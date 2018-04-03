@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
+    <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
+    <ProjectReference Include="..\KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocator.SimpleInjector.csproj" />
+    <ProjectReference Include="..\KalikoCMS.UI\KalikoCMS.UI.csproj" />
+  </ItemGroup>
+
+</Project>
