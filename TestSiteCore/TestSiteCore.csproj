@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
     <ProjectReference Include="..\KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocator.SimpleInjector.csproj" />
     <ProjectReference Include="..\KalikoCMS.UI\KalikoCMS.UI.csproj" />

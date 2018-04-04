@@ -1,4 +1,5 @@
-﻿using KalikoCMS.ServiceLocator;
+﻿using KalikoCMS.Mvc;
+using KalikoCMS.ServiceLocator;
 using KalikoCMS.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,8 @@ namespace TestSiteCore
 
 
             app.UseStaticFiles();
+
+            app.UseCmsMiddleware();
 
             app.UseMvc(routes =>
             {
