@@ -1,12 +1,17 @@
 namespace KalikoCMS.Mvc {
     using System.Collections.Generic;
     using Core;
+#if NETCORE
+    using Microsoft.AspNetCore.Http;
+#else
+    using System.Web;
+#endif
 
     public class RouteUtils
     {
-        public static void RedirectToController(CmsPage page, string actionName = "index", Dictionary<string, object> additionalRouteData = null)
+        public static void RedirectToController(HttpContext httpContext, CmsPage page, string actionName = "index", Dictionary<string, object> additionalRouteData = null)
         {
-            //RequestModule.RedirectToController(page, actionName, additionalRouteData);
+            RequestModule.RedirectToController(httpContext, page, actionName, additionalRouteData);
         }
     }
 }

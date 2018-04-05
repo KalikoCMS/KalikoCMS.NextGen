@@ -2,7 +2,7 @@
 namespace KalikoCMS.Mvc.Framework.Interfaces {
     using Core;
 
-    public interface IPageController {
+    internal interface IPageController {
         CmsPage GetTypedPage(CmsPage page);
     }
 }

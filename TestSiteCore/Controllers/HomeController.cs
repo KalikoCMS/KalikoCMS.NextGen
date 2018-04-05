@@ -3,7 +3,6 @@ using KalikoCMS.AssemblyReaders;
 using KalikoCMS.Core;
 using KalikoCMS.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using TestSite46.Models;
 
 namespace TestSiteCore.Controllers {
     public class HomeController : Controller {

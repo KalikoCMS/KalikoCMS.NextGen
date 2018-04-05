@@ -1,6 +1,7 @@
 ﻿using KalikoCMS.Mvc;
 using KalikoCMS.ServiceLocator;
 using KalikoCMS.UI;
+using KalikoCMS.Mvc.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
@@ -48,6 +49,8 @@ namespace TestSiteCore
 
             app.UseMvc(routes =>
             {
+                routes.Routes.Add(new CmsRoute(routes.DefaultHandler));
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

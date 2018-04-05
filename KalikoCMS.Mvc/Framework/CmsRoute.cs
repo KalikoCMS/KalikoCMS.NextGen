@@ -1,21 +1,25 @@
 ﻿namespace KalikoCMS.Mvc.Framework {
 #if NETCORE
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Routing;
-
 #else
     using System.Web.Routing;
 #endif
 
+#if NETCORE
+    public class CmsRoute : IRouter {
+        private readonly IRouter _defaultRouter;
+#else
     public class CmsRoute : Route {
+#endif
+
         #region Constructors
 
 #if NETCORE
-        public CmsRoute(IRouter target, string routeTemplate, IInlineConstraintResolver inlineConstraintResolver) : base(target, routeTemplate, inlineConstraintResolver) { }
-
-        public CmsRoute(IRouter target, string routeTemplate, RouteValueDictionary defaults, IDictionary<string, object> constraints, RouteValueDictionary dataTokens, IInlineConstraintResolver inlineConstraintResolver) : base(target, routeTemplate, defaults, constraints, dataTokens, inlineConstraintResolver) { }
-
-        public CmsRoute(IRouter target, string routeName, string routeTemplate, RouteValueDictionary defaults, IDictionary<string, object> constraints, RouteValueDictionary dataTokens, IInlineConstraintResolver inlineConstraintResolver) : base(target, routeName, routeTemplate, defaults, constraints, dataTokens, inlineConstraintResolver) { }
+        public CmsRoute(IRouter defaultRouter) {
+            _defaultRouter = defaultRouter;
+        }
 #else
         public CmsRoute(string url, IRouteHandler routeHandler) : base(url, routeHandler) { }
 
@@ -29,7 +33,11 @@
         #endregion
 
 #if NETCORE
-        public override VirtualPathData GetVirtualPath(VirtualPathContext context) {
+        public async Task RouteAsync(RouteContext context) {
+            await _defaultRouter.RouteAsync(context);
+        }
+
+        public VirtualPathData GetVirtualPath(VirtualPathContext context) {
             object controller = null;
 
             if (context.HttpContext.Items.Keys.Contains("cmsRouting") && context.Values.ContainsKey("controller")) {
@@ -37,7 +45,7 @@
                 context.Values.Remove("controller");
             }
 
-            var virtualPath = base.GetVirtualPath(context);
+            var virtualPath = _defaultRouter.GetVirtualPath(context);
 
             if (controller != null) {
                 context.Values.Add("controller", controller);

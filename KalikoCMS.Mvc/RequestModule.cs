@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace KalikoCMS.Mvc
-{
+namespace KalikoCMS.Mvc {
     using System;
     using System.Linq;
     using System.Reflection;
+    using System.Web;
     using Core;
     using Core.Interfaces;
     using Framework;
+    using Framework.Interfaces;
     using Logging;
 #if NETCORE
     using Microsoft.AspNetCore.Http;
@@ -17,17 +18,14 @@ namespace KalikoCMS.Mvc
     using System.Web.Mvc;
 #endif
 
-    internal class RequestModule : IStartupSequence
-    {
+    internal class RequestModule : IStartupSequence {
         private static Dictionary<int, Type> _controllerList;
 
-        public RequestModule()
-        {
+        public RequestModule() {
             //RequestManager = new RequestManager();
         }
 
-        protected void RedirectToStartPage()
-        {
+        protected void RedirectToStartPage() {
             //var startPageId = Configuration.SiteSettings.Instance.StartPageId;
 
             //if (startPageId == Guid.Empty)
@@ -47,8 +45,7 @@ namespace KalikoCMS.Mvc
             //RedirectToController(page);
         }
 
-        public static void RedirectToController(CmsPage page, string actionName = "index", Dictionary<string, object> additionalRouteData = null, bool isPreview = false)
-        {
+        public static void RedirectToController(HttpContext httpContext, CmsPage page, string actionName = "index", Dictionary<string, object> additionalRouteData = null, bool isPreview = false) {
             //if (!page.IsAvailable && !isPreview)
             //{
             //    PageHasExpired();
@@ -57,34 +54,45 @@ namespace KalikoCMS.Mvc
 
             //var type = GetControllerType(page);
 
-            //var controller = DependencyResolver.Current.GetService(type);
+            var type = _controllerList.FirstOrDefault().Value;
 
-            //var controllerName = StripEnd(type.Name.ToLowerInvariant(), "controller");
+#if NETCORE
+            var controller = httpContext.RequestServices.GetService(type);
+#else
+            var controller = DependencyResolver.Current.GetService(type);
+#endif
 
-            //HttpContext.Current.Items["cmsRouting"] = true;
+            var controllerName = StripEnd(type.Name.ToLowerInvariant(), "controller");
 
-            //var routeData = new RouteData();
-            //routeData.Values["controller"] = controllerName;
-            //routeData.Values["action"] = actionName;
-            //routeData.Values["currentPage"] = ((IPageController)controller).GetTypedPage(page);
-            //routeData.Values["cmsPageUrl"] = page.PageUrl.ToString().Trim('/');
+            httpContext.Items["cmsRouting"] = true;
 
-            //if (additionalRouteData != null)
-            //{
-            //    foreach (var data in additionalRouteData)
-            //    {
-            //        routeData.Values.Add(data.Key, data.Value);
-            //    }
-            //}
+            var routeData = new RouteData();
+            routeData.Values["controller"] = controllerName;
+            routeData.Values["action"] = actionName;
+            routeData.Values["currentPage"] = page; //((IPageController)controller).GetTypedPage(page);
+            routeData.Values["cmsPageUrl"] = "/pagecontroller"; //page.PageUrl.ToString().Trim('/');
 
-            //HttpContext.Current.Response.Clear();
-            //var requestContext = new RequestContext(new HttpContextWrapper(HttpContext.Current), routeData);
-            //((IController)controller).Execute(requestContext);
-            //HttpContext.Current.ApplicationInstance.CompleteRequest();
+            if (additionalRouteData != null)
+            {
+                foreach (var data in additionalRouteData)
+                {
+                    routeData.Values.Add(data.Key, data.Value);
+                }
+            }
+
+            httpContext.Response.Clear();
+#if NETCORE
+            //var requestContext = new RequestContext(new HttpContextWrapper(httpContext), routeData);
+            //((ControllerBase)controller).Execute(requestContext);
+            //httpContext.ApplicationInstance.CompleteRequest();
+#else
+            var requestContext = new RequestContext(new HttpContextWrapper(httpContext), routeData);
+            ((IController)controller).Execute(requestContext);
+            httpContext.ApplicationInstance.CompleteRequest();
+#endif
         }
 
-        private static Type GetControllerType(CmsPage page)
-        {
+        private static Type GetControllerType(CmsPage page) {
             throw new NotImplementedException();
             //if (_controllerList.All(c => c.Key != page.PageTypeId))
             //{
@@ -97,18 +105,15 @@ namespace KalikoCMS.Mvc
             //return type;
         }
 
-        private static string StripEnd(string text, string ending)
-        {
-            if (text.EndsWith(ending))
-            {
+        private static string StripEnd(string text, string ending) {
+            if (text.EndsWith(ending)) {
                 return text.Substring(0, text.Length - ending.Length);
             }
 
             return text;
         }
 
-        public static void RedirectToControllerAction(CmsPage page, string[] parameters)
-        {
+        public static void RedirectToControllerAction(CmsPage page, string[] parameters) {
             //if (!page.IsAvailable)
             //{
             //    PageHasExpired();
@@ -141,16 +146,14 @@ namespace KalikoCMS.Mvc
 
         public int StartupOrder => 10;
 
-        public void Startup()
-        {
+        public void Startup() {
             _controllerList = BuildControllerList();
             InjectMvcRoute();
         }
 
-        private void InjectMvcRoute()
-        {
+        private void InjectMvcRoute() {
 #if NETCORE
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             //var route = new CmsRoute(new MvcRouteHandler(), "{cmsPageUrl}/{action}", new DefaultInlineConstraintResolver());
             //route.Constraints.Add("cmsPageUrl", new CmsRouteConstraint());
             //route.Defaults.Add("action", "Index");
@@ -159,60 +162,52 @@ namespace KalikoCMS.Mvc
                 Constraints = new RouteValueDictionary { { "cmsPageUrl", new CmsRouteConstraint() } },
                 Defaults = new RouteValueDictionary { { "action", "Index" } }
             };
-#endif
 
-#if NETCORE
-#else
             RouteTable.Routes.Insert(0, route);
 #endif
         }
 
-        private static Dictionary<int, Type> BuildControllerList()
-        {
+        private static Dictionary<int, Type> BuildControllerList() {
             var controllerList = new Dictionary<int, Type>();
-            //var assemblies = BuildManager.GetReferencedAssemblies().Cast<Assembly>();
 
-            //foreach (var assembly in assemblies)
-            //{
-            //    if (IsGenericAssembly(assembly))
-            //    {
-            //        continue;
-            //    }
+            var assemblies = AssemblyReaders.AssemblyReader.GetAssemblies();
 
-            //    foreach (var definedType in assembly.DefinedTypes)
-            //    {
-            //        if (definedType.ImplementedInterfaces.All(i => i != typeof(IPageController)))
-            //        {
-            //            continue;
-            //        }
+            foreach (var assembly in assemblies) {
+                if (IsGenericAssembly(assembly)) {
+                    continue;
+                }
 
-            //        if (definedType.BaseType == null)
-            //        {
-            //            continue;
-            //        }
+                foreach (var definedType in assembly.DefinedTypes) {
+                    if (definedType.ImplementedInterfaces.All(i => i != typeof(IPageController))) {
+                        continue;
+                    }
 
-            //        if (definedType.IsAbstract)
-            //        {
-            //            continue;
-            //        }
+                    if (definedType.BaseType == null) {
+                        continue;
+                    }
 
-            //        var pageType = PageType.GetPageType(definedType.BaseType.GenericTypeArguments.FirstOrDefault());
+                    if (definedType.IsAbstract) {
+                        continue;
+                    }
 
-            //        if (pageType == null)
-            //        {
-            //            continue;
-            //        }
+                    // TODO: Add pagetype check
+                    //var pageType = PageType.GetPageType(definedType.BaseType.GenericTypeArguments.FirstOrDefault());
 
-            //        controllerList.Add(pageType.PageTypeId, definedType.AsType());
-            //    }
-            //}
+                    //if (pageType == null)
+                    //{
+                    //    continue;
+                    //}
+
+                    //controllerList.Add(pageType.PageTypeId, definedType.AsType());
+                    controllerList.Add(1, definedType.AsType());
+                }
+            }
 
             return controllerList;
         }
 
-        private static bool IsGenericAssembly(Assembly assembly)
-        {
-            var knownAssemblyNames = new[] { "System.", "Microsoft.", "KalikoCMS.", "Lucene." };
+        private static bool IsGenericAssembly(Assembly assembly) {
+            var knownAssemblyNames = new[] {"System.", "Microsoft.", "KalikoCMS.", "Lucene."};
             var isGenericAssembly = knownAssemblyNames.Any(knownAssemblyName => assembly.FullName.StartsWith(knownAssemblyName));
 
             return isGenericAssembly;
