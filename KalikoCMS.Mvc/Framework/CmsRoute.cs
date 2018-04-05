@@ -1,15 +1,22 @@
 ﻿namespace KalikoCMS.Mvc.Framework {
 #if NETCORE
-    using System.Collections.Generic;
+    using System;
     using System.Threading.Tasks;
+    using Core;
+    using Interfaces;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
 #else
     using System.Web.Routing;
+    using Interfaces;
 #endif
 
 #if NETCORE
     public class CmsRoute : IRouter {
-        private readonly IRouter _defaultRouter;
+        private readonly IActionSelector _actionSelector;
+        private readonly IActionInvokerFactory _actionInvokerFactory;
+        private readonly IActionContextAccessor _actionContextAccessor;
 #else
     public class CmsRoute : Route {
 #endif
@@ -17,8 +24,10 @@
         #region Constructors
 
 #if NETCORE
-        public CmsRoute(IRouter defaultRouter) {
-            _defaultRouter = defaultRouter;
+        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor) {
+            _actionSelector = actionSelector;
+            _actionInvokerFactory = actionInvokerFactory;
+            _actionContextAccessor = actionContextAccessor;
         }
 #else
         public CmsRoute(string url, IRouteHandler routeHandler) : base(url, routeHandler) { }
@@ -33,25 +42,66 @@
         #endregion
 
 #if NETCORE
-        public async Task RouteAsync(RouteContext context) {
-            await _defaultRouter.RouteAsync(context);
+        public Task RouteAsync(RouteContext context) {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (context.HttpContext.Request.Path == "/routed/")
+            {
+                context.RouteData.Values["controller"] = "Route";
+                context.RouteData.Values["action"] = "Index";
+            }
+            else if (context.HttpContext.Request.Path == "/page/")
+            {
+                context.RouteData.Values["controller"] = "TestPage";
+                context.RouteData.Values["action"] = "Index";
+                context.RouteData.Values["cmsPage"] = new CmsPage();
+            }
+            else
+            {
+                return Task.CompletedTask;
+            }
+
+            var candidates = _actionSelector.SelectCandidates(context);
+            if (candidates == null || candidates.Count == 0)
+            {
+                //_logger.NoActionsMatched(context.RouteData.Values);
+                return Task.CompletedTask;
+            }
+
+            var actionDescriptor = _actionSelector.SelectBestCandidate(context, candidates);
+            if (actionDescriptor == null)
+            {
+                //_logger.NoActionsMatched(context.RouteData.Values);
+                return Task.CompletedTask;
+            }
+
+            context.Handler = c =>
+            {
+                var routeData = c.GetRouteData();
+
+                var actionContext = new ActionContext(context.HttpContext, routeData, actionDescriptor);
+                if (_actionContextAccessor != null)
+                {
+                    _actionContextAccessor.ActionContext = actionContext;
+                }
+
+                var invoker = _actionInvokerFactory.CreateInvoker(actionContext);
+                if (invoker == null)
+                {
+                    throw new InvalidOperationException("Resources.FormatActionInvokerFactory_CouldNotCreateInvoker(actionDescriptor.DisplayName)");
+                }
+
+                return invoker.InvokeAsync();
+            };
+
+            return Task.CompletedTask;
         }
 
         public VirtualPathData GetVirtualPath(VirtualPathContext context) {
-            object controller = null;
-
-            if (context.HttpContext.Items.Keys.Contains("cmsRouting") && context.Values.ContainsKey("controller")) {
-                controller = context.Values["controller"];
-                context.Values.Remove("controller");
-            }
-
-            var virtualPath = _defaultRouter.GetVirtualPath(context);
-
-            if (controller != null) {
-                context.Values.Add("controller", controller);
-            }
-
-            return virtualPath;
+            return null;
         }
 #else
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values) {

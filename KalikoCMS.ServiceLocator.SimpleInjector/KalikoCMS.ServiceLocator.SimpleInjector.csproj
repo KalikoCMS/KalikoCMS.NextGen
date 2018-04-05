@@ -27,6 +27,7 @@
     <PackageReference Include="SimpleInjector.Integration.Web.Mvc" Version="4.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
