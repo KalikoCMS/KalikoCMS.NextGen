@@ -1,8 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Views\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\**" />
+  </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
@@ -11,13 +17,17 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <Folder Remove="NET46" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded">
+      <Version>2.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
 
-
-  <!-- .NET 4.5 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
+  <!-- .NET 4.6 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NET46;NETFULL</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -29,20 +39,5 @@
     <Reference Include="System.Configuration" />
     <Folder Include="NET46" />
   </ItemGroup>
-  
-  
-  <ItemGroup>
-    <!--<None Remove="Views\Shared\DisplayTemplates\ContentReference.cshtml" />-->
-    <None Remove="Views\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\**" />
-    <!--<EmbeddedResource Include="Views\Shared\DisplayTemplates\ContentReference.cshtml" />-->
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded">
-      <Version>2.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
-
+ 
 </Project>

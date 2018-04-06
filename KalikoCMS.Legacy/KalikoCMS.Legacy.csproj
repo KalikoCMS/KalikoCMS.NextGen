@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
@@ -12,10 +12,10 @@
   </ItemGroup>
 
   <!-- .NET 4.6 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NET46;NETFULL</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

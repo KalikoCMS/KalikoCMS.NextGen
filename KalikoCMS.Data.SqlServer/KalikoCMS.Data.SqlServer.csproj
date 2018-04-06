@@ -4,20 +4,28 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="LibLog" Version="4.2.6" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <Version>2.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0;LIBLOG_PORTABLE</DefineConstants>
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
   </ItemGroup>
 
   <!-- .NET 4.6 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>NET46;NETFULL;LIBLOG_PORTABLE</DefineConstants>
+    <DefineConstants>NET46;NETFULL</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="mscorlib" />
@@ -29,6 +37,9 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

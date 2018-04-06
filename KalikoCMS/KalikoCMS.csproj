@@ -1,21 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <Version>2.0-alpha1</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
+  </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-  </ItemGroup>
 
-
-  <!-- .NET 4.6 references, compilation flags and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <!-- .NET 4.6.x references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>NET46;NETFULL</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -27,10 +30,8 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
+    <Compile Remove="**\*_NETCORE.cs" Condition=" '$(TargetFramework)' == 'net461'" />
+    <Compile Remove="**\*_NET46.cs" Condition=" '$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
-    <DefineConstants>NET46;NETFULL</DefineConstants>
-  </PropertyGroup>
-  
+
 </Project>

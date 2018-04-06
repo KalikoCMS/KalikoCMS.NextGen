@@ -51,11 +51,6 @@ namespace TestSiteCore
             app.UseCmsMiddleware();
 
             app.UseMvc(routes => {
-                //var actionInvokerFactory = routes.ServiceProvider.GetService(typeof(IActionInvokerFactory)) as IActionInvokerFactory;
-                //var actionSelector = routes.ServiceProvider.GetService(typeof(IActionSelector)) as IActionSelector;
-                //var actionContextAccessor = routes.ServiceProvider.GetService(typeof(IActionContextAccessor)) as IActionContextAccessor;
-                //routes.Routes.Add(new CmsRoute(routes.DefaultHandler, actionSelector, actionInvokerFactory, actionContextAccessor));
-
                 routes.MapCms();
 
                 routes.MapRoute(

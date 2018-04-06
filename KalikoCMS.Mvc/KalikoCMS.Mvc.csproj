@@ -1,8 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
+    <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
+  </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
@@ -17,9 +22,17 @@
       <Version>2.0.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.viewfeatures\2.0.3\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
   <!-- .NET 4.6 references, compilation flags and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
+    <DefineConstants>NET46;NETFULL</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -30,24 +43,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461'">
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.3" />
   </ItemGroup>
   
-  <ItemGroup>
-    <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
-    <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
-    <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
-      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.viewfeatures\2.0.3\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
-    <DefineConstants>NET46;NETFULL</DefineConstants>
-  </PropertyGroup>
-
 </Project>

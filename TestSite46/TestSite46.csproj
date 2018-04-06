@@ -129,6 +129,10 @@
       <Project>{e45d85a2-0d75-4fa6-9fa2-0edb3feafc88}</Project>
       <Name>KalikoCMS.Framework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj">
+      <Project>{d9e5bdbe-9cf7-47d4-9fce-c1273a50ef1e}</Project>
+      <Name>KalikoCMS.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocator.SimpleInjector.csproj">
       <Project>{ee852b99-a947-4fc3-a61e-e822e0da3c3b}</Project>
       <Name>KalikoCMS.ServiceLocator.SimpleInjector</Name>

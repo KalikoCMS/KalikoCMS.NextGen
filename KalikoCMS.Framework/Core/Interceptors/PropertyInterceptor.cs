@@ -17,7 +17,7 @@ namespace KalikoCMS.Core.Interceptors {
 
             // Handle properties if they are CMS properties
             if (methodName.StartsWith("get_")) {
-                bool propertyExists = false;
+                var propertyExists = false;
                 var currentPage = (IContent) invocation.InvocationTarget;
                 var propertyName = methodName.Substring(4);
                 //var propertyData = currentPage.Property.GetPropertyValue(propertyName, out propertyExists);

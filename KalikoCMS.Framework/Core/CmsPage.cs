@@ -1,7 +1,9 @@
-﻿using KalikoCMS.Core.Interfaces;
-
+﻿
 namespace KalikoCMS.Core {
-    public class CmsPage : IContent {
+    using Interfaces;
+    using System;
 
+    public class CmsPage : MarshalByRefObject, IContent {
+        public string Name { get; set; }
     }
 }
