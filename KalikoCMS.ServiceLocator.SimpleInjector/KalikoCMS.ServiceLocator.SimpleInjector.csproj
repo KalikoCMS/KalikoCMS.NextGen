@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <RootNamespace>KalikoCMS.ServiceLocator</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Configuration\KalikoCMS.Configuration.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
     <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
   </ItemGroup>

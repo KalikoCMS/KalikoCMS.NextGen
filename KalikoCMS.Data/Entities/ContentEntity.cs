@@ -16,5 +16,9 @@
         public ICollection<ContentTagEntity> ContentTags { get; set; }
         public ICollection<ContentLanguageEntity> ContentLanguages { get; set; }
         public ICollection<ContentPropertyEntity> ContentProperties { get; set; }
+
+        public ContentEntity() {
+            ContentId = Guid.NewGuid();
+        }
     }
 }

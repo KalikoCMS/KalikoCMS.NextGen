@@ -12,7 +12,7 @@ namespace KalikoCMS.Modules {
     public abstract class RequestModuleBase : IHttpModule {
 #endif
 
-        private static readonly string PreviewPath;
+        private static readonly string PreviewPath = "TODO"; //TODO
         //protected static IRequestManager RequestManager { get; set; }
 
         static RequestModuleBase() {
@@ -79,6 +79,10 @@ namespace KalikoCMS.Modules {
         }
 
         private bool IsUrlToPreview(string url) {
+            if (string.IsNullOrEmpty(url)) {
+                return false;
+            }
+
             if (!url.StartsWith("/")) {
                 url = string.Format("/{0}", url);
             }

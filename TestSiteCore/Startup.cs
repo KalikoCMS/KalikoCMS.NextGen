@@ -3,39 +3,38 @@ using KalikoCMS.ServiceLocator;
 using KalikoCMS.UI;
 using KalikoCMS.Mvc.Extensions;
 using KalikoCMS.Mvc.Framework;
+using KalikoCMS.Data.InMemory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
-namespace TestSiteCore
-{
+namespace TestSiteCore {
     using KalikoCMS.Mvc.Framework.Interfaces;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
+    using Microsoft.EntityFrameworkCore;
 
-    public class Startup
-    {
+    public class Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
 
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
+            services.Configure<RazorViewEngineOptions>(options => {
                 options.FileProviders.Add(new CmsEmbeddedFileProvider());
             });
 
+            //services.AddDbContext<InMemoryCmsContext>();
+
             SimpleInjectorProvider.RegisterServices(services);
+            SimpleInjectorProvider.RegisterDataProvider<InMemoryCmsContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
 
@@ -50,6 +49,8 @@ namespace TestSiteCore
             app.UseStaticFiles();
             app.UseCmsMiddleware();
 
+            BuildTestSite();
+
             app.UseMvc(routes => {
                 routes.MapCms();
 
@@ -58,6 +59,10 @@ namespace TestSiteCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+        }
+
+        private void BuildTestSite() {
+            
         }
     }
 }

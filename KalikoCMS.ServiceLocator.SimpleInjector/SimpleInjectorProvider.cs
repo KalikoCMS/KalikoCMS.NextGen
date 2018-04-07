@@ -1,7 +1,4 @@
-﻿using KalikoCMS.Services;
-using KalikoCMS.Services.Interfaces;
-using SimpleInjector;
-
+﻿using SimpleInjector;
 #if NETFULL
 using System;
 using System.Reflection;
@@ -19,32 +16,37 @@ using SimpleInjector.Lifestyles;
 #endif
 
 namespace KalikoCMS.ServiceLocator {
+    using Data;
+    using Data.Repositories;
+    using Data.Repositories.Interfaces;
+    using Services.Content;
+    using Services.Content.Interfaces;
+    using KalikoCMS.Services.Resolvers;
+    using KalikoCMS.Services.Resolvers.Interfaces;
+
     public class SimpleInjectorProvider {
         public static Container Container { get; private set; }
 
-#if NETFULL
-        public static void RegisterServices()
-        {
-            // Create the container as usual.
-            var container = new Container();
-            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+        static SimpleInjectorProvider() {
+            Container = new Container();
+        }
 
-            // Register your types, for instance:
-            //container.Register<IDemoService, DemoService>(Lifestyle.Scoped);
+#if NETFULL
+        public static void InitializeContainer() {
+            Container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+
+            RegisterCmsServices();
 
             // This is an extension method from the integration package.
-            container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+            Container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
 
-            container.Verify();
+            Container.Verify();
 
-            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(container));
-            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
+            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(Container));
         }
 #else
         public static void RegisterServices(IServiceCollection services) {
-            Container = new Container();
-            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
-
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -60,14 +62,29 @@ namespace KalikoCMS.ServiceLocator {
             Container.RegisterMvcControllers(app);
             Container.RegisterMvcViewComponents(app);
 
-            // Register your types, for instance:
-            //Container.Register<IDemoService, DemoService>(Lifestyle.Scoped);
+            RegisterCmsServices();
 
             // Allow Simple Injector to resolve services from ASP.NET Core.
             Container.AutoCrossWireAspNetComponents(app);
 
             Container.Verify();
+
+            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
         }
 #endif
+
+        public static void RegisterDataProvider<T>() where T : CmsContext {
+            // TODO: Check that container was created
+            Container.Register<CmsContext, T>(Lifestyle.Scoped);
+        }
+
+        private static void RegisterCmsServices() {
+            Container.Register<IContentCreator, ContentCreator>(Lifestyle.Singleton);
+            Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
+            Container.Register<IContentIndexService, ContentIndexService>(Lifestyle.Singleton);
+            Container.Register<IHttpContextResolver, HttpContextResolver>();
+
+            Container.Register<IContentRepository, ContentRepository>();
+        }
     }
 }

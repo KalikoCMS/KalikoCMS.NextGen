@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Data.InMemory\KalikoCMS.Data.InMemory.csproj" />
     <ProjectReference Include="..\KalikoCMS.Data.SqlServer\KalikoCMS.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
     <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
     <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />

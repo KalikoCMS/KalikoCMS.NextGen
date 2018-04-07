@@ -2,7 +2,7 @@
     using Entities;
     using Microsoft.EntityFrameworkCore;
 
-    internal abstract class CmsContextBase : DbContext {
+    public class CmsContext : DbContext {
         internal DbSet<ContentAccessRightsEntity> ContentAccessRights { get; set; }
         internal DbSet<ContentEntity> Content { get; set; }
         internal DbSet<ContentLanguageEntity> ContentLanguages { get; set; }
@@ -16,6 +16,10 @@
         internal DbSet<SystemInformationEntity> SystemInformation { get; set; }
         internal DbSet<TagContextEntity> TagContexts { get; set; }
         internal DbSet<TagEntity> Tags { get; set; }
+
+        //public CmsContext(DbContextOptions<CmsContext> options) : base(options) { }
+
+        //protected CmsContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);

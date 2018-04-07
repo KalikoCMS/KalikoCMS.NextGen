@@ -11,7 +11,7 @@ namespace KalikoCMS.Data.Entities {
         public Guid ContentId { get; set; }
         public int LanguageId { get; set; }
         public string ContentName { get; set; }
-        public string ContentUrl { get; set; }
+        public string UrlSegment { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public DateTime? DeletedDate { get; set; }

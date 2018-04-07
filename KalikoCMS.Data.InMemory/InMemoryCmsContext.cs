@@ -1,11 +1,11 @@
-﻿namespace KalikoCMS.Data.SqlServer {
+﻿namespace KalikoCMS.Data.InMemory {
     using Microsoft.EntityFrameworkCore;
 
-    internal class CmsContext : CmsContextBase {
+    public class InMemoryCmsContext : CmsContext {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("CONNECTIONGOESHERE");
+            optionsBuilder.UseInMemoryDatabase("KalikoCMS");
         }
     }
 }

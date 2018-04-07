@@ -8,5 +8,9 @@ namespace KalikoCMS.Data.Entities {
 
         public string Name { get; set; }
         public string Class { get; set; }
+
+        public PropertyTypeEntity() {
+            PropertyTypeId = Guid.NewGuid();
+        }
     }
 }

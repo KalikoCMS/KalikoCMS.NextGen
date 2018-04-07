@@ -10,6 +10,7 @@ namespace KalikoCMS.Mvc {
     using Framework;
     using Framework.Interfaces;
     using Logging;
+    using Modules;
 #if NETCORE
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
@@ -18,14 +19,18 @@ namespace KalikoCMS.Mvc {
     using System.Web.Mvc;
 #endif
 
-    internal class RequestModule : IStartupSequence {
+    internal class RequestModule : RequestModuleBase, IStartupSequence {
         private static Dictionary<int, Type> _controllerList;
 
         public RequestModule() {
             //RequestManager = new RequestManager();
         }
 
+#if NETCORE
         protected void RedirectToStartPage() {
+#else
+        protected override void RedirectToStartPage() {
+#endif
             //var startPageId = Configuration.SiteSettings.Instance.StartPageId;
 
             //if (startPageId == Guid.Empty)
