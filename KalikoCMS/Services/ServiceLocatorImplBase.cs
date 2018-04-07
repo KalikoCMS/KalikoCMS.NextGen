@@ -131,7 +131,7 @@ namespace KalikoCMS.Services {
         /// <param name="key">Name requested.</param>
         /// <returns>The formatted exception message string.</returns>
         protected virtual string FormatActivationExceptionMessage(Exception actualException, Type serviceType, string key) {
-            return string.Format(CultureInfo.CurrentUICulture, Constants.ActivationExceptionMessage, serviceType.Name, key);
+            return string.Format(CultureInfo.CurrentUICulture, ServiceLocatorConstants.ActivationExceptionMessage, serviceType.Name, key);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace KalikoCMS.Services {
         /// <param name="serviceType">Type of service requested.</param>
         /// <returns>The formatted exception message string.</returns>
         protected virtual string FormatActivateAllExceptionMessage(Exception actualException, Type serviceType) {
-            return string.Format(CultureInfo.CurrentUICulture, Constants.ActivateAllExceptionMessage, serviceType.Name);
+            return string.Format(CultureInfo.CurrentUICulture, ServiceLocatorConstants.ActivateAllExceptionMessage, serviceType.Name);
         }
     }
 }

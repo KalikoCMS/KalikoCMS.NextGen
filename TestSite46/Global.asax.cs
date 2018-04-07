@@ -16,7 +16,7 @@ namespace TestSite46
         protected void Application_Start()
         {
             HostingEnvironment.RegisterVirtualPathProvider(new EmbeddedVirtualPathProvider());
-            SimpleInjectorProvider.Registere();
+            SimpleInjectorProvider.RegisterServices();
 
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile(Server.MapPath("~/App_Data/log-{Date}.txt"))

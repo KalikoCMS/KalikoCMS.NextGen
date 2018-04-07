@@ -15,7 +15,7 @@ namespace KalikoCMS.Services {
         /// </summary>
         public static IServiceLocator Current {
             get {
-                if (!IsLocationProviderSet) throw new InvalidOperationException(Constants.ServiceLocationProviderNotSetMessage);
+                if (!IsLocationProviderSet) throw new InvalidOperationException(ServiceLocatorConstants.ServiceLocationProviderNotSetMessage);
 
                 return _currentProvider();
             }
