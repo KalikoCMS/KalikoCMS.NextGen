@@ -10,7 +10,6 @@
         public int ContentTypeId { get; set; }
         public Guid ParentId { get; set; }
 
-        public int TreeLevel { get; set; }
         public int SortOrder { get; set; }
 
         public ContentTypeEntity ContentType { get; set; }

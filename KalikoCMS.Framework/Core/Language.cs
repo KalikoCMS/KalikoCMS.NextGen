@@ -18,7 +18,7 @@
 #endregion
 
 namespace KalikoCMS.Core {
-    public partial class Language {
+    public class Language {
         //private static readonly List<Language> LanguageList;
         //private static readonly string DefaultLanguageValue;
 

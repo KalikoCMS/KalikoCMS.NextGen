@@ -33,7 +33,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{B2FCAD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Mvc", "KalikoCMS.Mvc\KalikoCMS.Mvc.csproj", "{D9E5BDBE-9CF7-47D4-9FCE-C1273A50EF1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalikoCMS.Data.SqlServer", "KalikoCMS.Data.SqlServer\KalikoCMS.Data.SqlServer.csproj", "{CB91F654-2905-48DF-96F4-F6FB17044ADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Data.SqlServer", "KalikoCMS.Data.SqlServer\KalikoCMS.Data.SqlServer.csproj", "{CB91F654-2905-48DF-96F4-F6FB17044ADD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Info", ".Info", "{7594EE78-2202-4A21-8570-3D03F61C44E1}"
+	ProjectSection(SolutionItems) = preProject
+		Changes.txt = Changes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,3 @@
+﻿
+KalikoCMS.Core.Language.Translate moved to KalikoCMS.Services.Localization.LocalizationService
+
