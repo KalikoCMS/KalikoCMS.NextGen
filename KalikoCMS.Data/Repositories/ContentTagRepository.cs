@@ -11,7 +11,7 @@
             _cmsContext = cmsContext;
         }
 
-        public override async Task<ContentTagEntity> GetById(int id) {
+        public override Task<ContentTagEntity> GetById(int id) {
             throw new NotImplementedException();
         }
     }

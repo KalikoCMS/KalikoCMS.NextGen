@@ -5,6 +5,7 @@ namespace KalikoCMS.Mvc {
     using System.Linq;
     using System.Reflection;
     using System.Web;
+    using AssemblyHelpers;
     using Core;
     using Core.Interfaces;
     using Framework;
@@ -175,7 +176,7 @@ namespace KalikoCMS.Mvc {
         private static Dictionary<int, Type> BuildControllerList() {
             var controllerList = new Dictionary<int, Type>();
 
-            var assemblies = AssemblyReaders.AssemblyReader.GetAssemblies();
+            var assemblies = AssemblyReader.GetAssemblies();
 
             foreach (var assembly in assemblies) {
                 if (IsGenericAssembly(assembly)) {

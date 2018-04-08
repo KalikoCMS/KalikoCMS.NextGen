@@ -1,20 +1,15 @@
-﻿using KalikoCMS.Mvc;
-using KalikoCMS.ServiceLocator;
-using KalikoCMS.UI;
-using KalikoCMS.Mvc.Extensions;
-using KalikoCMS.Mvc.Framework;
-using KalikoCMS.Data.InMemory;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.DependencyInjection;
-using Serilog;
-
-namespace TestSiteCore {
-    using KalikoCMS.Mvc.Framework.Interfaces;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Microsoft.AspNetCore.Routing;
-    using Microsoft.EntityFrameworkCore;
+﻿namespace TestSiteCore {
+    using KalikoCMS.Mvc;
+    using KalikoCMS.ServiceLocator;
+    using KalikoCMS.UI;
+    using KalikoCMS.Mvc.Extensions;
+    using KalikoCMS.Mvc.Framework;
+    using KalikoCMS.Data.InMemory;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.Extensions.DependencyInjection;
+    using Serilog;
 
     public class Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -62,7 +57,7 @@ namespace TestSiteCore {
         }
 
         private void BuildTestSite() {
-            
+
         }
     }
 }

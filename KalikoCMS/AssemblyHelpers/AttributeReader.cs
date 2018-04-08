@@ -17,7 +17,7 @@
  */
 #endregion
 
-namespace KalikoCMS.AssemblyReaders {
+namespace KalikoCMS.AssemblyHelpers {
     using System;
     using System.Collections.Generic;
     using System.Linq;

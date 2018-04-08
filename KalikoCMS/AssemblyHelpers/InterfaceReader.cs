@@ -17,23 +17,21 @@
  */
 #endregion
 
-namespace KalikoCMS.AssemblyReaders {
-    using System.Collections.Generic;
-    using System.Reflection;
-#if NETFULL
-    using System.Linq;
-    using System.Web.Compilation;
-#else
+namespace KalikoCMS.AssemblyHelpers {
     using System;
-#endif
+    using System.Collections.Generic;
+    using System.Linq;
 
-    public class AssemblyReader {
-        public static IEnumerable<Assembly> GetAssemblies() {
-#if NETFULL
-            return BuildManager.GetReferencedAssemblies().Cast<Assembly>();
-#else
-            return AppDomain.CurrentDomain.GetAssemblies();
-#endif
+    public class InterfaceReader {
+        public static IEnumerable<Type> GetTypesWithInterface(Type interfaceType) {
+            var assemblies = AssemblyReader.GetAssemblies();
+            var types = assemblies
+                .SelectMany(s => s.GetTypes())
+                .Where(t => !t.IsInterface)
+                .Where(interfaceType.IsAssignableFrom)
+                .ToList();
+
+            return types;
         }
     }
 }
