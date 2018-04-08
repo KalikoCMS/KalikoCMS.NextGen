@@ -10,6 +10,7 @@ namespace KalikoCMS.Data.Entities {
 
         public Guid ContentId { get; set; }
         public int LanguageId { get; set; }
+        public bool IsOriginal { get; set; }
         public string ContentName { get; set; }
         public string UrlSegment { get; set; }
         public DateTime CreatedDate { get; set; }

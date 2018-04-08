@@ -176,7 +176,7 @@ namespace KalikoCMS.Mvc {
         private static Dictionary<int, Type> BuildControllerList() {
             var controllerList = new Dictionary<int, Type>();
 
-            var assemblies = AssemblyReader.GetAssemblies();
+            var assemblies = AssemblyLocator.GetAssemblies();
 
             foreach (var assembly in assemblies) {
                 if (IsGenericAssembly(assembly)) {

@@ -27,7 +27,7 @@ namespace KalikoCMS.AssemblyHelpers {
         public static IEnumerable<Type> GetTypesWithAttribute(Type attributeType) {
             var typesWithAttribute = new List<Type>();
             var attributeAssemblyName = attributeType.Assembly.GetName().Name;
-            var assemblies = AssemblyReader.GetAssemblies();
+            var assemblies = AssemblyLocator.GetAssemblies();
 
             typesWithAttribute.AddRange(GetTypesWithAttributeInAssembly(attributeType.Assembly, attributeType));
 

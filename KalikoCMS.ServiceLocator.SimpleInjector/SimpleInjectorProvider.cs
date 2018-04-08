@@ -16,13 +16,17 @@ using SimpleInjector.Lifestyles;
 #endif
 
 namespace KalikoCMS.ServiceLocator {
+    using System;
+    using AssemblyHelpers;
     using Data;
     using Data.Repositories;
     using Data.Repositories.Interfaces;
+    using Interfaces;
     using Services.Content;
     using Services.Content.Interfaces;
     using KalikoCMS.Services.Resolvers;
     using KalikoCMS.Services.Resolvers.Interfaces;
+    using Services.Initialization.Interfaces;
 
     public class SimpleInjectorProvider {
         public static Container Container { get; private set; }
@@ -74,17 +78,28 @@ namespace KalikoCMS.ServiceLocator {
 #endif
 
         public static void RegisterDataProvider<T>() where T : CmsContext {
-            // TODO: Check that container was created
             Container.Register<CmsContext, T>(Lifestyle.Scoped);
         }
 
         private static void RegisterCmsServices() {
             Container.Register<IContentCreator, ContentCreator>(Lifestyle.Singleton);
-            Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
             Container.Register<IContentIndexService, ContentIndexService>(Lifestyle.Singleton);
-            Container.Register<IHttpContextResolver, HttpContextResolver>();
-
+            Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
             Container.Register<IContentRepository, ContentRepository>();
+            Container.Register<IHttpContextResolver, HttpContextResolver>();
+            Container.Register<IInitializationService, IInitializationService>(Lifestyle.Singleton);
+
+            RegisterUserServices();
+        }
+
+        private static void RegisterUserServices() {
+            var types = AssemblyLocator.GetTypesWithInterface<ISimpleInjectorRegistration>();
+
+            foreach (var type in types) {
+                var instance = Activator.CreateInstance(type) as ISimpleInjectorRegistration;
+
+                instance?.Register(Container);
+            }
         }
     }
 }
