@@ -28,7 +28,7 @@ namespace KalikoCMS.Services.Localization {
 
     public class LocalizationService : ILocalizationService {
         private static readonly Hashtable TranslationData = new Hashtable();
-        private static readonly ILog Logger = LogProvider.For<Tester>();
+        private static readonly ILog Logger = LogProvider.For<LocalizationService>();
 
         public string Translate(string key, bool errorIfMissing = true) {
             if (string.IsNullOrEmpty(key)) {

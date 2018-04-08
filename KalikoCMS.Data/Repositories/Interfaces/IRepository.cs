@@ -13,6 +13,6 @@
         void Delete<T>(Func<T, bool> predicate) where T : class;
         IEnumerable<T> Select<T>(Func<T, bool> predicate) where T : class;
         T SingleOrDefault<T>(Func<T, bool> predicate) where T : class;
-        Task Update(TKey id, TEntity entity);
+        Task Update(TEntity entity);
     }
 }

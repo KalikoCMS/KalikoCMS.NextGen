@@ -6,7 +6,9 @@ namespace KalikoCMS.Core
 
     public class PropertyType
     {
-        internal static readonly List<PropertyType> PropertyTypes = Data.PropertyTypeData.GetPropertyTypes();
+//        private static readonly ILog Logger = LogProvider.For<PropertyType>();
+
+        internal static readonly List<PropertyType> PropertyTypes; // TODO: = Data.PropertyTypeData.GetPropertyTypes();
         private PropertyData _class;
 
         public Guid PropertyTypeId { get; set; }
@@ -15,11 +17,7 @@ namespace KalikoCMS.Core
         public string EditControl { get; set; }
         public Type Type { get; set; }
 
-        public PropertyData ClassInstance {
-            get {
-                return _class ?? (_class = CreateInstance());
-            }
-        }
+        public PropertyData ClassInstance => _class ?? (_class = CreateInstance());
 
         private PropertyData CreateInstance()
         {
@@ -73,7 +71,7 @@ namespace KalikoCMS.Core
             }
 
             var exception = new Exception("Cannot find propertytype for type " + type.Name);
-            Logger.Write(exception, Logger.Severity.Major);
+//            Logger.Write(exception, Logger.Severity.Major);
             throw exception;
         }
 

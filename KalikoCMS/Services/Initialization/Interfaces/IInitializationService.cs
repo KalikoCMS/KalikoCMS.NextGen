@@ -1,3 +1,5 @@
 ﻿namespace KalikoCMS.Services.Initialization.Interfaces {
-    public interface IInitializationService { }
+    public interface IInitializationService {
+        void Initialize();
+    }
 }

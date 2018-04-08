@@ -30,18 +30,11 @@ namespace KalikoCMS.Attributes {
             DisplayName = displayName;
         }
 
-        public PageTypeAttribute(string name, string displayName, string pageTemplate) {
-            Name = name;
-            DisplayName = displayName;
-            PageTemplate = pageTemplate;
-        }
-
         public Type[] AllowedTypes { get; set; }
         public SortDirection DefaultChildSortDirection { get; set; }
         public SortOrder DefaultChildSortOrder { get; set; }
         public string DisplayName { get; }
         public string Name { get; }
-        public string PageTemplate { get; }
         public string PageTypeDescription { get; set; }
         public string PreviewImage { get; set; }
     }

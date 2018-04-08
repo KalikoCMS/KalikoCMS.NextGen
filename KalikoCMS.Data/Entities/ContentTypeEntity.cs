@@ -1,4 +1,5 @@
 ﻿namespace KalikoCMS.Data.Entities {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using Core.Collections;
@@ -7,7 +8,7 @@
         [Key]
         public int ContentTypeId { get; set; }
 
-        public int ContentProviderId { get; set; }
+        public Guid ContentProviderId { get; set; }
         public string Name { get; set; }
         public string Class { get; set; }
         public string DisplayName { get; set; }

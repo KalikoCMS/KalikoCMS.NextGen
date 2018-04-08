@@ -1,5 +1,6 @@
 ﻿namespace KalikoCMS.Data.Repositories.Interfaces {
+    using System;
     using Entities;
 
-    public interface IContentProviderRepository : IRepository<ContentProviderEntity, int> { }
+    public interface IContentProviderRepository : IRepository<ContentProviderEntity, Guid> { }
 }

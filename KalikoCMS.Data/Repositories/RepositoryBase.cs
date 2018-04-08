@@ -25,7 +25,7 @@
             await _cmsContext.SaveChangesAsync();
         }
 
-        public async Task Update(TKey id, TEntity entity) {
+        public async Task Update(TEntity entity) {
             _cmsContext.Set<TEntity>().Update(entity);
             await _cmsContext.SaveChangesAsync();
         }

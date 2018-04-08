@@ -36,7 +36,7 @@
             SimpleInjectorProvider.InitializeContainer(app);
 
             var log = new LoggerConfiguration()
-                .WriteTo.RollingFile("log-{Date}.txt")
+                .WriteTo.RollingFile("Logs\\log-{Date}.log")
                 .CreateLogger();
 
             Log.Logger = log;

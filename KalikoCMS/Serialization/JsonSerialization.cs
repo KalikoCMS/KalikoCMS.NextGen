@@ -25,7 +25,7 @@ namespace KalikoCMS.Serialization {
     public class JsonSerialization {
         #region Private members
 
-        private static readonly ILog Logger = LogProvider.For<Tester>();
+        private static readonly ILog Logger = LogProvider.For<JsonSerialization>();
         private static readonly JsonSerializerSettings AjaxSerializerSettings;
         private static readonly JsonSerializerSettings StandardSerializerSettings;
         private static readonly JsonSerializerSettings TypedJsonSerializerSettings;

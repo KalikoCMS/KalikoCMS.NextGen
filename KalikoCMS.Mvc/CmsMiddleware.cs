@@ -3,6 +3,8 @@ namespace KalikoCMS.Mvc {
     using System.Threading.Tasks;
     using Core;
     using Microsoft.AspNetCore.Http;
+    using Services;
+    using Services.Initialization.Interfaces;
 
     public class CmsMiddleware {
         private readonly RequestDelegate _next;
@@ -17,6 +19,10 @@ namespace KalikoCMS.Mvc {
                 // Temporary scan for page controllers
                 var requestModule = new RequestModule();
                 requestModule.Startup();
+
+                var initializationService = ServiceLocator.Current.GetInstance<IInitializationService>();
+                initializationService.Initialize();
+
                 _isInitialized = true;
             }
 

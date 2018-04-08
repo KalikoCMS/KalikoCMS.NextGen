@@ -26,6 +26,7 @@ namespace KalikoCMS.ServiceLocator {
     using Services.Content.Interfaces;
     using KalikoCMS.Services.Resolvers;
     using KalikoCMS.Services.Resolvers.Interfaces;
+    using Services.Initialization;
     using Services.Initialization.Interfaces;
 
     public class SimpleInjectorProvider {
@@ -85,18 +86,34 @@ namespace KalikoCMS.ServiceLocator {
             Container.Register<IContentCreator, ContentCreator>(Lifestyle.Singleton);
             Container.Register<IContentIndexService, ContentIndexService>(Lifestyle.Singleton);
             Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
-            Container.Register<IContentRepository, ContentRepository>();
+            Container.Register<IContentTypeResolver, ContentTypeResolver>(Lifestyle.Singleton);
             Container.Register<IHttpContextResolver, HttpContextResolver>();
-            Container.Register<IInitializationService, IInitializationService>(Lifestyle.Singleton);
+            Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
+
+            // Data repositories
+            Container.Register<IContentAccessRightsRepository, ContentAccessRightsRepository>();
+            Container.Register<IContentLanguageRepository, ContentLanguageRepository>();
+            Container.Register<IContentPropertyRepository, ContentPropertyRepository>();
+            Container.Register<IContentProviderRepository, ContentProviderRepository>();
+            Container.Register<IContentRepository, ContentRepository>();
+            Container.Register<IContentTagRepository, ContentTagRepository>();
+            Container.Register<IContentTypeRepository, ContentTypeRepository>();
+            Container.Register<ILanguageRepository, LanguageRepository>();
+            Container.Register<IPropertyRepository, PropertyRepository>();
+            Container.Register<IPropertyTypeRepository, PropertyTypeRepository>();
+            Container.Register<IRedirectRepository, RedirectRepository>();
+            Container.Register<ISystemInformationRepository, SystemInformationRepository>();
+            Container.Register<ITagContextRepository, TagContextRepository>();
+            Container.Register<ITagRepository, TagRepository>();
 
             RegisterUserServices();
         }
 
         private static void RegisterUserServices() {
-            var types = AssemblyLocator.GetTypesWithInterface<ISimpleInjectorRegistration>();
+            var types = AssemblyLocator.GetTypesWithInterface<ISimpleInjectorRegistrator>();
 
             foreach (var type in types) {
-                var instance = Activator.CreateInstance(type) as ISimpleInjectorRegistration;
+                var instance = Activator.CreateInstance(type) as ISimpleInjectorRegistrator;
 
                 instance?.Register(Container);
             }

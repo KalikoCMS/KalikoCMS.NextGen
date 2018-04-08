@@ -1,26 +1,17 @@
-﻿using KalikoCMS.Core;
-using KalikoCMS.Data.Entities;
-using KalikoCMS.Data.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace TestSiteCore.Controllers {
-    using System;
+    using Services;
 
     public class HomeController : Controller {
-        private IContentRepository _contentRepository;
+        private readonly ILocalService _localService;
 
-        public HomeController(IContentRepository contentRepository) {
-            _contentRepository = contentRepository;
+        public HomeController(ILocalService localService) {
+            _localService = localService;
         }
 
         public IActionResult Index() {
-
-            _contentRepository.Create(new ContentEntity() {ContentId = Guid.NewGuid()});
-            var content = _contentRepository.GetAll().ToList();
-            return Content(content.Count().ToString());
-
-            return View(new ContentReference());
+            return Content(_localService.TestMethod());
         }
     }
 }

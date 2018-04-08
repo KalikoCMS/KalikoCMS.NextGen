@@ -1,9 +1,10 @@
-﻿namespace TestSiteCore.Models
-{
+﻿namespace TestSiteCore.Models {
+    using KalikoCMS.Attributes;
     using KalikoCMS.Core;
 
-    public class MyPage : CmsPage
-    {
+    [PageType("MyPage", "My page")]
+    public class MyPage : CmsPage {
+        [Property("Test")]
         public virtual string Test { get; set; }
     }
 }

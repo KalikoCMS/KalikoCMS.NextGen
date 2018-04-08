@@ -1,18 +1,35 @@
 ﻿namespace KalikoCMS.Services.Initialization {
     using System;
+    using Content.Interfaces;
     using Interfaces;
+    using Logging;
 
     public class InitializationService : IInitializationService {
+        private static readonly ILog Logger = LogProvider.For<InitializationService>();
         private static bool _isInitialized;
 
-        public InitializationService() { }
+        private readonly IContentTypeResolver _contentTypeResolver;
+
+        public InitializationService(IContentTypeResolver contentTypeResolver) {
+            _contentTypeResolver = contentTypeResolver;
+        }
 
         public void Initialize() {
+            Logger.Info("InitializationService.Initialize");
             if (_isInitialized) {
-                throw new Exception("CMS already initialized");
+                Logger.Error("CMS already initialized");
+                return;
             }
 
-            _isInitialized = true;
+            try {
+                _contentTypeResolver.Initialize();
+
+                _isInitialized = true;
+            }
+            catch (Exception exception) {
+                Logger.FatalException("Failed to initialize the CMS", exception);
+                throw;
+            }
         }
 
     }
