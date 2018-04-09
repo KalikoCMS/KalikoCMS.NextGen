@@ -1,8 +1,9 @@
 ﻿namespace TestSiteCore.Models {
     using KalikoCMS.Attributes;
+    using KalikoCMS.Core;
 
     [SiteSettings]
-    public class MySite
+    public class MySite : CmsSite
     {
         
     }

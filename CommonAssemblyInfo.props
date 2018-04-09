@@ -1,0 +1,7 @@
+﻿<Project>
+  <PropertyGroup>
+    <Copyright>Fredrik Schultz ©</Copyright>
+	<FileVersion>2.0.0</FileVersion>
+	<AssemblyVersion>2.0.0</AssemblyVersion>
+  </PropertyGroup>
+</Project>

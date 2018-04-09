@@ -19,7 +19,7 @@
         }
 
         public void Initialize() {
-            Logger.Info("InitializationService.Initialize");
+            Logger.Info("Start initialization");
             if (_isInitialized) {
                 Logger.Error("CMS already initialized");
                 return;
@@ -31,6 +31,7 @@
                 _contentIndexService.Initialize();
                 
                 _isInitialized = true;
+                Logger.Info("Finished initialization");
             }
             catch (Exception exception) {
                 Logger.FatalException("Failed to initialize the CMS", exception);

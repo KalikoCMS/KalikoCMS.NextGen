@@ -35,12 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Mvc", "KalikoCMS.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Data.SqlServer", "KalikoCMS.Data.SqlServer\KalikoCMS.Data.SqlServer.csproj", "{CB91F654-2905-48DF-96F4-F6FB17044ADD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Info", ".Info", "{7594EE78-2202-4A21-8570-3D03F61C44E1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution items", ".Solution items", "{7594EE78-2202-4A21-8570-3D03F61C44E1}"
 	ProjectSection(SolutionItems) = preProject
 		Changes.txt = Changes.txt
+		CommonAssemblyInfo.props = CommonAssemblyInfo.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalikoCMS.Data.InMemory", "KalikoCMS.Data.InMemory\KalikoCMS.Data.InMemory.csproj", "{B68A790D-E345-4B3F-A8DD-11D391A37798}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Data.InMemory", "KalikoCMS.Data.InMemory\KalikoCMS.Data.InMemory.csproj", "{B68A790D-E345-4B3F-A8DD-11D391A37798}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

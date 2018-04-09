@@ -39,6 +39,8 @@
                     PropertyTypeId = Guid.NewGuid(),
                     Type = type
                 };
+                var propertyTypeSynchronizer = new PropertyTypeSynchronizer();
+                propertyTypeSynchronizer.AddPropertyType(propertyType);
             }
             else if (propertyType.Type == null) {
                 propertyType.Type = type;
