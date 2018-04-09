@@ -3,6 +3,7 @@
     using System.Linq;
     using AssemblyHelpers;
     using Attributes;
+    using ContentProviders;
     using Core;
     using Data.Entities;
     using Data.Repositories.Interfaces;
@@ -21,9 +22,6 @@
             var contentTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository>();
             var contentTypeMapper = new ContentTypeMapper();
 
-
-
-
             var contentTypeEntities = contentTypeRepository.GetAll().Include(x => x.Properties).ToList();
             var contentTypes = new List<ContentType>();
             var typesWithAttribute = AttributeReader.GetTypesWithAttribute(typeof(PageTypeAttribute)).ToList();
@@ -31,20 +29,25 @@
             foreach (var type in typesWithAttribute) {
                 var attribute = AttributeReader.GetAttribute<PageTypeAttribute>(type);
 
-                var contentTypeEntity = contentTypeEntities.SingleOrDefault(pt => pt.Name == attribute.Name);
+                var contentTypeEntity = contentTypeEntities.SingleOrDefault(x => x.ContentTypeId == attribute.UniqueId);
 
+                var isNew = false;
                 if (contentTypeEntity == null) {
-                    contentTypeEntity = new ContentTypeEntity();
+                    contentTypeEntity = new ContentTypeEntity {
+                        ContentTypeId = attribute.UniqueId,
+                        ContentProviderId = PageContentProvider.UniqueId
+                    };
                     contentTypeEntities.Add(contentTypeEntity);
+                    isNew = true;
                 }
 
                 contentTypeEntity.DefaultChildSortDirection = attribute.DefaultChildSortDirection;
                 contentTypeEntity.DefaultChildSortOrder = attribute.DefaultChildSortOrder;
                 contentTypeEntity.DisplayName = attribute.DisplayName;
-                contentTypeEntity.Name = attribute.Name;
                 contentTypeEntity.Description = attribute.PageTypeDescription;
+                contentTypeEntity.Name = type.Name;
 
-                if (contentTypeEntity.ContentTypeId == 0) {
+                if (isNew) {
                     contentTypeRepository.Create(contentTypeEntity);
                 }
                 else {

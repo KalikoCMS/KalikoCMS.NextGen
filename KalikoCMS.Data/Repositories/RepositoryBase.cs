@@ -20,14 +20,14 @@
 
         public abstract Task<TEntity> GetById(TKey id);
 
-        public async Task Create(TEntity entity) {
-            await _cmsContext.Set<TEntity>().AddAsync(entity);
-            await _cmsContext.SaveChangesAsync();
+        public void Create(TEntity entity) {
+            _cmsContext.Set<TEntity>().Add(entity);
+            _cmsContext.SaveChanges();
         }
 
-        public async Task Update(TEntity entity) {
+        public void Update(TEntity entity) {
             _cmsContext.Set<TEntity>().Update(entity);
-            await _cmsContext.SaveChangesAsync();
+            _cmsContext.SaveChangesAsync();
         }
 
         public async Task Delete(TKey id) {
@@ -40,19 +40,19 @@
             return _cmsContext.Set<TEntity>().FirstOrDefault(predicate);
         }
 
-        public IEnumerable<T> Select<T>(Func<T, bool> predicate) where T : class {
-            return _cmsContext.Set<T>().Where(predicate);
+        public IEnumerable<TEntity> Select(Func<TEntity, bool> predicate) {
+            return _cmsContext.Set<TEntity>().Where(predicate);
         }
 
-        public void Delete<T>(Func<T, bool> predicate) where T : class {
-            var set = _cmsContext.Set<T>();
+        public void Delete(Func<TEntity, bool> predicate) {
+            var set = _cmsContext.Set<TEntity>();
             var entities = set.Where(predicate);
             set.RemoveRange(entities);
             _cmsContext.SaveChanges();
         }
 
-        public T SingleOrDefault<T>(Func<T, bool> predicate) where T : class {
-            return _cmsContext.Set<T>().SingleOrDefault(predicate);
+        public TEntity SingleOrDefault(Func<TEntity, bool> predicate) {
+            return _cmsContext.Set<TEntity>().SingleOrDefault(predicate);
         }
     }
 }

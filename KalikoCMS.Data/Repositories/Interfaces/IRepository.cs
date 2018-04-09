@@ -8,11 +8,11 @@
         TEntity FirstOrDefault(Func<TEntity, bool> predicate);
         IQueryable<TEntity> GetAll();
         Task<TEntity> GetById(TKey id);
-        Task Create(TEntity entity);
+        void Create(TEntity entity);
         Task Delete(TKey id);
-        void Delete<T>(Func<T, bool> predicate) where T : class;
-        IEnumerable<T> Select<T>(Func<T, bool> predicate) where T : class;
-        T SingleOrDefault<T>(Func<T, bool> predicate) where T : class;
-        Task Update(TEntity entity);
+        void Delete(Func<TEntity, bool> predicate);
+        IEnumerable<TEntity> Select(Func<TEntity, bool> predicate);
+        TEntity SingleOrDefault(Func<TEntity, bool> predicate);
+        void Update(TEntity entity);
     }
 }

@@ -4,10 +4,10 @@
     using Core;
 
     public interface IContentTypeResolver {
-        ContentType GetContentType(int contentTypeId);
+        ContentType GetContentType(Guid contentTypeId);
         ContentType GetContentType<T>() where T : class;
         ContentType GetContentType(Type type);
         void Initialize();
-        List<PropertyDefinition> GetPropertyDefinitions(int contentTypeId);
+        List<PropertyDefinition> GetPropertyDefinitions(Guid contentTypeId);
     }
 }

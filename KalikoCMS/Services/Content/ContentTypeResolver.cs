@@ -15,8 +15,8 @@
             _contentTypes = new List<ContentType>();
         }
 
-        public ContentType GetContentType(int contentTypeId) {
-            return _contentTypes.Find(pt => pt.ContentTypeId == contentTypeId);
+        public ContentType GetContentType(Guid contentTypeId) {
+            return _contentTypes.Find(x => x.ContentTypeId == contentTypeId);
         }
 
         public ContentType GetContentType<T>() where T : class {
@@ -34,7 +34,7 @@
             _contentTypes = contentTypeSynchronizer.SynchronizeContentTypes();
         }
 
-        public List<PropertyDefinition> GetPropertyDefinitions(int contentTypeId) {
+        public List<PropertyDefinition> GetPropertyDefinitions(Guid contentTypeId) {
             var contentType = GetContentType(contentTypeId);
 
             if (contentType == null) {

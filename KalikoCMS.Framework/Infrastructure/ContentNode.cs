@@ -7,11 +7,12 @@
 
         public Guid ContentTypeId { get; set; }
         public int SortOrder { get; set; }
+        public int TreeLevel { get; set; }
 
         public ContentNode Parent { get; set; }
-        public ICollection<ContentNode> Children { get; }
-        public ICollection<LanguageNode> Languages { get; }
-        public ICollection<AccessRightsNode> AccessRights { get; }
+        public IEnumerable<ContentNode> Children { get; }
+        public IEnumerable<LanguageNode> Languages { get; internal set; }
+        public IEnumerable<AccessRightsNode> AccessRights { get; }
 
         public ContentNode() {
             Children = new List<ContentNode>();

@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Attributes;
+    using Content.Interfaces;
     using Core;
     using Data.Entities;
     using Data.Repositories.Interfaces;
@@ -18,6 +19,8 @@
 
         internal void SynchronizeProperties(ContentType pageType, Type type, ICollection<PropertyEntity> propertyEntities) {
             var propertyRepository = ServiceLocator.Current.GetInstance<IPropertyRepository>();
+            var propertyTypeResolver = ServiceLocator.Current.GetInstance<IPropertyTypeResolver>();
+
             var propertyMapper = new PropertyMapper();
 
             var propertyAttributeType = typeof(PropertyAttribute);
@@ -36,7 +39,7 @@
 
                 var propertyName = propertyInfo.Name;
                 var declaringType = propertyInfo.PropertyType;
-                var propertyTypeId = Guid.Empty; // TODO: PropertyType.GetPropertyTypeId(declaringType);
+                var propertyType = propertyTypeResolver.GetOrCreate(declaringType);
 
                 if (!propertyAttribute.IsTypeValid(declaringType)) {
                     var notSupportedException = new NotSupportedException(string.Format("The property attribute of '{0}' on pagetype '{1}' ({2}) does not support the propertytype!", propertyName, pageType.Name, type.FullName));
@@ -56,7 +59,7 @@
                     properties.Add(property);
                 }
 
-                property.PropertyTypeId = propertyTypeId;
+                property.PropertyTypeId = propertyType.PropertyTypeId;
                 property.ContentTypeId = pageType.ContentTypeId;
                 property.SortOrder = sortOrder;
                 property.Header = propertyAttribute.Header;
@@ -74,6 +77,9 @@
 
                 if (property.PropertyId == 0) {
                     propertyRepository.Create(property);
+                }
+                else {
+                    propertyRepository.Update(property);
                 }
 
                 var propertyDefinition = propertyMapper.Map(property);

@@ -7,6 +7,11 @@ namespace KalikoCMS.Infrastructure {
         private Dictionary<Guid, ContentNode> LookupTable { get; }
         internal ICollection<ContentNode> Children { get; }
 
+        public void AddChild(ContentNode contentNode) {
+            LookupTable.Add(contentNode.ContentId, contentNode);
+            Children.Add(contentNode);
+        }
+
         public ContentTree(Guid contentId, Dictionary<Guid, ContentNode> lookupTable) {
             ContentId = contentId;
             LookupTable = lookupTable;

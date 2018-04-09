@@ -1,11 +1,11 @@
 ﻿namespace KalikoCMS.Data.SqlServer {
     using Microsoft.EntityFrameworkCore;
 
-    internal class SqlServerCmsContext : CmsContext {
+    public class SqlServerCmsContext : CmsContext {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer("CONNECTIONGOESHERE");
+            optionsBuilder.UseSqlServer("Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=NextGen;Data Source=(localdb)\\v11.0");
         }
     }
 }

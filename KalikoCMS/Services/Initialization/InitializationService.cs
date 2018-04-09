@@ -9,9 +9,13 @@
         private static bool _isInitialized;
 
         private readonly IContentTypeResolver _contentTypeResolver;
+        private readonly IPropertyTypeResolver _propertyTypeResolver;
+        private readonly IContentIndexService _contentIndexService;
 
-        public InitializationService(IContentTypeResolver contentTypeResolver) {
+        public InitializationService(IContentTypeResolver contentTypeResolver, IPropertyTypeResolver propertyTypeResolver, IContentIndexService contentIndexService) {
             _contentTypeResolver = contentTypeResolver;
+            _propertyTypeResolver = propertyTypeResolver;
+            _contentIndexService = contentIndexService;
         }
 
         public void Initialize() {
@@ -22,8 +26,10 @@
             }
 
             try {
+                _propertyTypeResolver.Initialize();
                 _contentTypeResolver.Initialize();
-
+                _contentIndexService.Initialize();
+                
                 _isInitialized = true;
             }
             catch (Exception exception) {

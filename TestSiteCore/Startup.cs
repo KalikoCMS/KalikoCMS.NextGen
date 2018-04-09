@@ -5,6 +5,7 @@
     using KalikoCMS.Mvc.Extensions;
     using KalikoCMS.Mvc.Framework;
     using KalikoCMS.Data.InMemory;
+    using KalikoCMS.Data.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Razor;
@@ -24,7 +25,7 @@
             //services.AddDbContext<InMemoryCmsContext>();
 
             SimpleInjectorProvider.RegisterServices(services);
-            SimpleInjectorProvider.RegisterDataProvider<InMemoryCmsContext>();
+            SimpleInjectorProvider.RegisterDataProvider<SqlServerCmsContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

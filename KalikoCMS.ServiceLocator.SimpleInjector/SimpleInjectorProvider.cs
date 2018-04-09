@@ -89,12 +89,12 @@ namespace KalikoCMS.ServiceLocator {
             Container.Register<IContentTypeResolver, ContentTypeResolver>(Lifestyle.Singleton);
             Container.Register<IHttpContextResolver, HttpContextResolver>();
             Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
+            Container.Register<IPropertyTypeResolver, PropertyTypeResolver>(Lifestyle.Singleton);
 
             // Data repositories
             Container.Register<IContentAccessRightsRepository, ContentAccessRightsRepository>();
             Container.Register<IContentLanguageRepository, ContentLanguageRepository>();
             Container.Register<IContentPropertyRepository, ContentPropertyRepository>();
-            Container.Register<IContentProviderRepository, ContentProviderRepository>();
             Container.Register<IContentRepository, ContentRepository>();
             Container.Register<IContentTagRepository, ContentTagRepository>();
             Container.Register<IContentTypeRepository, ContentTypeRepository>();

@@ -25,8 +25,8 @@ namespace KalikoCMS.Attributes {
     public sealed class PageTypeAttribute : Attribute {
         internal const int DefaultSortOrder = 100;
 
-        public PageTypeAttribute(string name, string displayName) {
-            Name = name;
+        public PageTypeAttribute(string uniqueId, string displayName) {
+            UniqueId = new Guid(uniqueId);
             DisplayName = displayName;
         }
 
@@ -34,7 +34,7 @@ namespace KalikoCMS.Attributes {
         public SortDirection DefaultChildSortDirection { get; set; }
         public SortOrder DefaultChildSortOrder { get; set; }
         public string DisplayName { get; }
-        public string Name { get; }
+        public Guid UniqueId { get; }
         public string PageTypeDescription { get; set; }
         public string PreviewImage { get; set; }
     }

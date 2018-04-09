@@ -8,7 +8,7 @@
         public int PropertyId { get; set; }
 
         public Guid PropertyTypeId { get; set; }
-        public int ContentTypeId { get; set; }
+        public Guid ContentTypeId { get; set; }
         public string Name { get; set; }
         public string Header { get; set; }
         public bool ShowInAdmin { get; set; }
