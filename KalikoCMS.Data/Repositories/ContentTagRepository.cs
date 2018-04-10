@@ -1,6 +1,5 @@
 ﻿namespace KalikoCMS.Data.Repositories {
     using System;
-    using System.Threading.Tasks;
     using Entities;
     using Interfaces;
 
@@ -11,7 +10,7 @@
             _cmsContext = cmsContext;
         }
 
-        public override Task<ContentTagEntity> GetById(int id) {
+        public override ContentTagEntity GetById(int id) {
             throw new NotImplementedException();
         }
     }

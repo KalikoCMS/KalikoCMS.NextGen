@@ -1,5 +1,5 @@
 ﻿namespace KalikoCMS.Data.Repositories {
-    using System.Threading.Tasks;
+    using System.Linq;
     using Entities;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
@@ -11,10 +11,10 @@
             _cmsContext = cmsContext;
         }
 
-        public override async Task<TagContextEntity> GetById(int id) {
-            return await _cmsContext.Set<TagContextEntity>()
+        public override TagContextEntity GetById(int id) {
+            return _cmsContext.Set<TagContextEntity>()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.TagContextId == id);
+                .FirstOrDefault(e => e.TagContextId == id);
         }
     }
 }

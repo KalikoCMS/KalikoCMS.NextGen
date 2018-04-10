@@ -2,7 +2,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +17,7 @@
             return _cmsContext.Set<TEntity>().AsNoTracking();
         }
 
-        public abstract Task<TEntity> GetById(TKey id);
+        public abstract TEntity GetById(TKey id);
 
         public void Create(TEntity entity) {
             _cmsContext.Set<TEntity>().Add(entity);
@@ -27,13 +26,13 @@
 
         public void Update(TEntity entity) {
             _cmsContext.Set<TEntity>().Update(entity);
-            _cmsContext.SaveChangesAsync();
+            _cmsContext.SaveChanges();
         }
 
-        public async Task Delete(TKey id) {
-            var entity = await GetById(id);
+        public void Delete(TKey id) {
+            var entity = GetById(id);
             _cmsContext.Set<TEntity>().Remove(entity);
-            await _cmsContext.SaveChangesAsync();
+            _cmsContext.SaveChanges();
         }
 
         public TEntity FirstOrDefault(Func<TEntity, bool> predicate) {

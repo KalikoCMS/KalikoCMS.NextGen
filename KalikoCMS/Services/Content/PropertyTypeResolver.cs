@@ -24,18 +24,18 @@
             var type = typeof(T);
             var propertyType = new PropertyType {
                 PropertyTypeId = propertyTypeId,
-                Name = type.FullName,
+                Name = type.Name,
                 Type = type
             };
             _propertyTypes.Add(propertyType);
         }
 
         public PropertyType GetOrCreate(Type type) {
-            var propertyType = _propertyTypes.FirstOrDefault(x => x.Name == type.FullName);
+            var propertyType = _propertyTypes.FirstOrDefault(x => x.Name == type.Name);
 
             if (propertyType == null) {
                 propertyType = new PropertyType {
-                    Name = type.FullName,
+                    Name = type.Name,
                     PropertyTypeId = Guid.NewGuid(),
                     Type = type
                 };

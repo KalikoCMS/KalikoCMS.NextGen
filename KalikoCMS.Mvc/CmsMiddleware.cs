@@ -1,29 +1,50 @@
 namespace KalikoCMS.Mvc {
 #if NETCORE
+    using System;
+    using System.Threading;
     using System.Threading.Tasks;
     using Core;
+    using Extensions;
     using Microsoft.AspNetCore.Http;
     using Services;
     using Services.Initialization.Interfaces;
 
     public class CmsMiddleware {
+        private static bool _isInitialized;
+        private static bool _isRunning;
+        private static readonly object Padlock = new object();
+
         private readonly RequestDelegate _next;
-        private bool _isInitialized;
 
         public CmsMiddleware(RequestDelegate next) {
             _next = next;
         }
 
         public async Task Invoke(HttpContext httpContext) {
-            if (!_isInitialized) {
-                // Temporary scan for page controllers
-                var requestModule = new RequestModule();
-                requestModule.Startup();
+            if (BreakIfAlreadyRunning(httpContext)) {
+                return;
+            }
 
-                var initializationService = ServiceLocator.Current.GetInstance<IInitializationService>();
-                initializationService.Initialize();
+            lock(Padlock) {
+                if (!_isInitialized) {
+                    _isRunning = true;
 
-                _isInitialized = true;
+                    try {
+                        // Temporary scan for page controllers
+                        var requestModule = new RequestModule();
+                        requestModule.Startup();
+
+                        var initializationService = ServiceLocator.Current.GetInstance<IInitializationService>();
+                        initializationService.Initialize();
+
+                        _isInitialized = true;
+                    }
+                    catch (Exception exception) {
+                        // TODO: Log
+                    }
+
+                    _isRunning = false;
+                }
             }
 
             if (httpContext.Request.Path == "/test/") {
@@ -45,6 +66,15 @@ namespace KalikoCMS.Mvc {
             //request.Init(httpContext);
 
             await _next(httpContext);
+        }
+
+        private static bool BreakIfAlreadyRunning(HttpContext httpContext) {
+            if (!_isRunning) {
+                return false;
+            }
+
+            httpContext.Response.RenderMessage("System is starting up..", "Please check back in a few seconds.", 503);
+            return true;
         }
     }
 #endif

@@ -2,7 +2,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using Core;
     using Entities;
     using Infrastructure;
@@ -16,10 +15,10 @@
             _cmsContext = cmsContext;
         }
 
-        public override async Task<ContentEntity> GetById(Guid id) {
-            return await _cmsContext.Set<ContentEntity>()
+        public override ContentEntity GetById(Guid id) {
+            return _cmsContext.Set<ContentEntity>()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.ContentId == id);
+                .FirstOrDefault(e => e.ContentId == id);
         }
 
         public IEnumerable<ContentNode> GetContentNodes(Guid contentProviderId) {

@@ -1,6 +1,10 @@
 ﻿namespace KalikoCMS.Services.Initialization {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using AssemblyHelpers;
     using Content.Interfaces;
+    using Core.Interfaces;
     using Interfaces;
     using Logging;
 
@@ -26,10 +30,15 @@
             }
 
             try {
+                var startupSequence = GetStartupSequence();
+                ExecutePreStartupSequence(startupSequence);
+
                 _propertyTypeResolver.Initialize();
                 _contentTypeResolver.Initialize();
                 _contentIndexService.Initialize();
-                
+
+                ExecutePostStartupSequence(startupSequence);
+
                 _isInitialized = true;
                 Logger.Info("Finished initialization");
             }
@@ -39,5 +48,38 @@
             }
         }
 
+
+        #region Startup sequence
+
+        private static List<IStartupSequence> GetStartupSequence() {
+            var types = AssemblyLocator.GetTypesWithInterface<IStartupSequence>();
+            var sequences = new List<IStartupSequence>();
+
+            foreach (var type in types) {
+                if (type.IsInterface) {
+                    continue;
+                }
+
+                if (Activator.CreateInstance(type) is IStartupSequence startupSequence) {
+                    sequences.Add(startupSequence);
+                }
+            }
+
+            return sequences;
+        }
+
+        private static void ExecutePreStartupSequence(IEnumerable<IStartupSequence> sequences) {
+            foreach (var startupSequence in sequences.Where(s => s.StartupOrder < 0).OrderBy(s => s.StartupOrder)) {
+                startupSequence.Startup();
+            }
+        }
+
+        private static void ExecutePostStartupSequence(IEnumerable<IStartupSequence> sequences) {
+            foreach (var startupSequence in sequences.Where(s => s.StartupOrder >= 0).OrderBy(s => s.StartupOrder)) {
+                startupSequence.Startup();
+            }
+        }
+
+        #endregion Startup sequence
     }
 }

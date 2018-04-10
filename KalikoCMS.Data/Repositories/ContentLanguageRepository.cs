@@ -1,5 +1,5 @@
 ﻿namespace KalikoCMS.Data.Repositories {
-    using System.Threading.Tasks;
+    using System.Linq;
     using Entities;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
@@ -11,10 +11,10 @@
             _cmsContext = cmsContext;
         }
 
-        public override async Task<ContentLanguageEntity> GetById(int id) {
-            return await _cmsContext.Set<ContentLanguageEntity>()
+        public override ContentLanguageEntity GetById(int id) {
+            return _cmsContext.Set<ContentLanguageEntity>()
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.ContentLanguageId == id);
+                .FirstOrDefault(e => e.ContentLanguageId == id);
         }
     }
 }
