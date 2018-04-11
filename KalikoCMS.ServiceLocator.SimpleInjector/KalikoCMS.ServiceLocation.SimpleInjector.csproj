@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
-    <RootNamespace>KalikoCMS.ServiceLocator</RootNamespace>
+    <RootNamespace>KalikoCMS.ServiceLocation</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\KalikoCMS.Configuration\KalikoCMS.Configuration.csproj" />
     <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
     <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
+    <ProjectReference Include="..\KalikoCMS.ServiceLocation\KalikoCMS.ServiceLocation.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
   </ItemGroup>
 

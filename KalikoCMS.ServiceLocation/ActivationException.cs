@@ -1,6 +1,6 @@
-﻿using System;
+﻿namespace KalikoCMS.ServiceLocation {
+    using System;
 
-namespace KalikoCMS.Services {
     /// <summary>
     /// The standard exception thrown when a ServiceLocator has an error in resolving an object.
     /// </summary>

@@ -1,5 +1,5 @@
 ﻿namespace TestSiteCore.Services {
-    using KalikoCMS.ServiceLocator.Interfaces;
+    using KalikoCMS.ServiceLocation.Interfaces;
     using SimpleInjector;
 
     public class ServiceRegistrator : ISimpleInjectorRegistrator {

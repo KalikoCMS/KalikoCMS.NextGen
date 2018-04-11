@@ -6,6 +6,7 @@
     using Infrastructure;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
+    using ServiceLocation;
 
     public class ContentIndexService : IContentIndexService {
         private static ContentIndex _index;

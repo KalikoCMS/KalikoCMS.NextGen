@@ -1,7 +1,8 @@
-﻿using System;
-using KalikoCMS.Services.Interfaces;
+﻿namespace KalikoCMS.ServiceLocation {
+    using System;
+    using Services;
+    using Services.Interfaces;
 
-namespace KalikoCMS.Services {
     /// <summary>
     /// This class provides the ambient container for this application. If your
     /// framework defines such an ambient container, use ServiceLocator.Current

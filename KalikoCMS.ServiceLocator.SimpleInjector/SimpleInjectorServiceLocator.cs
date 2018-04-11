@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using KalikoCMS.Services.Interfaces;
-using SimpleInjector;
-using ActivationException = KalikoCMS.Services.ActivationException;
+﻿namespace KalikoCMS.ServiceLocation {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Services.Interfaces;
+    using SimpleInjector;
 
-namespace KalikoCMS.ServiceLocator {
     public class SimpleInjectorServiceLocator : IServiceLocator {
         private const string NotSupportedMessage = "Keyed registration is not supported by the Simple Injector.";
 
@@ -36,7 +35,7 @@ namespace KalikoCMS.ServiceLocator {
                 return _container.GetAllInstances(typeof(TService)).Cast<TService>();
             }
             catch (SimpleInjector.ActivationException ex) {
-                throw new ActivationException(ex.Message, ex);
+                throw new SimpleInjector.ActivationException(ex.Message, ex);
             }
         }
 
@@ -53,7 +52,7 @@ namespace KalikoCMS.ServiceLocator {
                 return this._container.GetAllInstances(serviceType);
             }
             catch (SimpleInjector.ActivationException ex) {
-                throw new ActivationException(ex.Message, ex);
+                throw new SimpleInjector.ActivationException(ex.Message, ex);
             }
         }
 
@@ -88,7 +87,7 @@ namespace KalikoCMS.ServiceLocator {
                 return (TService) this._container.GetInstance(typeof(TService));
             }
             catch (SimpleInjector.ActivationException ex) {
-                throw new ActivationException(ex.Message, ex);
+                throw new SimpleInjector.ActivationException(ex.Message, ex);
             }
         }
 
@@ -123,7 +122,7 @@ namespace KalikoCMS.ServiceLocator {
                 return this._container.GetInstance(serviceType);
             }
             catch (SimpleInjector.ActivationException ex) {
-                throw new ActivationException(ex.Message, ex);
+                throw new SimpleInjector.ActivationException(ex.Message, ex);
             }
         }
 
@@ -137,7 +136,7 @@ namespace KalikoCMS.ServiceLocator {
                 return serviceProvider.GetService(serviceType);
             }
             catch (SimpleInjector.ActivationException ex) {
-                throw new ActivationException(ex.Message, ex);
+                throw new SimpleInjector.ActivationException(ex.Message, ex);
             }
         }
     }

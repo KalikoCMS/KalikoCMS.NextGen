@@ -1,4 +1,4 @@
-﻿namespace KalikoCMS.ServiceLocator.Interfaces {
+﻿namespace KalikoCMS.ServiceLocation.Interfaces {
     using SimpleInjector;
 
     public interface ISimpleInjectorRegistrator {

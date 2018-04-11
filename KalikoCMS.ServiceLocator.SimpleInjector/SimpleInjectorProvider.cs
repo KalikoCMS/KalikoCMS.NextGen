@@ -1,21 +1,4 @@
-﻿using SimpleInjector;
-#if NETFULL
-using System;
-using System.Reflection;
-using System.Web.Mvc;
-using SimpleInjector.Integration.Web;
-using SimpleInjector.Integration.Web.Mvc;
-#else
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.Extensions.DependencyInjection;
-using SimpleInjector.Integration.AspNetCore.Mvc;
-using SimpleInjector.Lifestyles;
-#endif
-
-namespace KalikoCMS.ServiceLocator {
+﻿namespace KalikoCMS.ServiceLocation {
     using System;
     using AssemblyHelpers;
     using Data;
@@ -28,6 +11,21 @@ namespace KalikoCMS.ServiceLocator {
     using KalikoCMS.Services.Resolvers.Interfaces;
     using Services.Initialization;
     using Services.Initialization.Interfaces;
+    using SimpleInjector;
+#if NETFULL
+    using System.Reflection;
+    using System.Web.Mvc;
+    using SimpleInjector.Integration.Web;
+    using SimpleInjector.Integration.Web.Mvc;
+#else
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Controllers;
+    using Microsoft.AspNetCore.Mvc.ViewComponents;
+    using Microsoft.Extensions.DependencyInjection;
+    using SimpleInjector.Integration.AspNetCore.Mvc;
+    using SimpleInjector.Lifestyles;
+#endif
 
     public class SimpleInjectorProvider {
         public static Container Container { get; private set; }
@@ -47,7 +45,7 @@ namespace KalikoCMS.ServiceLocator {
 
             Container.Verify();
 
-            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
+            ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(Container));
         }
 #else
@@ -74,7 +72,7 @@ namespace KalikoCMS.ServiceLocator {
 
             Container.Verify();
 
-            Services.ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
+            ServiceLocator.SetLocatorProvider(() => new SimpleInjectorServiceLocator(Container));
         }
 #endif
 

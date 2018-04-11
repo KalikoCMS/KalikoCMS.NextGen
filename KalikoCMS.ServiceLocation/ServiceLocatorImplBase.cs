@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using KalikoCMS.Services.Interfaces;
+﻿namespace KalikoCMS.ServiceLocation {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Services.Interfaces;
 
-namespace KalikoCMS.Services {
     /// <summary>
     /// This class is a helper that provides a default implementation
     /// for most of the methods of <see cref="IServiceLocator"/>.

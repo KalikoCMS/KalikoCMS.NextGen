@@ -11,6 +11,7 @@
     using Logging;
     using Mappers;
     using Serialization;
+    using ServiceLocation;
 
     internal class PropertySynchronizer {
         private static readonly ILog Logger = LogProvider.For<ContentTypeSynchronizer>();

@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test sites", "Test sites", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.UI", "KalikoCMS.UI\KalikoCMS.UI.csproj", "{FA811E77-A868-481D-855C-C06096AC2189}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.ServiceLocator.SimpleInjector", "KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocator.SimpleInjector.csproj", "{EE852B99-A947-4FC3-A61E-E822E0DA3C3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.ServiceLocation.SimpleInjector", "KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocation.SimpleInjector.csproj", "{EE852B99-A947-4FC3-A61E-E822E0DA3C3B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Data", "KalikoCMS.Data\KalikoCMS.Data.csproj", "{5F0709F7-D179-4F8F-ADDF-028E96E653F1}"
 EndProject
@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Solution items", ".Solutio
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.Data.InMemory", "KalikoCMS.Data.InMemory\KalikoCMS.Data.InMemory.csproj", "{B68A790D-E345-4B3F-A8DD-11D391A37798}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalikoCMS.ServiceLocation", "KalikoCMS.ServiceLocation\KalikoCMS.ServiceLocation.csproj", "{6AC0CD47-1E2A-4759-ADFC-065494A5085C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,10 @@ Global
 		{B68A790D-E345-4B3F-A8DD-11D391A37798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B68A790D-E345-4B3F-A8DD-11D391A37798}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B68A790D-E345-4B3F-A8DD-11D391A37798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC0CD47-1E2A-4759-ADFC-065494A5085C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC0CD47-1E2A-4759-ADFC-065494A5085C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC0CD47-1E2A-4759-ADFC-065494A5085C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC0CD47-1E2A-4759-ADFC-065494A5085C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +125,7 @@ Global
 		{D9E5BDBE-9CF7-47D4-9FCE-C1273A50EF1E} = {24667D6E-E532-4AA7-ABEF-1435FD94E26D}
 		{CB91F654-2905-48DF-96F4-F6FB17044ADD} = {29FD36F0-F143-4F4F-8808-A7A79D3F0FEE}
 		{B68A790D-E345-4B3F-A8DD-11D391A37798} = {29FD36F0-F143-4F4F-8808-A7A79D3F0FEE}
+		{6AC0CD47-1E2A-4759-ADFC-065494A5085C} = {24667D6E-E532-4AA7-ABEF-1435FD94E26D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {595B819A-9A82-48E1-AD3E-A10998A4234A}

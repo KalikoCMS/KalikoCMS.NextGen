@@ -12,13 +12,14 @@
     using Logging;
     using Mappers;
     using Microsoft.EntityFrameworkCore;
+    using ServiceLocation;
 
     internal class ContentTypeSynchronizer {
         private static readonly ILog Logger = LogProvider.For<ContentTypeSynchronizer>();
 
         private readonly IContentTypeRepository _contentTypeRepository;
         private readonly PropertySynchronizer _propertySynchronizer;
-        private ContentTypeMapper _contentTypeMapper;
+        private readonly ContentTypeMapper _contentTypeMapper;
 
         public ContentTypeSynchronizer() {
             _contentTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository>();

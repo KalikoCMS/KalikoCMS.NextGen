@@ -1,4 +1,4 @@
-﻿namespace KalikoCMS.Services {
+﻿namespace KalikoCMS.ServiceLocation {
     internal static class ServiceLocatorConstants {
         // Message shown if an exception occurs during a GetAllInstances call
         internal const string ActivateAllExceptionMessage = "Activation error occurred while trying to get all instances of type {0}";

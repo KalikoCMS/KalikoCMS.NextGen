@@ -6,6 +6,7 @@ namespace KalikoCMS.Mvc {
     using Core;
     using Extensions;
     using Microsoft.AspNetCore.Http;
+    using ServiceLocation;
     using Services;
     using Services.Initialization.Interfaces;
 

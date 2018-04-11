@@ -23,7 +23,6 @@ namespace KalikoCMS.AssemblyHelpers {
     using System.Linq;
     using System.Reflection;
 #if NETFULL
-    using System.Linq;
     using System.Web.Compilation;
 #endif
 

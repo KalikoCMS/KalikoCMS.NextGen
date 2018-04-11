@@ -1,11 +1,11 @@
 ﻿namespace TestSiteCore {
     using KalikoCMS.Mvc;
-    using KalikoCMS.ServiceLocator;
     using KalikoCMS.UI;
     using KalikoCMS.Mvc.Extensions;
     using KalikoCMS.Mvc.Framework;
     using KalikoCMS.Data.InMemory;
     using KalikoCMS.Data.SqlServer;
+    using KalikoCMS.ServiceLocation;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Razor;

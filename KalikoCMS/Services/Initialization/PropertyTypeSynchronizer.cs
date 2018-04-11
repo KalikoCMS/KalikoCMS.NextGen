@@ -4,6 +4,7 @@
     using Core;
     using Data.Entities;
     using Data.Repositories.Interfaces;
+    using ServiceLocation;
 
     internal class PropertyTypeSynchronizer {
         private readonly IPropertyTypeRepository _propertyTypeRepository;

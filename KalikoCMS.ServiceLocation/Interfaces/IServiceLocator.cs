@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using KalikoCMS.Services;
 
 namespace KalikoCMS.Services.Interfaces {
+    using ServiceLocation;
+
     /// <summary>
     /// The generic Service Locator interface. This interface is used
     /// to retrieve services (instances identified by type and optional
