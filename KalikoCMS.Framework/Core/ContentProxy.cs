@@ -22,12 +22,21 @@ namespace KalikoCMS.Core {
     using Castle.DynamicProxy;
     using KalikoCMS.Core.Interceptors;
 
-    public class PageProxy {
-        public static CmsPage CreatePageProxy(Type type) {
-            var proxyGenerator = new ProxyGenerator();
-            var proxy = proxyGenerator.CreateClassProxy(type, new PropertyInterceptor());
+    public class ContentProxy {
+        public static Content CreateProxy(Type type, bool isEditable = false) {
+            if (type == null) {
+                throw new ArgumentException("Type argument can't be empty");
+            }
 
-            return (CmsPage) proxy;
+            var proxyGenerator = new ProxyGenerator();
+            var proxy = proxyGenerator.CreateClassProxy(type, new PropertyInterceptor()) as Content;
+            if (proxy == null) {
+                throw new Exception($"Could not create proxy for type '{type.Name}'");
+            }
+
+            proxy.IsEditable = isEditable;
+
+            return proxy;
         }
     }
 }

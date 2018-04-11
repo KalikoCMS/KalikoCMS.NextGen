@@ -1,3 +1,7 @@
 ﻿namespace KalikoCMS.Services.Content.Interfaces {
-    public interface IContentCreator { }
+    using Core;
+
+    public interface IContentCreator {
+        T Create<T>() where T : Content;
+    }
 }

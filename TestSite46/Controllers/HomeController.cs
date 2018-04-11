@@ -12,7 +12,7 @@ namespace TestSite46.Controllers
 
         public ActionResult Index()
         {
-            var pageProxy = (MyPage)PageProxy.CreatePageProxy(typeof(MyPage));
+            var pageProxy = (MyPage)ContentProxy.CreateProxy(typeof(MyPage));
             var test = pageProxy.Test;
             if (test != null)
             {
