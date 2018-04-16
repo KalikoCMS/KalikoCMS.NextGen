@@ -4,10 +4,10 @@
     using Interfaces;
 
     public class ContentTagRepository : RepositoryBase<ContentTagEntity, int>, IContentTagRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public ContentTagRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public ContentTagRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override ContentTagEntity GetById(int id) {

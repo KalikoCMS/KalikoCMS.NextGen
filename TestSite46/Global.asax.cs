@@ -22,7 +22,6 @@ namespace TestSite46
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile(Server.MapPath("~/App_Data/log-{Date}.txt"))
                 .CreateLogger();
-            //log.Information("Serilog init");
             Log.Logger = log;
 
             AreaRegistration.RegisterAllAreas();

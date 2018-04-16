@@ -19,6 +19,7 @@
 
 namespace KalikoCMS.Serialization {
     using System;
+    using System.Runtime.InteropServices;
     using Logging;
     using Newtonsoft.Json;
 
@@ -53,6 +54,8 @@ namespace KalikoCMS.Serialization {
                 SerializationBinder = new PropertyTypeBinder(),
                 ContractResolver = new WritablePropertiesOnlyResolver()
             };
+
+            StandardSerializerSettings.Converters.Add(new HtmlStringConverter());
         }
 
         #endregion
@@ -74,6 +77,21 @@ namespace KalikoCMS.Serialization {
             }
 
             return default(T);
+        }
+
+        public static object DeserializeJson(string json, Type type) {
+            if (string.IsNullOrEmpty(json)) {
+                return type.IsValueType ? Activator.CreateInstance(type) : null;
+            }
+
+            try {
+                return JsonConvert.DeserializeObject(json, type, StandardSerializerSettings);
+            }
+            catch (Exception exception) {
+                Logger.ErrorException($"Could not deserialize '{json}'", exception);
+            }
+
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
         public static object DeserializeTypedJson(string json) {

@@ -5,14 +5,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class TagContextRepository : RepositoryBase<TagContextEntity, int>, ITagContextRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public TagContextRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public TagContextRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override TagContextEntity GetById(int id) {
-            return _cmsContext.Set<TagContextEntity>()
+            return _context.Set<TagContextEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.TagContextId == id);
         }

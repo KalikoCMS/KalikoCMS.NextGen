@@ -5,14 +5,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class ContentLanguageRepository : RepositoryBase<ContentLanguageEntity, int>, IContentLanguageRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public ContentLanguageRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public ContentLanguageRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override ContentLanguageEntity GetById(int id) {
-            return _cmsContext.Set<ContentLanguageEntity>()
+            return _context.Set<ContentLanguageEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.ContentLanguageId == id);
         }

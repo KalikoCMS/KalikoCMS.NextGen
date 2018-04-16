@@ -11,11 +11,25 @@ namespace KalikoCMS.Infrastructure {
             LookupTable = new Dictionary<Guid, ContentNode>();
         }
 
-        public ContentTree AddContentTree(Guid contentId) {
+        private ContentTree AddContentTree(Guid contentId) {
             var contentTree = new ContentTree(contentId, LookupTable);
             ContentTrees.Add(contentId, contentTree);
 
             return contentTree;
+        }
+
+        public void AddChild(ContentNode node) {
+            // TODO: Error handling
+            if (node.ParentId == Guid.Empty) {
+                var tree = AddContentTree(node.ContentId);
+                tree.AddChild(node);
+            }
+            else {
+                var parentNode = LookupTable[node.ParentId];
+                node.Parent = parentNode;
+                parentNode.Children.Add(node);
+                LookupTable.Add(node.ContentId, node);
+            }
         }
     }
 }

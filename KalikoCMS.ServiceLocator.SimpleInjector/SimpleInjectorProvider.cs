@@ -1,6 +1,7 @@
 ﻿namespace KalikoCMS.ServiceLocation {
     using System;
     using AssemblyHelpers;
+    using Core.Interfaces;
     using Data;
     using Data.Repositories;
     using Data.Repositories.Interfaces;
@@ -9,6 +10,8 @@
     using Services.Content.Interfaces;
     using KalikoCMS.Services.Resolvers;
     using KalikoCMS.Services.Resolvers.Interfaces;
+    using Mappers;
+    using Mappers.Interfaces;
     using Services.Initialization;
     using Services.Initialization.Interfaces;
     using SimpleInjector;
@@ -87,6 +90,7 @@
             Container.Register<IContentTypeResolver, ContentTypeResolver>(Lifestyle.Singleton);
             Container.Register<IHttpContextResolver, HttpContextResolver>();
             Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
+            Container.Register<IPropertyResolver, PropertyResolver>();
             Container.Register<IPropertyTypeResolver, PropertyTypeResolver>(Lifestyle.Singleton);
 
             // Data repositories
@@ -103,6 +107,9 @@
             Container.Register<ISystemInformationRepository, SystemInformationRepository>();
             Container.Register<ITagContextRepository, TagContextRepository>();
             Container.Register<ITagRepository, TagRepository>();
+
+            // Mappers
+            Container.Register<IContentMapper, ContentMapper>(Lifestyle.Singleton);
 
             RegisterUserServices();
         }

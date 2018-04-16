@@ -6,14 +6,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class ContentTypeRepository : RepositoryBase<ContentTypeEntity, Guid>, IContentTypeRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public ContentTypeRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public ContentTypeRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override ContentTypeEntity GetById(Guid id) {
-            return _cmsContext.Set<ContentTypeEntity>()
+            return _context.Set<ContentTypeEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.ContentTypeId == id);
         }

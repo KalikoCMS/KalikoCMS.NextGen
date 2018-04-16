@@ -1,4 +1,4 @@
-﻿namespace KalikoCMS.Extensions {
+﻿namespace KalikoCMS.Serialization {
     using System.Collections.Generic;
     using Newtonsoft.Json.Linq;
 

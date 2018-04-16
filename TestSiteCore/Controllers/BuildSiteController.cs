@@ -1,7 +1,11 @@
 ﻿namespace TestSiteCore.Controllers {
+    using System;
     using KalikoCMS.Data.Entities;
     using KalikoCMS.Data.Repositories.Interfaces;
+    using KalikoCMS.Serialization;
+    using KalikoCMS.ServiceLocation;
     using KalikoCMS.Services.Content.Interfaces;
+    using Microsoft.AspNetCore.Html;
     using Microsoft.AspNetCore.Mvc;
     using Models;
 
@@ -25,10 +29,37 @@
                 _languageRepository.Create(language);
             }
 
-            var page = _contentCreator.Create<MyPage>();
-            
 
-            return Content("Done" + language.LanguageId + "_" + page.Status);
+            var page = _contentCreator.CreateNew<MyPage>();
+            page.ContentName = "Test page 3";
+            page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
+            page.TestString = "Lorem ipsum";
+            page.ParentId = new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806");
+            page.LanguageId = language.LanguageId;
+            _contentCreator.Save(page);
+
+
+            return Content(JsonSerialization.SerializeJson(new HtmlString("<b>HEJ</b>")));
+
+            //var site = _contentCreator.CreateNew<MySite>();
+            //site.ContentName = "My website";
+            //site.LanguageId = language.LanguageId;
+
+            //_contentCreator.Save(site);
+
+
+            //var page = _contentCreator.CreateNew<MyPage>();
+            //page.ContentName = "Test page";
+            //page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
+            //page.TestString = "Lorem ipsum";
+            //page.ParentId = new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806");
+            //page.LanguageId = language.LanguageId;
+            //_contentCreator.Save(page);
+
+            var contentIndexService = ServiceLocator.Current.GetInstance<IContentIndexService>();
+            var site = contentIndexService.GetContent(new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806"));
+
+            return Content("Done");
         }
     }
 }

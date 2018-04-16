@@ -6,14 +6,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class LanguageRepository : RepositoryBase<LanguageEntity, int>, ILanguageRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public LanguageRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public LanguageRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override LanguageEntity GetById(int id) {
-            return _cmsContext.Set<LanguageEntity>()
+            return _context.Set<LanguageEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.LanguageId == id);
         }

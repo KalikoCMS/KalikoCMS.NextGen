@@ -4,13 +4,14 @@
 
     public interface IContent {
         // Content
-        Guid ContentId { get; set; }
+        Guid ContentId { get; }
         Guid ContentTypeId { get; set; }
-        int SortOrder { get; set; }
-        int TreeLevel { get; set; }
+        Guid ParentId { get; set; }
+        int SortOrder { get; }
+        int TreeLevel { get; }
 
         // ContentLanguage
-        int ContentLanguageId { get; set; }
+        int ContentLanguageId { get; }
         int LanguageId { get; set; }
         string ContentName { get; set; }
         string UrlSegment { get; set; }
@@ -19,14 +20,17 @@
         DateTime UpdateDate { get; set; }
         DateTime? StartPublish { get; set; }
         DateTime? StopPublish { get; set; }
-        string Author { get; set; }
+        string Author { get; }
         bool VisibleInMenu { get; set; } //??
         bool VisibleInSitemap { get; set; } //??
-        int CurrentVersion { get; set; }
+        int CurrentVersion { get; }
         ContentStatus Status { get; set; }
         SortDirection ChildSortDirection { get; set; }
         SortOrder ChildSortOrder { get; set; }
 
         bool IsEditable { get; }
+        PropertyCollection Property { get; }
+
+        void SetDefaults();
     }
 }

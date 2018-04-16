@@ -5,14 +5,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class RedirectRepository : RepositoryBase<RedirectEntity, int>, IRedirectRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public RedirectRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public RedirectRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override RedirectEntity GetById(int id) {
-            return _cmsContext.Set<RedirectEntity>()
+            return _context.Set<RedirectEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.LanguageId == id);
         }

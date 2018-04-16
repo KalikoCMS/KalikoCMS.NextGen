@@ -5,6 +5,8 @@
     [SiteSettings]
     public class MySite : CmsSite
     {
-        
+        public override void SetDefaults() {
+            ChildSortOrder = KalikoCMS.Core.Collections.SortOrder.CreatedDate;
+        }
     }
 }

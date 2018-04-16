@@ -5,14 +5,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class ContentPropertyRepository : RepositoryBase<ContentPropertyEntity, int>, IContentPropertyRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public ContentPropertyRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public ContentPropertyRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override ContentPropertyEntity GetById(int id) {
-            return _cmsContext.Set<ContentPropertyEntity>()
+            return _context.Set<ContentPropertyEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.ContentPropertyId == id);
         }

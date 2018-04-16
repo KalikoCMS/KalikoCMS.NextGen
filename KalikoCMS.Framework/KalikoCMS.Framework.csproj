@@ -6,6 +6,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
+    <ProjectReference Include="..\KalikoCMS.ServiceLocation\KalikoCMS.ServiceLocation.csproj" />
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
@@ -13,13 +18,14 @@
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.0.1" />
   </ItemGroup>
 
   <!-- .NET 4.6 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
     <DefineConstants>NET46;NETFULL</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -29,6 +35,11 @@
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

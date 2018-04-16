@@ -2,6 +2,7 @@
     using Core;
 
     public interface IContentCreator {
-        T Create<T>() where T : Content;
+        T CreateNew<T>() where T : Content;
+        void Save(Content content);
     }
 }

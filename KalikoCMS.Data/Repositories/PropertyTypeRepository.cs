@@ -6,14 +6,14 @@
     using Microsoft.EntityFrameworkCore;
 
     public class PropertyTypeRepository : RepositoryBase<PropertyTypeEntity, Guid>, IPropertyTypeRepository {
-        private readonly CmsContext _cmsContext;
+        private readonly CmsContext _context;
 
-        public PropertyTypeRepository(CmsContext cmsContext) : base(cmsContext) {
-            _cmsContext = cmsContext;
+        public PropertyTypeRepository(CmsContext context) : base(context) {
+            _context = context;
         }
 
         public override PropertyTypeEntity GetById(Guid id) {
-            return _cmsContext.Set<PropertyTypeEntity>()
+            return _context.Set<PropertyTypeEntity>()
                 .AsNoTracking()
                 .FirstOrDefault(e => e.PropertyTypeId == id);
         }

@@ -1,7 +1,7 @@
 ﻿namespace KalikoCMS.Core {
     using System;
 
-    public abstract class PropertyData {
+    public class PropertyData {
         public int ContentPropertyId { get; set; }
         public int PropertyId { get; set; }
         public Guid PropertyTypeId { get; internal set; }
