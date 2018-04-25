@@ -7,6 +7,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
+    using Services.Content.Interfaces;
+
 #else
     using System.Web.Routing;
     using Interfaces;
@@ -17,6 +19,7 @@
         private readonly IActionSelector _actionSelector;
         private readonly IActionInvokerFactory _actionInvokerFactory;
         private readonly IActionContextAccessor _actionContextAccessor;
+        private readonly IUrlResolver _urlResolver;
 #else
     public class CmsRoute : Route {
 #endif
@@ -24,10 +27,11 @@
         #region Constructors
 
 #if NETCORE
-        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor) {
+        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor, IUrlResolver urlResolver) {
             _actionSelector = actionSelector;
             _actionInvokerFactory = actionInvokerFactory;
             _actionContextAccessor = actionContextAccessor;
+            _urlResolver = urlResolver;
         }
 #else
         public CmsRoute(string url, IRouteHandler routeHandler) : base(url, routeHandler) { }
@@ -43,54 +47,56 @@
 
 #if NETCORE
         public Task RouteAsync(RouteContext context) {
-            if (context == null)
-            {
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (context.HttpContext.Request.Path == "/routed/")
-            {
-                context.RouteData.Values["controller"] = "Route";
-                context.RouteData.Values["action"] = "Index";
+            var path = context.HttpContext.Request.Path;
+            var content = _urlResolver.GetContent(path, true);
+            var action = "Index";
+
+            if (path.Value.Length > content.ContentUrl.Length) {
+                var remains = path.Value.Substring(content.ContentUrl.Length).Trim('/');
+                if (remains.IndexOf('/') > 0) {
+                    // Not an action
+                    content = null;
+                }
+                else {
+                    action = remains;
+                }
             }
-            else if (context.HttpContext.Request.Path == "/page/")
-            {
+
+            if (content != null) {
                 context.RouteData.Values["controller"] = "TestPage";
-                context.RouteData.Values["action"] = "Index";
-                context.RouteData.Values["cmsPage"] = new CmsPage();
+                context.RouteData.Values["action"] = action;
+                context.RouteData.Values["currentPage"] = content;
             }
-            else
-            {
+            else {
                 return Task.CompletedTask;
             }
 
             var candidates = _actionSelector.SelectCandidates(context);
-            if (candidates == null || candidates.Count == 0)
-            {
+            if (candidates == null || candidates.Count == 0) {
                 //_logger.NoActionsMatched(context.RouteData.Values);
                 return Task.CompletedTask;
             }
 
             var actionDescriptor = _actionSelector.SelectBestCandidate(context, candidates);
-            if (actionDescriptor == null)
-            {
+            if (actionDescriptor == null) {
                 //_logger.NoActionsMatched(context.RouteData.Values);
                 return Task.CompletedTask;
             }
 
-            context.Handler = c =>
-            {
+            context.Handler = c => {
                 var routeData = c.GetRouteData();
 
                 var actionContext = new ActionContext(context.HttpContext, routeData, actionDescriptor);
-                if (_actionContextAccessor != null)
-                {
+                if (_actionContextAccessor != null) {
                     _actionContextAccessor.ActionContext = actionContext;
                 }
 
                 var invoker = _actionInvokerFactory.CreateInvoker(actionContext);
-                if (invoker == null)
-                {
+                if (invoker == null) {
                     throw new InvalidOperationException("Resources.FormatActionInvokerFactory_CouldNotCreateInvoker(actionDescriptor.DisplayName)");
                 }
 
@@ -101,6 +107,12 @@
         }
 
         public VirtualPathData GetVirtualPath(VirtualPathContext context) {
+            var page = context.AmbientValues.ContainsKey("currentPage") ? context.AmbientValues["currentPage"] as CmsPage : null;
+            var action = context.Values.ContainsKey("action") ? context.AmbientValues["action"] : null;
+
+
+            return new VirtualPathData(this, $"{page?.ContentUrl}{action}", context.Values);
+
             return null;
         }
 #else

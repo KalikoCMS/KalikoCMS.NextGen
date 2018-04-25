@@ -16,7 +16,10 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services) {
-            services.AddMvc();
+            services.AddMvc(options => {
+                // add custom binder to beginning of collection
+                options.ModelBinderProviders.Insert(0, new CmsPageBinderProvider());
+            });
 
             services.Configure<RazorViewEngineOptions>(options => {
                 options.FileProviders.Add(new CmsEmbeddedFileProvider());
@@ -48,8 +51,6 @@
             BuildTestSite();
 
             app.UseMvc(routes => {
-                routes.MapCms();
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

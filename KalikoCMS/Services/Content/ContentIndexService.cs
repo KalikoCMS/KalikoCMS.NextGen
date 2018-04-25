@@ -1,5 +1,7 @@
 ﻿namespace KalikoCMS.Services.Content {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using ContentProviders;
     using Core;
@@ -10,10 +12,10 @@
 
     public class ContentIndexService : IContentIndexService {
         private readonly IContentTypeResolver _contentTypeResolver;
-        private static readonly ContentIndex _index;
+        private static readonly ContentIndex Index;
 
         static ContentIndexService() {
-            _index = new ContentIndex();
+            Index = new ContentIndex();
         }
 
         public ContentIndexService(IContentTypeResolver contentTypeResolver) {
@@ -25,57 +27,63 @@
 
             var contentNodes = contentRepository.GetContentNodes();
             foreach (var contentNode in contentNodes) {
-                _index.AddChild(contentNode);
+                Index.AddChild(contentNode);
             }
 
-            //var sites = contentRepository.GetContentNodes(SiteContentProvider.UniqueId);
-            //foreach (var site in sites) {
-            //    var contentTree = _index.AddContentTree(site.ContentId);
-            //    contentTree.AddChild(site);
-            //}
+            foreach (var site in GetRootNodes(SiteContentProvider.SiteContentTypeId)) {
+                foreach (var language in site.Languages) {
+                    BuildUrl(site, language);
+                }
+            }
+        }
 
-            //var pages = contentRepository.GetContentNodes(PageContentProvider.UniqueId);
-            //foreach (var page in pages) {
-            //    _index.AddChild(page);
-            //}
+        private void BuildUrl(ContentNode content, LanguageNode language) {
+            if (content.ContentTypeId == SiteContentProvider.SiteContentTypeId) {
+                language.ContentUrl = "/";
+            }
+            else {
+                if (content.TreeLevel > 1) {
+                    var parent = content.Parent.Languages.FirstOrDefault(x => x.LanguageId == language.LanguageId);
+                    // TODO: Add error handling
+                    language.ContentUrl = $"{parent.ContentUrl}{language.UrlSegment}/";
+                }
+                else {
+                    language.ContentUrl = $"/{language.UrlSegment}/";
+                }
+            }
 
-            //var sites = contentRepository.GetAll().Include(x => x.ContentLanguages).Where(x => x.ContentType.ContentProviderId == SiteContentProvider.UniqueId);
-            //foreach (var site in sites) {
-            //    var contentTree = _index.AddContentTree(site.ContentId);
-            //    var siteNode = new ContentNode() {};
-            //    foreach (var contentLanguage in site.ContentLanguages) {
-            //        var languageNode = new LanguageNode {
-            //            Author = contentLanguage.Author,
-            //            ChildSortDirection = contentLanguage.ChildSortDirection,
-            //            ChildSortOrder = contentLanguage.ChildSortOrder,
-            //            ContentLanguageId = contentLanguage.ContentLanguageId,
-            //            ContentName = contentLanguage.ContentName,
-            //            ContentUrl = contentLanguage.ContentName,
-            //            CreatedDate = contentLanguage.CreatedDate,
-            //            CurrentVersion = contentLanguage.CurrentVersion,
-            //            LanguageId = contentLanguage.ContentLanguageId,
-            //            StartPublish = contentLanguage.StartPublish,
-            //            Status = contentLanguage.Status,
-            //            StopPublish = contentLanguage.StopPublish,
-            //            UpdateDate = contentLanguage.UpdateDate,
-            //            UrlSegment = contentLanguage.UrlSegment,
-            //            VisibleInMenu = contentLanguage.VisibleInMenu,
-            //            VisibleInSitemap = contentLanguage.VisibleInSitemap
-            //        };
-            //        siteNode.Languages.Add(languageNode);
-            //    }
-            //}
+            foreach (var child in content.Children) {
+                foreach (var childLanguage in child.Languages) {
+                    BuildUrl(child, childLanguage);
+                }
+            }
         }
 
         public bool ContentExist(Guid contentId) {
-            return _index.LookupTable.ContainsKey(contentId);
+            return Index.LookupTable.ContainsKey(contentId);
         }
-
-
 
         public Content GetContent(Guid contentId) {
             // TODO Handle missing content
-            var node = _index.LookupTable[contentId];
+            var node = Index.LookupTable[contentId];
+
+            var content = GetContentFromNode(node);
+
+            return content;
+        }
+
+        public ContentNode GetNode(Guid contentId) {
+            // TODO Handle missing content
+            var node = Index.LookupTable[contentId];
+
+            return node;
+        }
+
+        public IEnumerable<ContentNode> GetRootNodes(Guid contentTypeId) {
+            return Index.ContentTrees.Where(x => x.Value.ContentTypeId == contentTypeId).Select(x => x.Value.Children.FirstOrDefault());
+        }
+
+        public Content GetContentFromNode(ContentNode node) {
 
             // TODO add language support
             var languageNode = node.Languages.FirstOrDefault();
@@ -107,14 +115,6 @@
             content.VisibleInSitemap = languageNode.VisibleInSitemap;
 
             return content;
-        }
-
-
-        public ContentNode GetNode(Guid contentId) {
-            // TODO Handle missing content
-            var node = _index.LookupTable[contentId];
-
-            return node;
         }
     }
 }

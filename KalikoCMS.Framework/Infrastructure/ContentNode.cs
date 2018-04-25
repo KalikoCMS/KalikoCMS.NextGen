@@ -12,8 +12,8 @@
 
         public ContentNode Parent { get; set; }
         public IList<ContentNode> Children { get; }
-        public IEnumerable<LanguageNode> Languages { get; internal set; }
-        public IEnumerable<AccessRightsNode> AccessRights { get; }
+        public IList<LanguageNode> Languages { get; internal set; }
+        public IList<AccessRightsNode> AccessRights { get; }
 
         public ContentNode() {
             Children = new List<ContentNode>();

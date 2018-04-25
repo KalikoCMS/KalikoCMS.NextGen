@@ -60,6 +60,8 @@
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
             contentRepository.SaveContent(content);
+            
+            // TODO: Insert in content tree
         }
     }
 }

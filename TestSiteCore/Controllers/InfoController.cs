@@ -30,7 +30,7 @@
         private void AppendNodes(ContentNode node, StringBuilder stringBuilder) {
             stringBuilder.AppendLine($"<li>{node.ContentId} [{node.ContentTypeId}]<br />");
             foreach (var nodeLanguage in node.Languages) {
-                stringBuilder.AppendLine($" - {nodeLanguage.ContentName} [{nodeLanguage.LanguageId}]<br>");
+                stringBuilder.AppendLine($" - {nodeLanguage.ContentName} \"{nodeLanguage.ContentUrl}\" [{nodeLanguage.LanguageId}]<br>");
             }
 
             if(node.Children.Any()) {

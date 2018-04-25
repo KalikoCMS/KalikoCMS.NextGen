@@ -34,7 +34,7 @@
                     TreeLevel = content.TreeLevel,
                     ParentId = content.ParentId,
                     ContentTypeId = content.ContentTypeId,
-                    Languages = from contentLanguage in grouped
+                    Languages = (from contentLanguage in grouped
                         select new LanguageNode {
                             ContentLanguageId = contentLanguage.ContentLanguageId,
                             ContentName = contentLanguage.ContentName,
@@ -51,7 +51,7 @@
                             UrlSegment = contentLanguage.UrlSegment,
                             VisibleInMenu = contentLanguage.VisibleInMenu,
                             LanguageId = contentLanguage.LanguageId
-                        }
+                        }).ToList()
                 };
         }
 

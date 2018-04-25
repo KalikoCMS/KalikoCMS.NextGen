@@ -30,17 +30,6 @@
             }
 
 
-            var page = _contentCreator.CreateNew<MyPage>();
-            page.ContentName = "Test page 3";
-            page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
-            page.TestString = "Lorem ipsum";
-            page.ParentId = new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806");
-            page.LanguageId = language.LanguageId;
-            _contentCreator.Save(page);
-
-
-            return Content(JsonSerialization.SerializeJson(new HtmlString("<b>HEJ</b>")));
-
             //var site = _contentCreator.CreateNew<MySite>();
             //site.ContentName = "My website";
             //site.LanguageId = language.LanguageId;
@@ -48,16 +37,27 @@
             //_contentCreator.Save(site);
 
 
-            //var page = _contentCreator.CreateNew<MyPage>();
-            //page.ContentName = "Test page";
+            var page = _contentCreator.CreateNew<MyPage>();
+            page.ContentName = "Test page";
+            page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
+            page.TestString = "Lorem ipsum";
+            page.ParentId = new Guid("5D1E8F73-F5CF-4338-BA6E-B1713C4F90B0");
+            page.LanguageId = language.LanguageId;
+            _contentCreator.Save(page);
+
+            //var contentId = page.ContentId;
+
+            //page = _contentCreator.CreateNew<MyPage>();
+            //page.ContentName = "Sub page";
             //page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
             //page.TestString = "Lorem ipsum";
-            //page.ParentId = new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806");
+            //page.ParentId = contentId; //new Guid("1705099c-cea5-41e4-9f4e-7ada79d09995");
             //page.LanguageId = language.LanguageId;
             //_contentCreator.Save(page);
 
-            var contentIndexService = ServiceLocator.Current.GetInstance<IContentIndexService>();
-            var site = contentIndexService.GetContent(new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806"));
+
+            //var contentIndexService = ServiceLocator.Current.GetInstance<IContentIndexService>();
+            //var site = contentIndexService.GetContent(new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806"));
 
             return Content("Done");
         }

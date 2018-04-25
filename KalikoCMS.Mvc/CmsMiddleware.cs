@@ -5,9 +5,13 @@ namespace KalikoCMS.Mvc {
     using System.Threading.Tasks;
     using Core;
     using Extensions;
+    using Framework;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
+    using Microsoft.AspNetCore.Routing;
     using ServiceLocation;
     using Services;
+    using Services.Content.Interfaces;
     using Services.Initialization.Interfaces;
 
     public class CmsMiddleware {
@@ -16,6 +20,7 @@ namespace KalikoCMS.Mvc {
         private static readonly object Padlock = new object();
 
         private readonly RequestDelegate _next;
+        private CmsRoute _route;
 
         public CmsMiddleware(RequestDelegate next) {
             _next = next;
@@ -48,17 +53,43 @@ namespace KalikoCMS.Mvc {
                 }
             }
 
-            if (httpContext.Request.Path == "/test/") {
-                var httpResponse = httpContext.Response;
-                httpResponse.StatusCode = 200;
-                await httpResponse.WriteAsync("Triggered from middleware");
-                return;
+            if (_route == null) {
+                var actionInvokerFactory = ServiceLocator.Current.GetInstance<IActionInvokerFactory>();
+                var actionSelector = ServiceLocator.Current.GetInstance<IActionSelector>();
+                var actionContextAccessor = ServiceLocator.Current.GetInstance<IActionContextAccessor>();
+                var urlResolver = ServiceLocator.Current.GetInstance<IUrlResolver>();
+
+                _route = new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver);
             }
 
-            if (httpContext.Request.Path == "/pagecontroller/") {
-                RouteUtils.RedirectToController(httpContext, new CmsPage());
-                //return;
+
+            var context = new RouteContext(httpContext);
+            await _route.RouteAsync(context);
+            if (context.Handler == null) {
+                await _next(httpContext);
             }
+            else {
+                context.RouteData.Routers.Insert(0, _route);
+                httpContext.Features[typeof(IRoutingFeature)] = new RoutingFeature()
+                {
+                    RouteData = context.RouteData,
+                };
+
+                await context.Handler(context.HttpContext);
+            }
+
+
+            //if (httpContext.Request.Path == "/test/") {
+            //    var httpResponse = httpContext.Response;
+            //    httpResponse.StatusCode = 200;
+            //    await httpResponse.WriteAsync("Triggered from middleware");
+            //    return;
+            //}
+
+            //if (httpContext.Request.Path == "/pagecontroller/") {
+            //    RouteUtils.RedirectToController(httpContext, new CmsPage());
+            //    //return;
+            //}
 
             //var init = new InitModule();
             //init.Init(null);
@@ -66,7 +97,7 @@ namespace KalikoCMS.Mvc {
             //var request = new RequestModule();
             //request.Init(httpContext);
 
-            await _next(httpContext);
+            //await _next(httpContext);
         }
 
         private static bool BreakIfAlreadyRunning(HttpContext httpContext) {

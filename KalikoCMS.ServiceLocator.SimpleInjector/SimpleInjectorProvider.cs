@@ -24,6 +24,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc.Controllers;
+    using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Mvc.ViewComponents;
     using Microsoft.Extensions.DependencyInjection;
     using SimpleInjector.Integration.AspNetCore.Mvc;
@@ -92,6 +93,7 @@
             Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
             Container.Register<IPropertyResolver, PropertyResolver>();
             Container.Register<IPropertyTypeResolver, PropertyTypeResolver>(Lifestyle.Singleton);
+            Container.Register<IUrlResolver, UrlResolver>(Lifestyle.Singleton);
 
             // Data repositories
             Container.Register<IContentAccessRightsRepository, ContentAccessRightsRepository>();
@@ -110,6 +112,10 @@
 
             // Mappers
             Container.Register<IContentMapper, ContentMapper>(Lifestyle.Singleton);
+
+#if NETCORE
+            Container.Register<IActionContextAccessor, ActionContextAccessor>();
+#endif
 
             RegisterUserServices();
         }

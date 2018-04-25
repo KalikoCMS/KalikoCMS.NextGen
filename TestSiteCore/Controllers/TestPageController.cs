@@ -4,10 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TestSiteCore.Controllers
 {
-    public class TestPageController : PageController<CmsPage>
+    using Models;
+
+    public class TestPageController : PageController<MyPage>
     {
-        public override ActionResult Index(CmsPage currentPage) {
-            return Ok("Routed controller " + (currentPage != null));
+        public override ActionResult Index(MyPage currentPage) {
+            return Ok("Routed controller " + currentPage.ContentName);
+        }
+
+        public ActionResult Test(MyPage currentPage) {
+            return Ok("Test @ " + currentPage.ContentUrl + " " + Url.Action(null, null) + " | " + Url.Action("Hello", null, new { SomeValue = true }));
+        }
+
+        public ActionResult Hello(MyPage currentPage, bool someValue) {
+            return Ok("Hello worlD");
         }
     }
 }

@@ -7,7 +7,7 @@
         public Guid ContentTypeId { get; set; }
         public string Name { get; set; }
         public string Header { get; set; }
-        public bool ShowInAdmin { get; set; }
+        public bool Localize { get; set; }
         public int SortOrder { get; set; }
         public string Parameters { get; set; }
         public bool Required { get; set; }
