@@ -57,9 +57,10 @@ namespace KalikoCMS.Mvc {
                 var actionInvokerFactory = ServiceLocator.Current.GetInstance<IActionInvokerFactory>();
                 var actionSelector = ServiceLocator.Current.GetInstance<IActionSelector>();
                 var actionContextAccessor = ServiceLocator.Current.GetInstance<IActionContextAccessor>();
+                var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
                 var urlResolver = ServiceLocator.Current.GetInstance<IUrlResolver>();
 
-                _route = new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver);
+                _route = new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader);
             }
 
 

@@ -9,7 +9,8 @@ namespace TestSiteCore.Controllers
     public class TestPageController : PageController<MyPage>
     {
         public override ActionResult Index(MyPage currentPage) {
-            return Ok("Routed controller " + currentPage.ContentName);
+            return View("~/Views/Pages/TestPage/Index.cshtml", currentPage);
+            //return Ok("Routed controller " + currentPage.ContentName);
         }
 
         public ActionResult Test(MyPage currentPage) {

@@ -3,7 +3,7 @@
     using Data.Entities;
     using Interfaces;
 
-    public class ContentTypeMapper : IMapper<ContentTypeEntity, ContentType>, IMapper<ContentType, ContentTypeEntity> {
+    public class ContentTypeMapper : IContentTypeMapper {
         public ContentType Map(ContentTypeEntity source) {
             return new ContentType {
                 ContentProviderId = source.ContentProviderId,

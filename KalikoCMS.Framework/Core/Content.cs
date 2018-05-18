@@ -4,14 +4,15 @@
     using Interfaces;
     using ServiceLocation;
 
-    public abstract class Content : IContent { //MarshalByRefObject
+    public abstract class Content : IContent {
         public Guid ContentId { get; internal set; }
-        public Guid ContentTypeId { get; set; }
-        public Guid ParentId { get; set; }
+        public Guid ContentTypeId { get; internal set; }
+        public Guid ContentProviderId { get; internal set; }
+        public Guid ParentId { get; internal set; }
         public int SortOrder { get; internal set; }
         public int TreeLevel { get; internal set; }
         public int ContentLanguageId { get; internal set; }
-        public int LanguageId { get; set; }
+        public int LanguageId { get; internal set; }
         public string ContentName { get; set; }
         public string UrlSegment { get; set; }
         public string ContentUrl { get; set; }
@@ -33,6 +34,8 @@
         public virtual void SetDefaults() {
             // No defaults
         }
+
+        public ContentReference ContentReference => new ContentReference(ContentId, LanguageId);
 
         public PropertyCollection Property {
             get => _propertyCollection ?? (_propertyCollection = LoadProperties());

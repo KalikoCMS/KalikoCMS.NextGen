@@ -11,9 +11,10 @@
             var actionInvokerFactory = routeBuilder.ServiceProvider.GetService(typeof(IActionInvokerFactory)) as IActionInvokerFactory;
             var actionSelector = routeBuilder.ServiceProvider.GetService(typeof(IActionSelector)) as IActionSelector;
             var actionContextAccessor = routeBuilder.ServiceProvider.GetService(typeof(IActionContextAccessor)) as IActionContextAccessor;
+            var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
             var urlResolver = ServiceLocator.Current.GetInstance<IUrlResolver>();
 
-            routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver));
+            routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader));
         }
     }
 #endif

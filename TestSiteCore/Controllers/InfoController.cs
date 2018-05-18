@@ -2,6 +2,7 @@
     using System;
     using System.Linq;
     using System.Text;
+    using KalikoCMS.Extensions;
     using KalikoCMS.Infrastructure;
     using KalikoCMS.Services.Content.Interfaces;
     using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("<html><body>");
             stringBuilder.AppendLine("<ul>");
-            var node = _contentIndexService.GetNode(new Guid("4B619F02-CC0F-4B9A-85D5-08D5A0B0E806"));
+            var node = _contentIndexService.GetNode(new Guid("5D1E8F73-F5CF-4338-BA6E-B1713C4F90B0"));
             AppendNodes(node, stringBuilder);
             stringBuilder.AppendLine("</ul>");
             stringBuilder.AppendLine("</body></html>");
@@ -30,7 +31,8 @@
         private void AppendNodes(ContentNode node, StringBuilder stringBuilder) {
             stringBuilder.AppendLine($"<li>{node.ContentId} [{node.ContentTypeId}]<br />");
             foreach (var nodeLanguage in node.Languages) {
-                stringBuilder.AppendLine($" - {nodeLanguage.ContentName} \"{nodeLanguage.ContentUrl}\" [{nodeLanguage.LanguageId}]<br>");
+                var content = _contentIndexService.GetContentFromNode(node);
+                stringBuilder.AppendLine($" - {nodeLanguage.ContentName} \"{nodeLanguage.ContentUrl}\" [{nodeLanguage.LanguageId}] {content.IsAvailable()}<br>");   
             }
 
             if(node.Children.Any()) {

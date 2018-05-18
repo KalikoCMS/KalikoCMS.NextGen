@@ -85,12 +85,15 @@
         }
 
         private static void RegisterCmsServices() {
+            // Services
             Container.Register<IContentCreator, ContentCreator>(Lifestyle.Singleton);
             Container.Register<IContentIndexService, ContentIndexService>(Lifestyle.Singleton);
             Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
             Container.Register<IContentTypeResolver, ContentTypeResolver>(Lifestyle.Singleton);
+            Container.Register<IDomainResolver, DomainResolver>(Lifestyle.Singleton);
             Container.Register<IHttpContextResolver, HttpContextResolver>();
             Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
+            Container.Register<ILanguageResolver, LanguageResolver>(Lifestyle.Singleton);
             Container.Register<IPropertyResolver, PropertyResolver>();
             Container.Register<IPropertyTypeResolver, PropertyTypeResolver>(Lifestyle.Singleton);
             Container.Register<IUrlResolver, UrlResolver>(Lifestyle.Singleton);
@@ -102,6 +105,7 @@
             Container.Register<IContentRepository, ContentRepository>();
             Container.Register<IContentTagRepository, ContentTagRepository>();
             Container.Register<IContentTypeRepository, ContentTypeRepository>();
+            Container.Register<IDomainRepository, DomainRepository>();
             Container.Register<ILanguageRepository, LanguageRepository>();
             Container.Register<IPropertyRepository, PropertyRepository>();
             Container.Register<IPropertyTypeRepository, PropertyTypeRepository>();
@@ -112,6 +116,9 @@
 
             // Mappers
             Container.Register<IContentMapper, ContentMapper>(Lifestyle.Singleton);
+            Container.Register<IContentTypeMapper, ContentTypeMapper>(Lifestyle.Singleton);
+            Container.Register<IDomainMapper, DomainMapper>(Lifestyle.Singleton);
+            Container.Register<IPropertyMapper, PropertyMapper>(Lifestyle.Singleton);
 
 #if NETCORE
             Container.Register<IActionContextAccessor, ActionContextAccessor>();

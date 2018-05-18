@@ -8,6 +8,7 @@
         internal DbSet<ContentLanguageEntity> ContentLanguages { get; set; }
         internal DbSet<ContentPropertyEntity> ContentProperties { get; set; }
         internal DbSet<ContentTypeEntity> ContentTypes { get; set; }
+        internal DbSet<DomainEntity> Domains { get; set; }
         internal DbSet<LanguageEntity> Languages { get; set; }
         internal DbSet<PropertyEntity> Properties { get; set; }
         internal DbSet<PropertyTypeEntity> PropertyTypes { get; set; }

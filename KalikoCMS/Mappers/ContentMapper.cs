@@ -11,8 +11,11 @@
             _contentTypeResolver = contentTypeResolver;
         }
 
-        public Content MapToContent(ContentNode node, LanguageNode languageNode)
-        {
+        public Content MapToContent(ContentNode node, LanguageNode languageNode) {
+            if (node == null || languageNode == null) {
+                return null;
+            }
+
             var contentType = _contentTypeResolver.GetContentType(node.ContentTypeId);
 
             var content = ContentProxy.CreateProxy(contentType.Type);
@@ -22,6 +25,7 @@
             content.ContentId = node.ContentId;
             content.ContentLanguageId = languageNode.ContentLanguageId;
             content.ContentName = languageNode.ContentName;
+            content.ContentProviderId = node.ContentProviderId;
             content.ContentTypeId = node.ContentTypeId;
             content.ContentUrl = languageNode.ContentUrl;
             content.CreatedDate = languageNode.CreatedDate;
@@ -41,5 +45,38 @@
             return content;
         }
 
+        public ContentNode MapFromContent(Content content) {
+            var node = new ContentNode {
+                ContentId = content.ContentId,
+                ContentProviderId = content.ContentProviderId,
+                ContentTypeId = content.ContentTypeId,
+                ParentId = content.ParentId,
+                SortOrder = content.SortOrder,
+                TreeLevel = content.TreeLevel
+            };
+
+            var languageNode = new LanguageNode {
+                Author = content.Author,
+                ChildSortDirection = content.ChildSortDirection,
+                ChildSortOrder = content.ChildSortOrder,
+                ContentLanguageId = content.ContentLanguageId,
+                ContentName = content.ContentName,
+                ContentUrl = content.ContentUrl,
+                CreatedDate = content.CreatedDate,
+                CurrentVersion = content.CurrentVersion,
+                LanguageId = content.LanguageId,
+                StartPublish = content.StartPublish,
+                Status = content.Status,
+                StopPublish = content.StopPublish,
+                UpdateDate = content.UpdateDate,
+                UrlSegment = content.UrlSegment,
+                VisibleInMenu = content.VisibleInMenu,
+                VisibleInSitemap = content.VisibleInSitemap
+            };
+
+            node.Languages.Add(languageNode);
+
+            return node;
+        }
     }
 }

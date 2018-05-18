@@ -4,5 +4,6 @@
 
     public interface IContentMapper {
         Content MapToContent(ContentNode node, LanguageNode languageNode);
+        ContentNode MapFromContent(Content content);
     }
 }

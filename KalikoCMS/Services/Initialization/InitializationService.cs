@@ -15,11 +15,13 @@
         private readonly IContentTypeResolver _contentTypeResolver;
         private readonly IPropertyTypeResolver _propertyTypeResolver;
         private readonly IContentIndexService _contentIndexService;
+        private readonly IDomainResolver _domainResolver;
 
-        public InitializationService(IContentTypeResolver contentTypeResolver, IPropertyTypeResolver propertyTypeResolver, IContentIndexService contentIndexService) {
+        public InitializationService(IContentTypeResolver contentTypeResolver, IPropertyTypeResolver propertyTypeResolver, IContentIndexService contentIndexService, IDomainResolver domainResolver) {
             _contentTypeResolver = contentTypeResolver;
             _propertyTypeResolver = propertyTypeResolver;
             _contentIndexService = contentIndexService;
+            _domainResolver = domainResolver;
         }
 
         public void Initialize() {
@@ -36,6 +38,7 @@
                 _propertyTypeResolver.Initialize();
                 _contentTypeResolver.Initialize();
                 _contentIndexService.Initialize();
+                _domainResolver.Initialize();
 
                 ExecutePostStartupSequence(startupSequence);
 

@@ -8,5 +8,6 @@
     public interface IContentRepository : IRepository<ContentEntity, Guid> {
         IEnumerable<ContentNode> GetContentNodes();
         void SaveContent(Content content);
+        void PublishContent(Content content);
     }
 }

@@ -1,0 +1,52 @@
+﻿@using KalikoCMS.Core
+@using KalikoCMS.Extensions
+@using KalikoCMS.ServiceLocation
+@using KalikoCMS.Services.Content.Interfaces
+@model TestSiteCore.Models.MyPage
+
+@{
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title>@Model.ContentName</title>
+</head>
+<body>
+
+    @{
+        var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
+        var children = contentLoader.GetChildren(new ContentReference(new Guid("130D6E62-3974-4E55-B6D6-D42E88D10D8B"), 1));
+
+        foreach (var child in children)
+        {
+            if (child.IsAvailable())
+            {
+                <a href="@child.ContentUrl">@child.ContentName</a>
+            }
+            else
+            {
+                <span>@child.ContentName</span>
+            }
+        }
+    }
+
+    <h1>@Model.ContentName</h1>
+    Created @Model.CreatedDate by @Model.Author
+    <div>@Model.TestHtmlString</div>
+    @Model.TestString
+<ul>
+    @foreach (var child in Model.GetChildren()) {
+        if (child.IsAvailable())
+        {
+            <li><a href="@child.ContentUrl">@child.ContentName</a></li>
+        }
+        else
+        {
+            <li>@child.ContentName</li>
+        }
+    }
+</ul>
+</body>
+</html>

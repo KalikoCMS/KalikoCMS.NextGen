@@ -19,7 +19,7 @@ namespace TestSite46.Controllers
                 return Content(test);
             }
 
-            return View(new ContentReference());
+            return View(pageProxy.ContentReference);
         }
     }
 }

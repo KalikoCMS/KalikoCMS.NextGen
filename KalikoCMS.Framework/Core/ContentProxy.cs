@@ -23,13 +23,18 @@ namespace KalikoCMS.Core {
     using KalikoCMS.Core.Interceptors;
 
     public class ContentProxy {
+        private static readonly ProxyGenerator ProxyGenerator;
+
+        static ContentProxy() {
+            ProxyGenerator = new ProxyGenerator();
+        }
+
         public static Content CreateProxy(Type type, bool isEditable = false) {
             if (type == null) {
                 throw new ArgumentException("Type argument can't be empty");
             }
-
-            var proxyGenerator = new ProxyGenerator();
-            var proxy = proxyGenerator.CreateClassProxy(type, new PropertyInterceptor()) as Content;
+            
+            var proxy = ProxyGenerator.CreateClassProxy(type, new PropertyInterceptor()) as Content;
             if (proxy == null) {
                 throw new Exception($"Could not create proxy for type '{type.Name}'");
             }

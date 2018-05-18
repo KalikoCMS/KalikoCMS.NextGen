@@ -1,6 +1,8 @@
 ﻿namespace KalikoCMS.Services.Content {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using Castle.DynamicProxy.Generators.Emitters;
     using Interfaces;
     using Core;
     using Initialization;
@@ -42,6 +44,10 @@
             }
 
             return contentType.Properties;
+        }
+
+        public List<ContentType> GetContentTypes<T>() where T : class {
+            return _contentTypes.Where(x => x.Type is T).ToList();
         }
     }
 }

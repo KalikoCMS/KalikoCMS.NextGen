@@ -5,14 +5,15 @@
     public interface IContent {
         // Content
         Guid ContentId { get; }
-        Guid ContentTypeId { get; set; }
-        Guid ParentId { get; set; }
+        Guid ContentProviderId { get; }
+        Guid ContentTypeId { get; }
+        Guid ParentId { get; }
         int SortOrder { get; }
         int TreeLevel { get; }
 
         // ContentLanguage
         int ContentLanguageId { get; }
-        int LanguageId { get; set; }
+        int LanguageId { get; }
         string ContentName { get; set; }
         string UrlSegment { get; set; }
         string ContentUrl { get; set; }
@@ -28,6 +29,7 @@
         SortDirection ChildSortDirection { get; set; }
         SortOrder ChildSortOrder { get; set; }
 
+        ContentReference ContentReference { get; }
         bool IsEditable { get; }
         PropertyCollection Property { get; }
 

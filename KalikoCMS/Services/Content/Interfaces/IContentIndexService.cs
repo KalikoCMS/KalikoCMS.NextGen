@@ -11,5 +11,6 @@
         ContentNode GetNode(Guid contentId);
         IEnumerable<ContentNode> GetRootNodes(Guid contentTypeId);
         Content GetContentFromNode(ContentNode node);
+        void AddOrUpdate(Content content);
     }
 }

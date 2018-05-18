@@ -1,14 +1,17 @@
 ﻿namespace KalikoCMS.Mvc.Framework {
 #if NETCORE
     using System;
+    using System.Globalization;
+    using System.Threading;
     using System.Threading.Tasks;
     using Core;
     using Interfaces;
+    using KalikoCMS.Extensions;
+    using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
     using Services.Content.Interfaces;
-
 #else
     using System.Web.Routing;
     using Interfaces;
@@ -20,6 +23,7 @@
         private readonly IActionInvokerFactory _actionInvokerFactory;
         private readonly IActionContextAccessor _actionContextAccessor;
         private readonly IUrlResolver _urlResolver;
+        private readonly IContentLoader _contentLoader;
 #else
     public class CmsRoute : Route {
 #endif
@@ -27,11 +31,12 @@
         #region Constructors
 
 #if NETCORE
-        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor, IUrlResolver urlResolver) {
+        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor, IUrlResolver urlResolver, IContentLoader contentLoader) {
             _actionSelector = actionSelector;
             _actionInvokerFactory = actionInvokerFactory;
             _actionContextAccessor = actionContextAccessor;
             _urlResolver = urlResolver;
+            _contentLoader = contentLoader;
         }
 #else
         public CmsRoute(string url, IRouteHandler routeHandler) : base(url, routeHandler) { }
@@ -53,27 +58,39 @@
 
             var path = context.HttpContext.Request.Path;
             var content = _urlResolver.GetContent(path, true);
-            var action = "Index";
 
+            if (content == null || !content.IsAvailable()) {
+                return Task.CompletedTask;
+            }
+
+            var action = "Index";
             if (path.Value.Length > content.ContentUrl.Length) {
                 var remains = path.Value.Substring(content.ContentUrl.Length).Trim('/');
                 if (remains.IndexOf('/') > 0) {
                     // Not an action
-                    content = null;
+                    return Task.CompletedTask;
                 }
                 else {
                     action = remains;
                 }
             }
 
-            if (content != null) {
-                context.RouteData.Values["controller"] = "TestPage";
-                context.RouteData.Values["action"] = action;
-                context.RouteData.Values["currentPage"] = content;
-            }
-            else {
-                return Task.CompletedTask;
-            }
+            var site = _contentLoader.GetClosest<CmsSite>(content.ContentReference);
+
+            context.RouteData.Values["controller"] = "TestPage";
+            context.RouteData.Values["action"] = action;
+            context.RouteData.Values["currentPage"] = content;
+            context.RouteData.Values["currentSite"] = site;
+
+            context.HttpContext.Items["cmsCurrentPage"] = content;
+            context.HttpContext.Items["cmsCurrentSite"] = site;
+            context.HttpContext.Items["cmsLanguageId"] = content.LanguageId;
+
+            // TODO: Lift from system
+            //Get the culture info of the language code
+            var culture = CultureInfo.GetCultureInfo("en");
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
             var candidates = _actionSelector.SelectCandidates(context);
             if (candidates == null || candidates.Count == 0) {
@@ -112,8 +129,6 @@
 
 
             return new VirtualPathData(this, $"{page?.ContentUrl}{action}", context.Values);
-
-            return null;
         }
 #else
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values) {

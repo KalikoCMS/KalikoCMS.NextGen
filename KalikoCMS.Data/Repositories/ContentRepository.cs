@@ -28,12 +28,13 @@
                     _context.ContentLanguages.Where(x => x.DeletedDate == null && (x.Status == ContentStatus.Published || (x.Status == ContentStatus.WorkingCopy && x.CurrentVersion == 0)))
                     on content.ContentId equals contentLanguage.ContentId into grouped
                 orderby content.TreeLevel
-                select new ContentNode() {
+                select new ContentNode {
                     ContentId = content.ContentId,
                     SortOrder = content.SortOrder,
                     TreeLevel = content.TreeLevel,
                     ParentId = content.ParentId,
                     ContentTypeId = content.ContentTypeId,
+                    ContentProviderId = content.ContentType.ContentProviderId,
                     Languages = (from contentLanguage in grouped
                         select new LanguageNode {
                             ContentLanguageId = contentLanguage.ContentLanguageId,
@@ -92,6 +93,8 @@
                         };
                         _context.ContentLanguages.Add(contentLanguageEntity);
                         _context.SaveChanges();
+
+                        content.ContentLanguageId = contentLanguageEntity.ContentLanguageId;
                     }
                     else {
                         var contentLanguageEntity = _context.ContentLanguages.FirstOrDefault(x => x.ContentLanguageId == content.ContentLanguageId && x.Status == ContentStatus.WorkingCopy);
@@ -128,6 +131,8 @@
                         contentLanguageEntity.VisibleInSitemap = content.VisibleInSitemap;
                         _context.Update(contentLanguageEntity);
                         _context.SaveChanges();
+
+                        content.ContentLanguageId = contentLanguageEntity.ContentLanguageId;
                     }
 
                     var properties = _context.ContentProperties.Where(x => x.ContentId == content.ContentId && x.LanguageId == content.LanguageId && x.Version == content.CurrentVersion);
@@ -153,9 +158,51 @@
                 }
                 catch(Exception exception) {
                     transaction.Rollback();
+                    // TODO: Log
                     throw;
                 }
+            }
+        }
 
+        public void PublishContent(Content content) {
+            var currentlyPublished = _context.ContentLanguages.FirstOrDefault(x => x.ContentId == content.ContentId && x.LanguageId == content.LanguageId && x.Status == ContentStatus.Published);
+            var contentLanguageEntity = _context.ContentLanguages.FirstOrDefault(x => x.ContentLanguageId == content.ContentLanguageId);
+
+            if (contentLanguageEntity == null) {
+                // TODO: Log
+                throw new Exception();
+            }
+
+            if (contentLanguageEntity.Status != ContentStatus.WorkingCopy) {
+                // TODO: Log
+                throw new Exception();
+            }
+
+            using (var transaction = _context.Database.BeginTransaction()) {
+                try {
+                    if (currentlyPublished != null) {
+                        currentlyPublished.Status = ContentStatus.Archived;
+                    }
+
+                    if (contentLanguageEntity.StartPublish == null) {
+                        contentLanguageEntity.StartPublish = DateTime.Now.ToUniversalTime();
+                    }
+
+                    contentLanguageEntity.Status = ContentStatus.Published;
+
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    content.Status = ContentStatus.Published;
+                    content.StartPublish = contentLanguageEntity.StartPublish;
+                }
+                catch (Exception exception) {
+                    transaction.Rollback();
+                    // TODO: Log
+
+                    throw;
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿namespace TestSiteCore.Controllers {
     using System;
+    using KalikoCMS.Core;
     using KalikoCMS.Data.Entities;
     using KalikoCMS.Data.Repositories.Interfaces;
     using KalikoCMS.Serialization;
@@ -12,10 +13,12 @@
     public class BuildSiteController : Controller {
         private readonly ILanguageRepository _languageRepository;
         private readonly IContentCreator _contentCreator;
+        private readonly IDomainResolver _domainResolver;
 
-        public BuildSiteController(ILanguageRepository languageRepository, IContentCreator contentCreator) {
+        public BuildSiteController(ILanguageRepository languageRepository, IContentCreator contentCreator, IDomainResolver domainResolver) {
             _languageRepository = languageRepository;
             _contentCreator = contentCreator;
+            _domainResolver = domainResolver;
         }
 
         public ActionResult Index() {
@@ -29,21 +32,32 @@
                 _languageRepository.Create(language);
             }
 
+            var site = _contentCreator.CreateNew<MySite>(new ContentReference(Guid.Empty, language.LanguageId));
+            site.ContentName = "My website";
 
-            //var site = _contentCreator.CreateNew<MySite>();
-            //site.ContentName = "My website";
-            //site.LanguageId = language.LanguageId;
+            _contentCreator.Save(site);
+            _contentCreator.Publish(site);
 
-            //_contentCreator.Save(site);
+            var domain = new DomainInformation {
+                ContentId = site.ContentId,
+                LanguageId = site.LanguageId,
+                DomainName = "localhost",
+                Port = 50176,
+                EnforceHttps = false,
+                IsPrimary = true,
+                UseLanguagePrefix = false
+            };
+            _domainResolver.AddDomain(domain);
 
+            //var parentReference = new ContentReference(new Guid("0f0a33cd-0db6-48be-9484-d3b51e62e921"), language.LanguageId);
+            var parentReference = site.ContentReference;
 
-            var page = _contentCreator.CreateNew<MyPage>();
-            page.ContentName = "Test page";
+            var page = _contentCreator.CreateNew<MyPage>(parentReference);
+            page.ContentName = "Another subpage " + DateTime.Now.Ticks;
             page.TestHtmlString = new HtmlString("<h1>HTML STRING</h1>");
             page.TestString = "Lorem ipsum";
-            page.ParentId = new Guid("5D1E8F73-F5CF-4338-BA6E-B1713C4F90B0");
-            page.LanguageId = language.LanguageId;
             _contentCreator.Save(page);
+            _contentCreator.Publish(page);
 
             //var contentId = page.ContentId;
 

@@ -19,22 +19,18 @@ namespace KalikoCMS.Core.Interceptors {
 
             // Handle properties if they are CMS properties
             if (methodName.StartsWith("get_")) {
-                var currentPage = (IContent) invocation.InvocationTarget;
+                var currentPage = invocation.InvocationTarget as IContent;
                 var propertyName = methodName.Substring(4);
-                //var propertyData = currentPage.Property.GetPropertyValue(propertyName, out propertyExists);
                 var propertyData = currentPage.Property.GetItem(propertyName);
 
                 if (propertyData != null) {
                     invocation.ReturnValue = propertyData.Value;
-                    //    invocation.ReturnValue = GetPropertyValue(method, propertyData);
                     return;
                 }
             }
-            else if (methodName.StartsWith("set_"))
-            {
+            else if (methodName.StartsWith("set_")) {
                 var currentPage = (IContent)invocation.InvocationTarget;
                 var propertyName = methodName.Substring(4);
-                //var propertyData = currentPage.Property.GetPropertyValue(propertyName, out propertyExists);
                 var propertyData = currentPage.Property.GetItem(propertyName);
 
                 if (propertyData != null) {
@@ -43,22 +39,11 @@ namespace KalikoCMS.Core.Interceptors {
                     }
 
                     propertyData.Value = invocation.Arguments[0];
-                    //    invocation.ReturnValue = GetPropertyValue(method, propertyData);
                     return;
                 }
             }
 
             invocation.Proceed();
         }
-
-        //private object GetPropertyValue(MethodBase method, PropertyData propertyData)
-        //{
-        //    if (propertyData == null)
-        //    {
-        //        return Activator.CreateInstance(((MethodInfo)method).ReturnType);
-        //    }
-
-        //    return propertyData;
-        //}
     }
 }

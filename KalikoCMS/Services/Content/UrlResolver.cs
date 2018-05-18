@@ -1,15 +1,16 @@
 ﻿namespace KalikoCMS.Services.Content {
+    using System;
     using System.Linq;
-    using ContentProviders;
     using Core;
-    using Infrastructure;
     using Interfaces;
 
     public class UrlResolver : IUrlResolver {
         private readonly IContentIndexService _contentIndexService;
+        private readonly IDomainResolver _domainResolver;
 
-        public UrlResolver(IContentIndexService contentIndexService) {
+        public UrlResolver(IContentIndexService contentIndexService, IDomainResolver domainResolver) {
             _contentIndexService = contentIndexService;
+            _domainResolver = domainResolver;
         }
 
         public Content GetContent(string path) {
@@ -17,8 +18,14 @@
         }
 
         public Content GetContent(string path, bool returnPartialMatches) {
+            var domain = _domainResolver.GetCurrentDomain();
+            if (domain == null) {
+                // TODO: Allow wildcard?
+                return null;
+            }
+
             // TODO: Add persinstance and support multiple sites
-            var site = _contentIndexService.GetRootNodes(SiteContentProvider.SiteContentTypeId).FirstOrDefault();
+            var site = _contentIndexService.GetNode(domain.ContentId);
             if (site == null) {
                 return null;
             }

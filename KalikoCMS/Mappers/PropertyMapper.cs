@@ -3,7 +3,7 @@
     using Data.Entities;
     using Interfaces;
 
-    public class PropertyMapper : IMapper<PropertyEntity, PropertyDefinition>, IMapper<PropertyDefinition, PropertyEntity> {
+    public class PropertyMapper : IPropertyMapper {
         public PropertyDefinition Map(PropertyEntity source) {
             return new PropertyDefinition {
                 PropertyId = source.PropertyId,

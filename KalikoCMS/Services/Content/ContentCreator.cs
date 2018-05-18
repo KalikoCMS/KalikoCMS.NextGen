@@ -3,6 +3,7 @@
     using System.Linq;
     using Core;
     using Data.Repositories.Interfaces;
+    using Extensions;
     using Interfaces;
     using Resolvers.Interfaces;
     using ServiceLocation;
@@ -16,22 +17,25 @@
             _contentIndexService = contentIndexService;
         }
 
-        public T CreateNew<T>() where T : Content {
+        public T CreateNew<T>(ContentReference parent, bool bypassAccessCheck = false) where T : Content {
             var contentType = _contentTypeResolver.GetContentType<T>();
             if (contentType == null) {
                 throw new ArgumentException($"'{typeof(T).FullName}' is not a registered content type. Missing a decorating attribute?");
             }
 
             var proxy = (T)ContentProxy.CreateProxy(typeof(T), true);
+            proxy.ContentProviderId = contentType.ContentProviderId;
             proxy.ContentTypeId = contentType.ContentTypeId;
             proxy.CurrentVersion = -1;
+            proxy.LanguageId = parent.LanguageId;
+            proxy.ParentId = parent.ContentId;
             proxy.Status = ContentStatus.WorkingCopy;
             proxy.SetDefaults();
 
             return proxy;
         }
 
-        public void Save(Content content) {
+        public void Save(Content content, bool bypassAccessCheck = false) {
             if (content is null) { throw new ArgumentException("Content can't be null"); }
             if (content.ParentId == Guid.Empty && !(content is CmsSite)) { throw new Exception("Content has no parent"); }
             if (content.Status != ContentStatus.WorkingCopy) { throw new Exception("Status may not be manually changed"); }
@@ -52,6 +56,9 @@
 
                 content.TreeLevel = parentNode.TreeLevel + 1;
                 content.SortOrder = parentNode.Children.Any() ? parentNode.Children.Max(x => x.SortOrder) + 1 : 1;
+
+                content.UrlSegment = content.ContentName.UrlFriendly();
+                // TODO: Check for empty segments and duplicates under parent
             }
 
             if (content.CurrentVersion == -1) {
@@ -60,8 +67,18 @@
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
             contentRepository.SaveContent(content);
-            
-            // TODO: Insert in content tree
+
+            if (content.CurrentVersion == 0) {
+                _contentIndexService.AddOrUpdate(content);
+            }
+        }
+
+        public void Publish(Content content, bool bypassAccessCheck = false) {
+            // TODO: Check access rights
+            var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+            contentRepository.PublishContent(content);
+
+            _contentIndexService.AddOrUpdate(content);
         }
     }
 }

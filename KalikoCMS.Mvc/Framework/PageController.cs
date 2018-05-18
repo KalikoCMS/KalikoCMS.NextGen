@@ -10,10 +10,5 @@
 
     public abstract class PageController<T> : Controller, IPageController where T : CmsPage {
         public abstract ActionResult Index(T currentPage);
-
-        public CmsPage GetTypedPage(CmsPage page) {
-            throw new NotImplementedException();
-            //return page.ConvertToTypedPage<T>();
-        }
     }
 }
