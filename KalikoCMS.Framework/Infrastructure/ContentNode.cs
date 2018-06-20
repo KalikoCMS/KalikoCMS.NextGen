@@ -13,7 +13,7 @@
 
         public ContentNode Parent { get; set; }
         public List<ContentNode> Children { get; }
-        public List<LanguageNode> Languages { get; internal set; }
+        public List<LanguageNode> Languages { get; set; } // TODO: internal set
         public List<AccessRightsNode> AccessRights { get; }
 
         public ContentNode() {

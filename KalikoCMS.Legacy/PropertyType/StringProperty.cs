@@ -17,46 +17,13 @@
 // */
 //#endregion
 
-//using System;
-
 //namespace KalikoCMS.PropertyType {
-//    using KalikoCMS.Attributes;
-//    using KalikoCMS.Core;
-//    using KalikoCMS.Serialization;
+//    using System;
+//    using Attributes;
 
 //    [Obsolete("Use the string data type instead in your model.")]
-//    //[PropertyType("296f2f4a-99a5-4b54-96bc-8148830a8fc5", "String", "String", "%AdminPath%Content/PropertyType/StringPropertyEditor.ascx")]
-//    public class StringProperty : PropertyData {
-//        private static readonly int EmptyHashCode = string.Empty.GetHashCode();
-//        private int? _cachedHashCode;
-
-//        public StringProperty() { 
-//        }
-
-//        public StringProperty(string value) {
-//            Value = value;
-//        }
-
+//    [PropertyType("296f2f4a-99a5-4b54-96bc-8148830a8fc5", "String", "String", "%AdminPath%Content/PropertyType/StringPropertyEditor.ascx")]
+//    public class StringProperty {
 //        public string Value { get; set; }
-
-//        protected override string StringValue {
-//            get { return Value; }
-//        }
-
-//        protected override PropertyData DeserializeFromJson(string data) {
-//            return JsonSerialization.DeserializeJson<StringProperty>(data);
-//        }
-
-//        public override int GetHashCode() {
-//            return (int)(_cachedHashCode ?? (_cachedHashCode = CalculateHashCode()));
-//        }
-
-//        private int CalculateHashCode() {
-//            if (Value == null) {
-//                return EmptyHashCode;
-//            }
-
-//            return Value.GetHashCode();
-//        }
 //    }
 //}

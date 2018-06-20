@@ -41,6 +41,7 @@
 #if NETFULL
         public static void InitializeContainer() {
             Container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+            Container.Options.AllowOverridingRegistrations = true;
 
             RegisterCmsServices();
 
@@ -55,6 +56,7 @@
 #else
         public static void RegisterServices(IServiceCollection services) {
             Container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+            Container.Options.AllowOverridingRegistrations = true;
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IControllerActivator>(new SimpleInjectorControllerActivator(Container));

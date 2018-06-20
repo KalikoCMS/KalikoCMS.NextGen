@@ -26,5 +26,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
+  </ItemGroup>
 
 </Project>

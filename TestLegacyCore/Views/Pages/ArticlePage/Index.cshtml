@@ -1,0 +1,24 @@
+﻿@using KalikoCMS.Core
+@using KalikoCMS.Extensions
+@using KalikoCMS.ServiceLocation
+@using KalikoCMS.Services.Content.Interfaces
+@using TestLegacyCore.Models
+@model TestLegacyCore.Models.ArticlePage
+
+@{
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title>@Model.ContentName</title>
+</head>
+<body>
+
+    <h1>@Html.DisplayFor(x => x.Headline)</h1>
+    Created @Model.CreatedDate by @Model.Author
+    <div>@Html.DisplayFor(x => x.Preamble)</div>
+    @Html.DisplayFor(x => x.MainBody)
+</body>
+</html>

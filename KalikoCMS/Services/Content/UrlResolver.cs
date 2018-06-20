@@ -30,6 +30,7 @@
                 return null;
             }
 
+            // TODO: Actually get the start page from config, not the first child of root
             if (path == "/") {
                 var startContent = site.Children.FirstOrDefault();
                 if (startContent == null) {

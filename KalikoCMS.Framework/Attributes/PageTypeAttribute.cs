@@ -26,6 +26,7 @@ namespace KalikoCMS.Attributes {
         internal const int DefaultSortOrder = 100;
 
         public PageTypeAttribute(string uniqueId, string displayName) {
+            // TODO: Add GUID validator
             UniqueId = new Guid(uniqueId);
             DisplayName = displayName;
         }

@@ -77,7 +77,8 @@
 
             var site = _contentLoader.GetClosest<CmsSite>(content.ContentReference);
 
-            context.RouteData.Values["controller"] = "TestPage";
+            // TODO: Get the correct controller
+            context.RouteData.Values["controller"] = "ArticlePage";
             context.RouteData.Values["action"] = action;
             context.RouteData.Values["currentPage"] = content;
             context.RouteData.Values["currentSite"] = site;

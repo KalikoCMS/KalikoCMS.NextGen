@@ -12,10 +12,10 @@
 
     public class ContentIndexService : IContentIndexService {
         private readonly IContentMapper _contentMapper;
-        private static readonly ContentIndex Index;
+        private static ContentIndex _index;
 
         static ContentIndexService() {
-            Index = new ContentIndex();
+            _index = new ContentIndex();
         }
 
         public ContentIndexService(IContentMapper contentMapper) {
@@ -25,9 +25,11 @@
         public void Initialize() {
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
 
+            _index = new ContentIndex();
+
             var contentNodes = contentRepository.GetContentNodes();
             foreach (var contentNode in contentNodes) {
-                Index.AddChild(contentNode);
+                _index.AddChild(contentNode);
             }
 
             //foreach (var site in GetRootNodes(SiteContentProvider.SiteContentTypeId)) {
@@ -43,13 +45,13 @@
             var node = _contentMapper.MapFromContent(content);
 
             if (existingNode == null) {
-                Index.AddChild(node);
+                _index.AddChild(node);
                 return;
             }
 
             existingNode.Languages.RemoveAll(x => x.LanguageId == content.LanguageId);
             existingNode.Languages.Add(node.Languages.FirstOrDefault());
-            Index.GenerateContentUrl(existingNode);
+            _index.GenerateContentUrl(existingNode);
         }
 
         //private void BuildUrl(ContentNode content, LanguageNode language) {
@@ -75,7 +77,7 @@
         //}
 
         public bool ContentExist(Guid contentId) {
-            return Index.LookupTable.ContainsKey(contentId);
+            return _index.LookupTable.ContainsKey(contentId);
         }
 
         public Content GetContent(Guid contentId) {
@@ -101,7 +103,7 @@
         }
 
         public ContentNode GetNode(Guid contentId) {
-            if (Index.LookupTable.TryGetValue(contentId, out var node)) {
+            if (_index.LookupTable.TryGetValue(contentId, out var node)) {
                 return node;
             }
 
@@ -109,7 +111,7 @@
         }
 
         public IEnumerable<ContentNode> GetRootNodes(Guid contentTypeId) {
-            return Index.ContentTrees.Where(x => x.Value.ContentTypeId == contentTypeId).Select(x => x.Value.Children.FirstOrDefault());
+            return _index.ContentTrees.Where(x => x.Value.ContentTypeId == contentTypeId).Select(x => x.Value.Children.FirstOrDefault());
         }
     }
 }

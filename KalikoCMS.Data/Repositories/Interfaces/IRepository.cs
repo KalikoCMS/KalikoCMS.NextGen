@@ -2,7 +2,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     public interface IRepository<TEntity, in TKey> where TEntity : class {
         TEntity FirstOrDefault(Func<TEntity, bool> predicate);

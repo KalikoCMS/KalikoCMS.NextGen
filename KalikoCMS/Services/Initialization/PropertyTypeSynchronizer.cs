@@ -1,4 +1,5 @@
 ﻿namespace KalikoCMS.Services.Initialization {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Core;
@@ -27,7 +28,7 @@
                     propertyTypes.Add(new PropertyType {
                         PropertyTypeId = propertyType.PropertyTypeId,
                         Name = propertyType.Name,
-                        Class = propertyType.Class
+                        Class = propertyType.Class,
                     });
                 }
             }
