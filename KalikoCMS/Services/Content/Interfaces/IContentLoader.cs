@@ -18,5 +18,7 @@
         IEnumerable<T> GetChildren<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content;
 
         IEnumerable<IContent> GetDescendents(ContentReference contentReference, bool bypassAccessCheck = false);
+
+        IEnumerable<T> GetDescendents<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content;
     }
 }

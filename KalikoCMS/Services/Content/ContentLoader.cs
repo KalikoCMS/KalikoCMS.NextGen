@@ -73,15 +73,69 @@
                 children.Add(_contentIndexService.GetContentFromNode(node));
             }
 
+            // TODO: null checks + access checks
+
             return children;
         }
 
         public IEnumerable<T> GetChildren<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {
-            throw new NotImplementedException();
+            var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
+            var children = new List<T>();
+            foreach (var node in contentNode.Children) {
+                var content = _contentIndexService.GetContentFromNode(node);
+
+                if (content is T variable) {
+                    children.Add(variable);
+                }
+            }
+
+            // TODO: null checks + access checks
+
+            return children;
         }
 
         public IEnumerable<IContent> GetDescendents(ContentReference contentReference, bool bypassAccessCheck = false) {
-            throw new NotImplementedException();
+            var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
+            var descendants = new List<IContent>();
+
+            foreach (var node in contentNode.Children)
+            {
+                var content = _contentIndexService.GetContentFromNode(node);
+
+                descendants.Add(content);
+
+                if (!node.Children.Any())
+                {
+                    continue;
+                }
+
+                descendants.AddRange(GetDescendents(content.ContentReference, bypassAccessCheck));
+            }
+
+            // TODO: null checks + access checks
+
+            return descendants;
+        }
+
+        public IEnumerable<T> GetDescendents<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {
+            var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
+            var descendants = new List<T>();
+
+            foreach (var node in contentNode.Children) {
+                var content = _contentIndexService.GetContentFromNode(node) as IContent;
+
+                if (content is T typedContent) {
+                    descendants.Add(typedContent);
+                }
+
+                if (!node.Children.Any()) {
+                    continue;
+                }
+
+                descendants.AddRange(GetDescendents<T>(content.ContentReference, bypassAccessCheck));
+            }
+
+            return descendants;
         }
 
 
