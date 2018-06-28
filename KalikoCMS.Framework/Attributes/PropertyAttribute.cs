@@ -17,10 +17,10 @@
  */
 #endregion
 
-using System;
-using KalikoCMS.Core;
-
 namespace KalikoCMS.Attributes {
+    using System;
+    using Core;
+
     [AttributeUsage(AttributeTargets.Property)]
     public class PropertyAttribute : Attribute {
         public string Header { get; }
