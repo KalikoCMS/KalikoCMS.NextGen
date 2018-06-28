@@ -94,7 +94,7 @@
             return children;
         }
 
-        public IEnumerable<IContent> GetDescendents(ContentReference contentReference, bool bypassAccessCheck = false) {
+        public IEnumerable<IContent> GetDescendants(ContentReference contentReference, bool bypassAccessCheck = false) {
             var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
             var descendants = new List<IContent>();
 
@@ -109,7 +109,7 @@
                     continue;
                 }
 
-                descendants.AddRange(GetDescendents(content.ContentReference, bypassAccessCheck));
+                descendants.AddRange(GetDescendants(content.ContentReference, bypassAccessCheck));
             }
 
             // TODO: null checks + access checks
@@ -117,7 +117,7 @@
             return descendants;
         }
 
-        public IEnumerable<T> GetDescendents<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {
+        public IEnumerable<T> GetDescendants<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {
             var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
             var descendants = new List<T>();
 
@@ -132,7 +132,7 @@
                     continue;
                 }
 
-                descendants.AddRange(GetDescendents<T>(content.ContentReference, bypassAccessCheck));
+                descendants.AddRange(GetDescendants<T>(content.ContentReference, bypassAccessCheck));
             }
 
             return descendants;
