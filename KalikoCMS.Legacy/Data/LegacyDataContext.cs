@@ -22,7 +22,7 @@
         public virtual DbSet<LegacyTagContextEntity> TagContexts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(@"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=TemporaryKalikoCMS;Data Source=(localdb)\v11.0");
+            optionsBuilder.UseSqlServer(@"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=LegacyCMS;Data Source=(localdb)\v11.0");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
@@ -95,6 +95,10 @@
                 entity.Property(e => e.StopPublish).HasColumnType("datetime");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.VisibleInMenu).HasColumnType("tinyint");
+
+                entity.Property(e => e.VisibleInSitemap).HasColumnType("tinyint");
 
                 entity.HasOne(d => d.SiteLanguage)
                     .WithMany(p => p.PageInstances)
