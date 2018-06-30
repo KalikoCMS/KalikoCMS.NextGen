@@ -12,6 +12,9 @@ namespace KalikoCMS.Mvc {
     using Framework.Interfaces;
     using Logging;
     using Modules;
+    using ServiceLocation;
+    using Services.Content;
+    using Services.Content.Interfaces;
 #if NETCORE
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Routing;
@@ -21,7 +24,8 @@ namespace KalikoCMS.Mvc {
 #endif
 
     internal class RequestModule : RequestModuleBase, IStartupSequence {
-        private static Dictionary<int, Type> _controllerList;
+        private static Dictionary<Guid, Type> _controllerList;
+        private static readonly ILog Logger = LogProvider.For<RequestModule>();
 
         public RequestModule() {
             //RequestManager = new RequestManager();
@@ -98,17 +102,14 @@ namespace KalikoCMS.Mvc {
 #endif
         }
 
-        private static Type GetControllerType(CmsPage page) {
-            throw new NotImplementedException();
-            //if (_controllerList.All(c => c.Key != page.PageTypeId))
-            //{
-            //    var exception = new Exception(string.Format("No controller is registered for pagetype of page '{0}'", page.PageName));
-            //    Logger.Write(exception, Logger.Severity.Critical);
-            //    throw exception;
-            //}
+        internal static Type GetControllerType(IContent page) {
+            if (_controllerList.Any(c => c.Key == page.ContentTypeId)) {
+                return _controllerList[page.ContentTypeId];
+            }
 
-            //var type = _controllerList[page.PageTypeId];
-            //return type;
+            var exception = new Exception($"No controller is registered for pagetype of page '{page.ContentName}'");
+            Logger.Error(exception, "Failed to get controller");
+            throw exception;
         }
 
         private static string StripEnd(string text, string ending) {
@@ -173,8 +174,10 @@ namespace KalikoCMS.Mvc {
 #endif
         }
 
-        private static Dictionary<int, Type> BuildControllerList() {
-            var controllerList = new Dictionary<int, Type>();
+        private static Dictionary<Guid, Type> BuildControllerList() {
+            var controllerList = new Dictionary<Guid, Type>();
+
+            var contentTypeResolver = ServiceLocator.Current.GetInstance<IContentTypeResolver>();
 
             var assemblies = AssemblyLocator.GetAssemblies();
 
@@ -196,16 +199,13 @@ namespace KalikoCMS.Mvc {
                         continue;
                     }
 
-                    // TODO: Add pagetype check
-                    //var pageType = PageType.GetPageType(definedType.BaseType.GenericTypeArguments.FirstOrDefault());
+                    var contentType = contentTypeResolver.GetContentType(definedType.BaseType.GenericTypeArguments.FirstOrDefault());
 
-                    //if (pageType == null)
-                    //{
-                    //    continue;
-                    //}
+                    if (contentType == null) {
+                        continue;
+                    }
 
-                    //controllerList.Add(pageType.PageTypeId, definedType.AsType());
-                    controllerList.Add(1, definedType.AsType());
+                    controllerList.Add(contentType.ContentTypeId, definedType.AsType());
                 }
             }
 

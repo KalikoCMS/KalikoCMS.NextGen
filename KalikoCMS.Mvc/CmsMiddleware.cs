@@ -37,8 +37,8 @@ namespace KalikoCMS.Mvc {
 
                     try {
                         // Temporary scan for page controllers
-                        var requestModule = new RequestModule();
-                        requestModule.Startup();
+                        //var requestModule = new RequestModule();
+                        //requestModule.Startup();
 
                         var initializationService = ServiceLocator.Current.GetInstance<IInitializationService>();
                         initializationService.Initialize();
