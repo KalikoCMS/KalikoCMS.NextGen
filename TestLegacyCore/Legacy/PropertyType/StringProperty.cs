@@ -25,5 +25,9 @@ namespace KalikoCMS.PropertyType {
     [PropertyType("296f2f4a-99a5-4b54-96bc-8148830a8fc5", "String", "String", "%AdminPath%Content/PropertyType/StringPropertyEditor.ascx")]
     public class StringProperty {
         public string Value { get; set; }
+
+        public override string ToString() {
+            return Value;
+        }
     }
 }

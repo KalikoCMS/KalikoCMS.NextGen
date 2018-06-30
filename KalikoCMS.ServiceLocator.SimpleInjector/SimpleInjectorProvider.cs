@@ -1,19 +1,8 @@
 ﻿namespace KalikoCMS.ServiceLocation {
     using System;
     using AssemblyHelpers;
-    using Core.Interfaces;
     using Data;
-    using Data.Repositories;
-    using Data.Repositories.Interfaces;
     using Interfaces;
-    using Services.Content;
-    using Services.Content.Interfaces;
-    using KalikoCMS.Services.Resolvers;
-    using KalikoCMS.Services.Resolvers.Interfaces;
-    using Mappers;
-    using Mappers.Interfaces;
-    using Services.Initialization;
-    using Services.Initialization.Interfaces;
     using SimpleInjector;
 #if NETFULL
     using System.Reflection;
@@ -29,9 +18,10 @@
     using Microsoft.Extensions.DependencyInjection;
     using SimpleInjector.Integration.AspNetCore.Mvc;
     using SimpleInjector.Lifestyles;
+
 #endif
 
-    public class SimpleInjectorProvider {
+    public class SimpleInjectorProvider : ServiceLocatorProviderBase {
         public static Container Container { get; private set; }
 
         static SimpleInjectorProvider() {
@@ -39,7 +29,7 @@
         }
 
 #if NETFULL
-        public static void InitializeContainer() {
+        public void InitializeContainer() {
             Container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
             Container.Options.AllowOverridingRegistrations = true;
 
@@ -66,7 +56,7 @@
             services.UseSimpleInjectorAspNetRequestScoping(Container);
         }
 
-        public static void InitializeContainer(IApplicationBuilder app) {
+        public void InitializeContainer(IApplicationBuilder app) {
             // Add application presentation components:
             Container.RegisterMvcControllers(app);
             Container.RegisterMvcViewComponents(app);
@@ -86,50 +76,19 @@
             Container.Register<CmsContext, T>(Lifestyle.Scoped);
         }
 
-        private static void RegisterCmsServices() {
-            // Services
-            Container.Register<IContentCreator, ContentCreator>(Lifestyle.Singleton);
-            Container.Register<IContentIndexService, ContentIndexService>(Lifestyle.Singleton);
-            Container.Register<IContentLoader, ContentLoader>(Lifestyle.Singleton);
-            Container.Register<IContentTypeResolver, ContentTypeResolver>(Lifestyle.Singleton);
-            Container.Register<IDomainResolver, DomainResolver>(Lifestyle.Singleton);
-            Container.Register<IHttpContextResolver, HttpContextResolver>();
-            Container.Register<IInitializationService, InitializationService>(Lifestyle.Singleton);
-            Container.Register<ILanguageResolver, LanguageResolver>(Lifestyle.Singleton);
-            Container.Register<IPropertyResolver, PropertyResolver>();
-            Container.Register<IPropertyTypeResolver, PropertyTypeResolver>(Lifestyle.Singleton);
-            Container.Register<IUrlResolver, UrlResolver>(Lifestyle.Singleton);
-
-            // Data repositories
-            Container.Register<IContentAccessRightsRepository, ContentAccessRightsRepository>();
-            Container.Register<IContentLanguageRepository, ContentLanguageRepository>();
-            Container.Register<IContentPropertyRepository, ContentPropertyRepository>();
-            Container.Register<IContentRepository, ContentRepository>();
-            Container.Register<IContentTagRepository, ContentTagRepository>();
-            Container.Register<IContentTypeRepository, ContentTypeRepository>();
-            Container.Register<IDomainRepository, DomainRepository>();
-            Container.Register<ILanguageRepository, LanguageRepository>();
-            Container.Register<IPropertyRepository, PropertyRepository>();
-            Container.Register<IPropertyTypeRepository, PropertyTypeRepository>();
-            Container.Register<IRedirectRepository, RedirectRepository>();
-            Container.Register<ISystemInformationRepository, SystemInformationRepository>();
-            Container.Register<ITagContextRepository, TagContextRepository>();
-            Container.Register<ITagRepository, TagRepository>();
-
-            // Mappers
-            Container.Register<IContentMapper, ContentMapper>(Lifestyle.Singleton);
-            Container.Register<IContentTypeMapper, ContentTypeMapper>(Lifestyle.Singleton);
-            Container.Register<IDomainMapper, DomainMapper>(Lifestyle.Singleton);
-            Container.Register<IPropertyMapper, PropertyMapper>(Lifestyle.Singleton);
-
-#if NETCORE
-            Container.Register<IActionContextAccessor, ActionContextAccessor>();
-#endif
-
-            RegisterUserServices();
+        public override void RegisterSingelton<TService, TImplementation>() {
+            Container.Register<TService, TImplementation>(Lifestyle.Singleton);
         }
 
-        private static void RegisterUserServices() {
+        public override void RegisterScoped<TService, TImplementation>() {
+            Container.Register<TService, TImplementation>(Lifestyle.Scoped);
+        }
+
+        public override void RegisterTransient<TService, TImplementation>() {
+            Container.Register<TService, TImplementation>(Lifestyle.Transient);
+        }
+
+        public override void RegisterUserServices() {
             var types = AssemblyLocator.GetTypesWithInterface<ISimpleInjectorRegistrator>();
 
             foreach (var type in types) {

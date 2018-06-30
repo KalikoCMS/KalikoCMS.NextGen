@@ -2,7 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <RootNamespace>KalikoCMS.ServiceLocation</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Configuration\KalikoCMS.Configuration.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
+    <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
+  </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
@@ -21,7 +28,6 @@
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />

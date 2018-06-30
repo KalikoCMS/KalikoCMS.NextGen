@@ -3,8 +3,6 @@
     using Microsoft.EntityFrameworkCore;
 
     public class LegacyDataContext : DbContext {
-        // TODO: Enable DataStore again
-        //public virtual DbSet<DataStore> DataStore { get; set; }
         public virtual DbSet<LegacyPageEntity> Pages { get; set; }
         public virtual DbSet<LegacyPageInstanceEntity> PageInstances { get; set; }
         public virtual DbSet<LegacyPagePropertyEntity> PageProperties { get; set; }
@@ -26,13 +24,6 @@
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            //modelBuilder.Entity<DataStore>(entity => {
-            //    entity.HasKey(e => e.KeyName)
-            //        .HasName("pk_DataStore");
-
-            //    entity.Property(e => e.KeyName).HasMaxLength(256);
-            //});
-            
             modelBuilder.Entity<LegacyPageTypeEntity>().ToTable("DataStore");
             modelBuilder.Entity<LegacyPageEntity>().ToTable("Page");
             modelBuilder.Entity<LegacyPageInstanceEntity>().ToTable("PageInstance");
@@ -51,7 +42,6 @@
             modelBuilder.Entity<LegacyTagEntity>().ToTable("Tag");
             modelBuilder.Entity<LegacyTagContextEntity>().ToTable("TagContext");
             modelBuilder.Entity<LegacyTagEntity>().ToTable("Tag");
-
 
             modelBuilder.Entity<LegacyPageEntity>(entity => {
                 entity.HasIndex(e => e.PageTypeId)

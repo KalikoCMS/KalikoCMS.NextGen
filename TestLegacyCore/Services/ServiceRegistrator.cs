@@ -1,9 +1,10 @@
-﻿namespace TestSiteCore.Services {
+﻿namespace TestLegacyCore.Services {
     using KalikoCMS.Data.Repositories.Interfaces;
     using KalikoCMS.Legacy.Data;
     using KalikoCMS.Legacy.Data.Repositories;
     using KalikoCMS.ServiceLocation.Interfaces;
     using SimpleInjector;
+    using TestSiteCore.Services;
 
     public class ServiceRegistrator : ISimpleInjectorRegistrator {
         public void Register(Container container) {
@@ -11,20 +12,20 @@
 
             // Override with legacy repositories
             container.Register<LegacyDataContext, LegacyDataContext>(Lifestyle.Scoped);
-            container.Register<IContentAccessRightsRepository, LegacyContentAccessRightsRepository>();
-            container.Register<IContentLanguageRepository, LegacyContentLanguageRepository>();
-            container.Register<IContentPropertyRepository, LegacyContentPropertyRepository>();
-            container.Register<IContentRepository, LegacyContentRepository>();
-            container.Register<IContentTagRepository, LegacyContentTagRepository>();
-            container.Register<IContentTypeRepository, LegacyContentTypeRepository>();
-            container.Register<IDomainRepository, LegacyDomainRepository>();
-            container.Register<ILanguageRepository, LegacyLanguageRepository>();
-            container.Register<IPropertyRepository, LegacyPropertyRepository>();
-            container.Register<IPropertyTypeRepository, LegacyPropertyTypeRepository>();
-            container.Register<IRedirectRepository, LegacyRedirectRepository>();
-            container.Register<ISystemInformationRepository, LegacySystemInformationRepository>();
-            container.Register<ITagContextRepository, LegacyTagContextRepository>();
-            container.Register<ITagRepository, LegacyTagRepository>();
+            container.Register<IContentAccessRightsRepository, LegacyContentAccessRightsRepository>(Lifestyle.Scoped);
+            container.Register<IContentLanguageRepository, LegacyContentLanguageRepository>(Lifestyle.Scoped);
+            container.Register<IContentPropertyRepository, LegacyContentPropertyRepository>(Lifestyle.Scoped);
+            container.Register<IContentRepository, LegacyContentRepository>(Lifestyle.Scoped);
+            container.Register<IContentTagRepository, LegacyContentTagRepository>(Lifestyle.Scoped);
+            container.Register<IContentTypeRepository, LegacyContentTypeRepository>(Lifestyle.Scoped);
+            container.Register<IDomainRepository, LegacyDomainRepository>(Lifestyle.Scoped);
+            container.Register<ILanguageRepository, LegacyLanguageRepository>(Lifestyle.Scoped);
+            container.Register<IPropertyRepository, LegacyPropertyRepository>(Lifestyle.Scoped);
+            container.Register<IPropertyTypeRepository, LegacyPropertyTypeRepository>(Lifestyle.Scoped);
+            container.Register<IRedirectRepository, LegacyRedirectRepository>(Lifestyle.Scoped);
+            container.Register<ISystemInformationRepository, LegacySystemInformationRepository>(Lifestyle.Scoped);
+            container.Register<ITagContextRepository, LegacyTagContextRepository>(Lifestyle.Scoped);
+            container.Register<ITagRepository, LegacyTagRepository>(Lifestyle.Scoped);
         }
     }
 }

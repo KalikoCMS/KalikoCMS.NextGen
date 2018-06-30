@@ -25,7 +25,7 @@
             services.Configure<RazorViewEngineOptions>(options => {
                 options.FileProviders.Add(new CmsEmbeddedFileProvider());
             });
-
+            
             SimpleInjectorProvider.RegisterServices(services);
             SimpleInjectorProvider.RegisterDataProvider<InMemoryCmsContext>();  // Using in empty in memory database
         }
@@ -36,7 +36,8 @@
                 app.UseDeveloperExceptionPage();
             }
 
-            SimpleInjectorProvider.InitializeContainer(app);
+            var simpleInjectorProvider = new SimpleInjectorProvider();
+            simpleInjectorProvider.InitializeContainer(app);
 
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile("Logs\\log-{Date}.log")
@@ -46,18 +47,12 @@
 
             app.UseStaticFiles();
             app.UseCmsMiddleware();
-
-            BuildTestSite();
-
+            
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-        }
-
-        private void BuildTestSite() {
 
         }
     }

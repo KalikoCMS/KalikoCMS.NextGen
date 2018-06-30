@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>KalikoCMS.ServiceLocation</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -37,25 +37,6 @@
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core">
       <Version>4.1.0</Version>
     </PackageReference>
-  </ItemGroup>
-
-  <!-- .NET 4.6 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461'">
-    <DefineConstants>NET46;NETFULL</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="SimpleInjector.Integration.Web.Mvc" Version="4.1.0" />
   </ItemGroup>
 
 </Project>

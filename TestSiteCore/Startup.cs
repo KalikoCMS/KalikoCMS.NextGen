@@ -38,7 +38,8 @@
                 app.UseDeveloperExceptionPage();
             }
 
-            SimpleInjectorProvider.InitializeContainer(app);
+            var simpleInjectorProvider = new SimpleInjectorProvider();
+            simpleInjectorProvider.InitializeContainer(app);
 
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile("Logs\\log-{Date}.log")
