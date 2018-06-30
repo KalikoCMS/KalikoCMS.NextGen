@@ -59,7 +59,7 @@
             RegisterSingelton<IPropertyMapper, PropertyMapper>();
 
 #if NETCORE
-            RegisterScoped<IActionContextAccessor, ActionContextAccessor>();
+            RegisterTransient<IActionContextAccessor, ActionContextAccessor>();
 #endif
 
             RegisterUserServices();

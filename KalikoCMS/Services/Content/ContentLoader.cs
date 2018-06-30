@@ -45,7 +45,7 @@
         public T GetClosest<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {
             var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
 
-            var contentTypeResolver = ServiceLocator.Current.GetInstance<ContentTypeResolver>();
+            var contentTypeResolver = ServiceLocator.Current.GetInstance<IContentTypeResolver>();
             var contentTypes = contentTypeResolver.GetContentTypes<T>();
 
             while (contentNode.Parent != null) {

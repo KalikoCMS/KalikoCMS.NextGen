@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -21,7 +21,7 @@
     <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
     <ProjectReference Include="..\KalikoCMS.Legacy\KalikoCMS.Legacy.csproj" />
     <ProjectReference Include="..\KalikoCMS.Mvc\KalikoCMS.Mvc.csproj" />
-    <ProjectReference Include="..\KalikoCMS.ServiceLocator.SimpleInjector\KalikoCMS.ServiceLocation.SimpleInjector.csproj" />
+    <ProjectReference Include="..\KalikoCMS.ServiceLocation.DependencyInjection\KalikoCMS.ServiceLocation.DependencyInjection.csproj" />
     <ProjectReference Include="..\KalikoCMS\KalikoCMS.csproj" />
     <ProjectReference Include="..\KalikoCMS.UI\KalikoCMS.UI.csproj" />
   </ItemGroup>

@@ -7,6 +7,7 @@
         ContentType GetContentType(Guid contentTypeId);
         ContentType GetContentType<T>() where T : class;
         ContentType GetContentType(Type type);
+        List<ContentType> GetContentTypes<T>() where T : class;
         void Initialize();
         List<PropertyDefinition> GetPropertyDefinitions(Guid contentTypeId);
     }

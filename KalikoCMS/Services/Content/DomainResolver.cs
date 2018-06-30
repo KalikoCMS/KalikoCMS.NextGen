@@ -5,6 +5,7 @@
     using Interfaces;
     using Mappers.Interfaces;
     using Resolvers;
+    using Resolvers.Interfaces;
     using ServiceLocation;
 
     public class DomainResolver : IDomainResolver {
@@ -42,7 +43,7 @@
         }
 
         public DomainInformation GetCurrentDomain() {
-            var httpContext = ServiceLocator.Current.GetInstance<HttpContextResolver>();
+            var httpContext = ServiceLocator.Current.GetInstance<IHttpContextResolver>();
             if (httpContext.Current.Items["cmsDomain"] is DomainInformation domain) {
                 return domain;
             }

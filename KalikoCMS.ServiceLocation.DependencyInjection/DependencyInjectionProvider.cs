@@ -1,4 +1,7 @@
 ﻿namespace KalikoCMS.ServiceLocation {
+    using System;
+    using AssemblyHelpers;
+    using Interfaces;
     using Microsoft.Extensions.DependencyInjection;
 
     public class DependencyInjectionProvider : ServiceLocatorProviderBase {
@@ -26,7 +29,14 @@
         }
 
         public override void RegisterUserServices() {
-            throw new System.NotImplementedException();
+            var types = AssemblyLocator.GetTypesWithInterface<IDependencyInjectionRegistrator>();
+
+            foreach (var type in types)
+            {
+                var instance = Activator.CreateInstance(type) as IDependencyInjectionRegistrator;
+
+                instance?.Register(_serviceCollection);
+            }
         }
     }
 }

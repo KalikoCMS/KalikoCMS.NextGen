@@ -1,16 +1,21 @@
 ﻿namespace TestSiteCore {
+    using KalikoCMS.Data;
     using KalikoCMS.Mvc;
     using KalikoCMS.UI;
     using KalikoCMS.Mvc.Extensions;
     using KalikoCMS.Mvc.Framework;
     using KalikoCMS.Data.InMemory;
+    using KalikoCMS.Data.Repositories.Interfaces;
     using KalikoCMS.Data.SqlServer;
+    using KalikoCMS.Legacy.Data;
+    using KalikoCMS.Legacy.Data.Repositories;
     using KalikoCMS.ServiceLocation;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc.Razor;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
+    using Services;
 
     public class Startup {
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -25,9 +30,9 @@
             services.Configure<RazorViewEngineOptions>(options => {
                 options.FileProviders.Add(new CmsEmbeddedFileProvider());
             });
-            
-            SimpleInjectorProvider.RegisterServices(services);
-            SimpleInjectorProvider.RegisterDataProvider<InMemoryCmsContext>();  // Using in empty in memory database
+
+            var dependencyInjectionProvider = new DependencyInjectionProvider();
+            dependencyInjectionProvider.Initialize(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,9 +40,6 @@
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-
-            var simpleInjectorProvider = new SimpleInjectorProvider();
-            simpleInjectorProvider.InitializeContainer(app);
 
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile("Logs\\log-{Date}.log")
