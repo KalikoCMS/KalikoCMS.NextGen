@@ -1,5 +1,8 @@
 ﻿namespace KalikoCMS.Services.Content {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Core;
     using Core.Collections;
     using Core.Interfaces;
     using Data.Repositories.Interfaces;
@@ -26,13 +29,18 @@
 
             var properties = _propertyRepository.LoadProperties(contentId, languageId, contentTypeId, version, CreateProperty);
 
-            propertyCollection = new PropertyCollection {
-                Properties = properties
-            };
-
-            _memoryCache.Set($"properties/{contentId}/{languageId}", propertyCollection);
+            propertyCollection = AddToCache(contentId, languageId, properties);
 
             return propertyCollection;
+        }
+
+        public void Preload() {
+            var properties = _propertyRepository.LoadAllProperties(CreateProperty);
+
+            var groupedProperties = properties.GroupBy(x => (ContentId: x.ContentId, LanguageId: x.LanguageId));
+            foreach (var propertyGroup in groupedProperties) {
+                AddToCache(propertyGroup.Key.ContentId, propertyGroup.Key.LanguageId, new List<PropertyData>(propertyGroup.ToList()));
+            }
         }
 
         public object CreateProperty(Guid propertyTypeId, string serializedValue) {
@@ -41,6 +49,15 @@
             var value = JsonSerialization.DeserializeJson(serializedValue, contentType.Type);
 
             return value;
+        }
+
+        private PropertyCollection AddToCache(Guid contentId, int languageId, List<PropertyData> properties) {
+            var propertyCollection = new PropertyCollection {
+                Properties = properties
+            };
+
+            _memoryCache.Set($"properties/{contentId}/{languageId}", propertyCollection);
+            return propertyCollection;
         }
     }
 }

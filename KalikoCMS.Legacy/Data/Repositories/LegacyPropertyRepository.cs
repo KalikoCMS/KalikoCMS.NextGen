@@ -50,6 +50,26 @@
             return properties.ToList();
         }
 
+        public List<ExtendedPropertyData> LoadAllProperties(Func<Guid, string, object> creator) {
+            var properties = from p in _context.Properties
+                join cp in _context.PageProperties on p.PropertyId equals cp.PropertyId into merge
+                from m in merge.DefaultIfEmpty(new LegacyPagePropertyEntity())
+                join pi in _context.PageInstances on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
+                where pi.Status == ContentStatus.Published
+                select new ExtendedPropertyData
+                {
+                    ContentId = pi.PageId,
+                    LanguageId = pi.LanguageId,
+                    ContentPropertyId = m != null ? m.PagePropertyId : 0,
+                    PropertyName = p.Name.ToLowerInvariant(),
+                    Value = creator(p.PropertyTypeId, m == null ? string.Empty : m.PageData),
+                    PropertyId = p.PropertyId,
+                    PropertyTypeId = p.PropertyTypeId
+                };
+
+            return properties.ToList();
+        }
+
         public override void Create(PropertyEntity entity) {
             // Supress
         }

@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KalikoCMS.Configuration\KalikoCMS.Configuration.csproj" />
     <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
     <ProjectReference Include="..\KalikoCMS.Framework\KalikoCMS.Framework.csproj" />
     <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />

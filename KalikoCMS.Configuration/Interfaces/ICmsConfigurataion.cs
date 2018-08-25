@@ -1,3 +1,6 @@
 ﻿namespace KalikoCMS.Configuration.Interfaces {
-    public interface ICmsConfigurataion { }
+    public interface ICmsConfigurataion {
+        string ConnectionString { get; }
+        bool WarmupProperties { get; }
+    }
 }

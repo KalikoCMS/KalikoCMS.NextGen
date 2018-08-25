@@ -1,5 +1,6 @@
 ﻿namespace TestLegacyCore.Services
 {
+    using KalikoCMS.Configuration.Interfaces;
     using KalikoCMS.Data;
     using KalikoCMS.Data.InMemory;
     using KalikoCMS.Data.Repositories.Interfaces;
@@ -17,6 +18,7 @@
 
             // Override with legacy repositories
             services.AddScoped<LegacyDataContext, LegacyDataContext>();
+            services.AddSingleton<ICmsConfigurataion, CustomConfiguration>();
             services.AddScoped<IContentAccessRightsRepository, LegacyContentAccessRightsRepository>();
             services.AddScoped<IContentLanguageRepository, LegacyContentLanguageRepository>();
             services.AddScoped<IContentPropertyRepository, LegacyContentPropertyRepository>();

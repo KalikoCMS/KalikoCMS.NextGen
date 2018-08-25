@@ -1,6 +1,8 @@
 ﻿namespace KalikoCMS.Legacy.Data {
+    using Configuration.Interfaces;
     using Entities;
     using Microsoft.EntityFrameworkCore;
+    using ServiceLocation;
 
     public class LegacyDataContext : DbContext {
         public virtual DbSet<LegacyPageEntity> Pages { get; set; }
@@ -19,8 +21,11 @@
         public virtual DbSet<LegacyTagEntity> Tags { get; set; }
         public virtual DbSet<LegacyTagContextEntity> TagContexts { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer(@"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=LegacyCMS;Data Source=(localdb)\v11.0");
+            var configurataion = ServiceLocator.Current.GetInstance<ICmsConfigurataion>();
+
+            optionsBuilder.UseSqlServer(configurataion.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

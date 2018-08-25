@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KalikoCMS.Data\KalikoCMS.Data.csproj" />
+    <ProjectReference Include="..\KalikoCMS.Configuration\KalikoCMS.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

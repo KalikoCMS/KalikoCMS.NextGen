@@ -1,9 +1,8 @@
 ﻿@using KalikoCMS.Core
-@using KalikoCMS.Extensions
 @using KalikoCMS.ServiceLocation
 @using KalikoCMS.Services.Content.Interfaces
-@using TestLegacyCore.Models
-@model TestLegacyCore.Models.ArticlePage
+@using TestLegacyCore.Models.PageTypes
+@model ArticlePage
 
 @{
     Layout = null;
@@ -16,9 +15,41 @@
 </head>
 <body>
 
-    <h1>@Html.DisplayFor(x => x.Headline)</h1>
-    Created @Model.CreatedDate by @Model.Author
-    <div>@Html.DisplayFor(x => x.Preamble)</div>
-    @Html.DisplayFor(x => x.MainBody)
+<div>
+    <h1>@Model.Heading</h1>
+
+    @{
+        var seriesName = "Aliquam lacus lacus, rutrum at egestas at, molestie ut augue";
+
+        var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
+        var descendants = contentLoader.GetDescendants<ArticlePage>(new ContentReference(new Guid("C541EA37-9B7C-4634-85C3-41DE0BE24F66"), 1));
+
+        descendants = descendants.Where(x => x.Series.Value == seriesName).OrderBy(x => x.SortOrder).ToList();
+
+        foreach (var descendant in descendants) {
+            <a href="@descendant.ContentUrl.TrimEnd('/')">@descendant.Heading</a>
+        }
+
+        var breadCrumbs = contentLoader.GetAncestors(Model.ContentReference).Reverse();
+
+        <div>
+            @foreach (var breadCrumb in breadCrumbs) {
+                <a href="@breadCrumb.ContentUrl">@breadCrumb.ContentName</a>
+            }
+        </div>
+    }
+
+    <div class="documentation">
+
+        @Html.Raw(Model.Content.Value)
+
+        <h4>Tags</h4>
+        <p>
+            @foreach (var tag in Model.Tags.Tags) {
+                <span class="label label-primary"><a href="~/tags/@tag" style="color: white;">@tag</a></span>
+            }
+        </p>
+    </div>
+</div>
 </body>
 </html>

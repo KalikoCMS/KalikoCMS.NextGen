@@ -5,6 +5,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    // TODO: Store ContentReferences instead of Ids
     public sealed class ContentCollection : IEnumerable<Content> {
         private static readonly object PadLock = new object();
 

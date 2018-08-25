@@ -1,4 +1,6 @@
 ﻿namespace KalikoCMS.ServiceLocation {
+    using Configuration;
+    using Configuration.Interfaces;
     using Core.Interfaces;
     using Data.Repositories;
     using Data.Repositories.Interfaces;
@@ -10,7 +12,6 @@
     using Services.Initialization.Interfaces;
     using Services.Resolvers;
     using Services.Resolvers.Interfaces;
-
 #if NETCORE
     using Microsoft.AspNetCore.Mvc.Infrastructure;
 #endif
@@ -24,6 +25,7 @@
 
         protected void RegisterCmsServices() {
             // Services
+            RegisterSingelton<ICmsConfigurataion, CmsConfiguration>();
             RegisterSingelton<IContentCreator, ContentCreator>();
             RegisterSingelton<IContentIndexService, ContentIndexService>();
             RegisterSingelton<IContentLoader, ContentLoader>();

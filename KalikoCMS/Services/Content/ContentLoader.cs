@@ -4,6 +4,7 @@
     using System.Linq;
     using Core;
     using Core.Interfaces;
+    using Infrastructure;
     using Interfaces;
     using Mappers.Interfaces;
     using ServiceLocation;
@@ -36,10 +37,31 @@
         }
 
         public IEnumerable<IContent> GetAncestors(ContentReference contentReference, bool bypassAccessCheck = false) {
-            var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
-            var languageNode = contentNode.Languages.FirstOrDefault(x => x.LanguageId == contentReference.LanguageId);
+            var ancestors = new List<IContent>();
+            var contentId = contentReference.ContentId;
 
-            throw new NotImplementedException();
+            // TODO: null checks + access checks
+
+            do {
+                var contentNode = _contentIndexService.GetNode(contentId);
+                var languageNode = contentNode?.Languages.FirstOrDefault(x => x.LanguageId == contentReference.LanguageId);
+
+                if (contentNode == null || languageNode == null) {
+                    break;
+                }
+
+                var content = _contentMapper.MapToContent(contentNode, languageNode);
+                ancestors.Add(content);
+
+                if (content.TreeLevel < 0) {
+                    break;
+                }
+
+                contentId = content.ParentId;
+
+            } while (contentId != Guid.Empty);
+
+            return ancestors;
         }
 
         public T GetClosest<T>(ContentReference contentReference, bool bypassAccessCheck = false) where T : Content {

@@ -1,0 +1,34 @@
+﻿@using KalikoCMS.Core
+@using KalikoCMS.Extensions
+@using TestLegacyCore.Models.PageTypes
+@model ArticleLandingPage
+
+@{
+    Layout = null;
+}
+
+
+<html>
+<head>
+    <title>@Model.ContentName</title>
+</head>
+<body>
+
+    <div>
+        <h1>@Model.Heading</h1>
+        
+
+        <div class="documentation">
+
+            @Html.Raw(Model.Content.Value)
+
+            <h4>Articles</h4>
+        
+            @foreach (CmsPage child in Model.GetChildren()) {
+                <a href="@child.ContentUrl">@child.ContentName</a>
+            }
+
+        </div>
+    </div>
+</body>
+</html>
