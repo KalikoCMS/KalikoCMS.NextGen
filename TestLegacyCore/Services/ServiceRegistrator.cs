@@ -6,6 +6,7 @@
     using KalikoCMS.Data.Repositories.Interfaces;
     using KalikoCMS.Legacy.Data;
     using KalikoCMS.Legacy.Data.Repositories;
+    using KalikoCMS.ServiceLocation;
     using KalikoCMS.ServiceLocation.Interfaces;
     using Microsoft.Extensions.DependencyInjection;
     using TestSiteCore.Services;
@@ -15,6 +16,8 @@
         public void Register(IServiceCollection services)
         {
             services.AddScoped<ILocalService, LocalServices>();
+
+            //services.AddSingleton<IServiceScopeFactory, DependencyInjectionServiceLocator>();
 
             // Override with legacy repositories
             services.AddScoped<LegacyDataContext, LegacyDataContext>();

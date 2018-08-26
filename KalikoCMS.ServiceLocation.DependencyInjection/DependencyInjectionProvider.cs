@@ -7,13 +7,15 @@
     public class DependencyInjectionProvider : ServiceLocatorProviderBase {
         private IServiceCollection _serviceCollection;
 
-        public void Initialize(IServiceCollection services) {
+        public IServiceProvider Initialize(IServiceCollection services) {
             _serviceCollection = services;
 
             RegisterCmsServices();
 
             var serviceProvider = _serviceCollection.BuildServiceProvider();
             ServiceLocator.SetLocatorProvider(() => new DependencyInjectionServiceLocator(serviceProvider));
+
+            return serviceProvider;
         }
 
         public override void RegisterSingelton<TService, TImplementation>() {
