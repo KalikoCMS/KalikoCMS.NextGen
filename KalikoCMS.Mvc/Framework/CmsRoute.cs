@@ -1,13 +1,15 @@
 ﻿namespace KalikoCMS.Mvc.Framework {
 #if NETCORE
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
+    using System.Text.Encodings.Web;
     using System.Threading;
     using System.Threading.Tasks;
     using Core;
     using Interfaces;
     using KalikoCMS.Extensions;
-    using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
@@ -18,7 +20,7 @@
 #endif
 
 #if NETCORE
-    public class CmsRoute : IRouter {
+    public class CmsRoute : IRouter, INamedRouter {
         private readonly IActionSelector _actionSelector;
         private readonly IActionInvokerFactory _actionInvokerFactory;
         private readonly IActionContextAccessor _actionContextAccessor;
@@ -51,6 +53,8 @@
         #endregion
 
 #if NETCORE
+        public string Name => "KalikoCMSRouter";
+
         public Task RouteAsync(RouteContext context) {
             if (context == null) {
                 throw new ArgumentNullException(nameof(context));
@@ -131,11 +135,20 @@
         }
 
         public VirtualPathData GetVirtualPath(VirtualPathContext context) {
-            var page = context.AmbientValues.ContainsKey("currentPage") ? context.AmbientValues["currentPage"] as CmsPage : null;
-            var action = context.Values.ContainsKey("action") ? context.AmbientValues["action"] : null;
+            if(!context.AmbientValues.ContainsKey("currentPage")) {
+                return null;
+            }
 
+            var currentController = context.AmbientValues.ContainsKey("controller") ? (string)context.AmbientValues["controller"] : "";
+            var requestedController = context.Values.ContainsKey("controller") ? (string)context.Values["controller"] : "";
+            if (currentController != requestedController) {
+                return null;
+            }
 
-            return new VirtualPathData(this, $"{page?.ContentUrl}{action}", context.Values);
+            var currentPage = context.AmbientValues["currentPage"] as CmsPage;
+            var action = context.Values.ContainsKey("action") ? context.Values["action"] : null;
+            
+            return new VirtualPathData(this, $"{currentPage?.ContentUrl}{action}", context.Values);
         }
 #else
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values) {

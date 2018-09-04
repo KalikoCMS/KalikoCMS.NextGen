@@ -10,7 +10,7 @@
             }
         }
 
-        public bool IgnoreStartPage => true;
+        public bool IgnoreStartPage => false;
 
         // NOTE: Warming property repository by preloading at first request
         public bool WarmupProperties => true;

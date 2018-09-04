@@ -1,4 +1,5 @@
 ﻿@model object
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
 
@@ -14,5 +15,9 @@
 
         @Url.Action("Test", null)
     </div>
+
+    <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+
+    <a asp-area="" asp-controller="Home" asp-action="Test">Test</a>
 </body>
 </html>

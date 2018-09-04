@@ -7,5 +7,9 @@
         public override ActionResult Index(ArticlePage currentPage) {
             return View("~/Views/Pages/ArticlePage/Index.cshtml", currentPage);
         }
+
+        public ActionResult Test(ArticlePage currentPage) {
+            return Content("Action Test on " + currentPage.ContentName);
+        }
     }
 }

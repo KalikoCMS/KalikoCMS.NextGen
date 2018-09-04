@@ -50,8 +50,10 @@
 
             app.UseStaticFiles();
             app.UseCmsMiddleware();
-            
+
             app.UseMvc(routes => {
+                routes.MapCms();
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
