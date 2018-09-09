@@ -23,9 +23,9 @@
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            var configurataion = ServiceLocator.Current.GetInstance<ICmsConfigurataion>();
+            var configuration = ServiceLocator.Current.GetInstance<ICmsConfigurataion>();
 
-            optionsBuilder.UseSqlServer(configurataion.ConnectionString);
+            optionsBuilder.UseSqlServer(configuration.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {

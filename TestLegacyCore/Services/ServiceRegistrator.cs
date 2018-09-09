@@ -8,6 +8,7 @@
     using KalikoCMS.Legacy.Data.Repositories;
     using KalikoCMS.ServiceLocation;
     using KalikoCMS.ServiceLocation.Interfaces;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using TestSiteCore.Services;
 
@@ -18,6 +19,7 @@
             services.AddScoped<ILocalService, LocalServices>();
 
             //services.AddSingleton<IServiceScopeFactory, DependencyInjectionServiceLocator>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Override with legacy repositories
             services.AddScoped<LegacyDataContext, LegacyDataContext>();

@@ -12,6 +12,7 @@
 
     public class LegacyContentRepository : LegacyRepositoryBase<LegacyPageEntity, ContentEntity, Guid>, IContentRepository {
         private readonly LegacyDataContext _context;
+
         public LegacyContentRepository(LegacyDataContext context) : base(context) {
             _context = context;
         }
@@ -65,7 +66,7 @@
                         }).ToList()
                 }).ToList();
 
-            var siteId = new Guid("C541EA37-9B7C-4634-85C3-41DE0BE24F66");
+            var siteId = LegacySettings.SiteId;
 
             foreach (var contentNode in nodes.Where(x => x.ParentId == Guid.Empty)) {
                 contentNode.ParentId = siteId;
