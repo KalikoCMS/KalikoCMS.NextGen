@@ -41,7 +41,7 @@
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile("Logs\\log-{Date}.log")
                 .CreateLogger();

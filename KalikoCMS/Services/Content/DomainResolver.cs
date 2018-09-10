@@ -59,6 +59,11 @@
                 return domain;
             }
 
+            if (_domains.TryGetValue("*", out domain)) {
+                httpContext.Current.Items["cmsDomain"] = domain;
+                return domain;
+            }
+
             return null;
         }
     }

@@ -23,7 +23,7 @@
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            var configuration = ServiceLocator.Current.GetInstance<ICmsConfigurataion>();
+            var configuration = ServiceLocator.Current.GetInstance<ICmsConfiguration>();
 
             optionsBuilder.UseSqlServer(configuration.ConnectionString);
         }

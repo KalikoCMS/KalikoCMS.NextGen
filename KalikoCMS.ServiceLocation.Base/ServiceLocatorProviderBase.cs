@@ -25,7 +25,7 @@
 
         protected void RegisterCmsServices() {
             // Services
-            RegisterSingelton<ICmsConfigurataion, CmsConfiguration>();
+            RegisterSingelton<ICmsConfiguration, CmsConfiguration>();
             RegisterSingelton<IContentCreator, ContentCreator>();
             RegisterSingelton<IContentIndexService, ContentIndexService>();
             RegisterSingelton<IContentLoader, ContentLoader>();

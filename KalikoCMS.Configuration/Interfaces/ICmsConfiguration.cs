@@ -1,5 +1,5 @@
 ﻿namespace KalikoCMS.Configuration.Interfaces {
-    public interface ICmsConfigurataion {
+    public interface ICmsConfiguration {
         string ConnectionString { get; }
         bool IgnoreStartPage { get; }
         bool WarmupProperties { get; }

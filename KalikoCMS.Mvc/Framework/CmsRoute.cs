@@ -53,7 +53,7 @@
         #endregion
 
 #if NETCORE
-        public string Name => "KalikoCMSRouter";
+        public string Name => "CmsRoute";
 
         public Task RouteAsync(RouteContext context) {
             if (context == null) {

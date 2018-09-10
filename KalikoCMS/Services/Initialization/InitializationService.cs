@@ -18,15 +18,15 @@
         private readonly IContentIndexService _contentIndexService;
         private readonly IDomainResolver _domainResolver;
         private readonly IPropertyResolver _propertyResolver;
-        private readonly ICmsConfigurataion _configurataion;
+        private readonly ICmsConfiguration _configuration;
 
-        public InitializationService(IContentTypeResolver contentTypeResolver, IPropertyTypeResolver propertyTypeResolver, IContentIndexService contentIndexService, IDomainResolver domainResolver, IPropertyResolver propertyResolver, ICmsConfigurataion configurataion) {
+        public InitializationService(IContentTypeResolver contentTypeResolver, IPropertyTypeResolver propertyTypeResolver, IContentIndexService contentIndexService, IDomainResolver domainResolver, IPropertyResolver propertyResolver, ICmsConfiguration configuration) {
             _contentTypeResolver = contentTypeResolver;
             _propertyTypeResolver = propertyTypeResolver;
             _contentIndexService = contentIndexService;
             _domainResolver = domainResolver;
             _propertyResolver = propertyResolver;
-            _configurataion = configurataion;
+            _configuration = configuration;
         }
 
         public void Initialize() {
@@ -59,7 +59,7 @@
         }
 
         private void ApplyConditionalInitializations() {
-            if (_configurataion.WarmupProperties) {
+            if (_configuration.WarmupProperties) {
                 _propertyResolver.Preload();
             }
         }

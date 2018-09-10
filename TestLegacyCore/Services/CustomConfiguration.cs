@@ -1,7 +1,7 @@
 ﻿namespace TestLegacyCore.Services {
     using KalikoCMS.Configuration.Interfaces;
 
-    public class CustomConfiguration : ICmsConfigurataion
+    public class CustomConfiguration : ICmsConfiguration
     {
         public string ConnectionString {
             get {
@@ -12,7 +12,7 @@
 
         public bool IgnoreStartPage => false;
 
-        // NOTE: Warming property repository by preloading at first request
+        // NOTE: Warming property repository by pre-loading at first request
         public bool WarmupProperties => true;
     }
 }

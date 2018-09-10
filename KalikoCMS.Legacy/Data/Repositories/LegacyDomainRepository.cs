@@ -13,7 +13,7 @@
             Domain = new DomainEntity()
             {
                 DomainId = 1,
-                DomainName = "localhost",
+                DomainName = "*",
                 Port = 50176,
                 ContentId = new Guid("C541EA37-9B7C-4634-85C3-41DE0BE24F66"),
                 IsPrimary = true

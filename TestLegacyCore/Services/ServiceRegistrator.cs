@@ -23,7 +23,7 @@
 
             // Override with legacy repositories
             services.AddScoped<LegacyDataContext, LegacyDataContext>();
-            services.AddSingleton<ICmsConfigurataion, CustomConfiguration>();
+            services.AddSingleton<ICmsConfiguration, CustomConfiguration>();
             services.AddScoped<IContentAccessRightsRepository, LegacyContentAccessRightsRepository>();
             services.AddScoped<IContentLanguageRepository, LegacyContentLanguageRepository>();
             services.AddScoped<IContentPropertyRepository, LegacyContentPropertyRepository>();

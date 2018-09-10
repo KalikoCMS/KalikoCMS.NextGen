@@ -8,12 +8,12 @@
     public class UrlResolver : IUrlResolver {
         private readonly IContentIndexService _contentIndexService;
         private readonly IDomainResolver _domainResolver;
-        private readonly ICmsConfigurataion _configurataion;
+        private readonly ICmsConfiguration _configuration;
 
-        public UrlResolver(IContentIndexService contentIndexService, IDomainResolver domainResolver, ICmsConfigurataion configurataion) {
+        public UrlResolver(IContentIndexService contentIndexService, IDomainResolver domainResolver, ICmsConfiguration configuration) {
             _contentIndexService = contentIndexService;
             _domainResolver = domainResolver;
-            _configurataion = configurataion;
+            _configuration = configuration;
         }
 
         public Content GetContent(string path) {
@@ -35,7 +35,7 @@
 
             // TODO: Actually get the start page from config, not the first child of root
             if (path == "/") {
-                if (_configurataion.IgnoreStartPage) {
+                if (_configuration.IgnoreStartPage) {
                     return null;
                 }
 
