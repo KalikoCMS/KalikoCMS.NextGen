@@ -49,10 +49,11 @@
             Log.Logger = log;
 
             app.UseStaticFiles();
-            app.UseCmsMiddleware();
 
             app.UseMvc(routes => {
-                routes.MapCms();
+                routes.MapRoute(name: "home", template: "", defaults: new { controller = "Home", action = "Index" });
+
+                routes.MapCms(false);
 
                 routes.MapRoute(
                     name: "default",

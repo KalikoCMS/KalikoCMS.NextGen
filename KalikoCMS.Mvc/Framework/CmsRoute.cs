@@ -1,17 +1,15 @@
 ﻿namespace KalikoCMS.Mvc.Framework {
 #if NETCORE
     using System;
-    using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
-    using System.Text.Encodings.Web;
     using System.Threading;
     using System.Threading.Tasks;
     using Core;
-    using Interfaces;
     using KalikoCMS.Extensions;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
+    using Microsoft.AspNetCore.Mvc.Internal;
     using Microsoft.AspNetCore.Routing;
     using Services.Content.Interfaces;
 #else
@@ -58,6 +56,19 @@
         public Task RouteAsync(RouteContext context) {
             if (context == null) {
                 throw new ArgumentNullException(nameof(context));
+            }
+
+            if (!Bootstrapper.Initialize()) {
+                //context.HttpContext.Response.RenderMessage("System is starting up..", "Please check back in a few seconds.", 503);
+                //context.HttpContext.Response.ContentType = "text/text";
+                //context.HttpContext.Response.WriteAsync("System is starting up");
+                context.Handler = c => {
+                    c.Response.ContentType = "text/text";
+                    c.Response.WriteAsync("System is starting up... Please check back in a few seconds");
+                    return Task.CompletedTask;
+                };
+
+                return Task.CompletedTask;
             }
 
             var path = context.HttpContext.Request.Path;

@@ -48,7 +48,6 @@
             Log.Logger = log;
 
             app.UseStaticFiles();
-            app.UseCmsMiddleware();
 
             BuildTestSite();
 
