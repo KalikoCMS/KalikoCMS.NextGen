@@ -46,7 +46,7 @@
 
                 return _contentIndexService.GetContentFromNode(startContent);
             }
-
+            
             // TODO: Add domain and language resolver
 
             var segments = path.Trim('/').Split('/');

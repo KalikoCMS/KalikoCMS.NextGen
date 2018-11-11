@@ -12,6 +12,9 @@
 
         public bool IgnoreStartPage => false;
 
+        // Remove trailing slash from URLs when set to true
+        public bool SkipEndingSlash => true;
+
         // NOTE: Warming property repository by pre-loading at first request
         public bool WarmupProperties => true;
     }

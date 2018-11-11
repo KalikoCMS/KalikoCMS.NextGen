@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
+    using Configuration.Interfaces;
     using Core;
     using KalikoCMS.Extensions;
     using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@
         private readonly IActionContextAccessor _actionContextAccessor;
         private readonly IUrlResolver _urlResolver;
         private readonly IContentLoader _contentLoader;
+        private readonly ICmsConfiguration _configuration;
 #else
     public class CmsRoute : Route {
 #endif
@@ -31,12 +33,13 @@
         #region Constructors
 
 #if NETCORE
-        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor, IUrlResolver urlResolver, IContentLoader contentLoader) {
+        public CmsRoute(IActionSelector actionSelector, IActionInvokerFactory actionInvokerFactory, IActionContextAccessor actionContextAccessor, IUrlResolver urlResolver, IContentLoader contentLoader, ICmsConfiguration configuration) {
             _actionSelector = actionSelector;
             _actionInvokerFactory = actionInvokerFactory;
             _actionContextAccessor = actionContextAccessor;
             _urlResolver = urlResolver;
             _contentLoader = contentLoader;
+            _configuration = configuration;
         }
 #else
         public CmsRoute(string url, IRouteHandler routeHandler) : base(url, routeHandler) { }
@@ -79,8 +82,9 @@
             }
 
             var action = "Index";
-            if (path.Value.Length > content.ContentUrl.Length) {
-                var remains = path.Value.Substring(content.ContentUrl.Length).Trim('/');
+            var contentUrlLength = content.ContentUrl.Length + (_configuration.SkipEndingSlash ? 1 : 0);
+            if (path.Value.Length > contentUrlLength) {
+                var remains = path.Value.Substring(contentUrlLength).Trim('/');
                 if (remains.IndexOf('/') > 0) {
                     // Not an action
                     return Task.CompletedTask;

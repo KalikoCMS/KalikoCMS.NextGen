@@ -1,4 +1,5 @@
 ﻿namespace KalikoCMS.Mappers {
+    using Configuration.Interfaces;
     using Core;
     using Infrastructure;
     using Interfaces;
@@ -6,9 +7,11 @@
 
     public class ContentMapper : IContentMapper {
         private readonly IContentTypeResolver _contentTypeResolver;
+        private readonly ICmsConfiguration _configuration;
 
-        public ContentMapper(IContentTypeResolver contentTypeResolver) {
+        public ContentMapper(IContentTypeResolver contentTypeResolver, ICmsConfiguration configuration) {
             _contentTypeResolver = contentTypeResolver;
+            _configuration = configuration;
         }
 
         public Content MapToContent(ContentNode node, LanguageNode languageNode) {
@@ -42,6 +45,10 @@
             content.VisibleInMenu = languageNode.VisibleInMenu;
             content.VisibleInSitemap = languageNode.VisibleInSitemap;
 
+            if (_configuration.SkipEndingSlash) {
+                content.ContentUrl = content.ContentUrl.TrimEnd('/');
+            }
+
             return content;
         }
 
@@ -73,6 +80,10 @@
                 VisibleInMenu = content.VisibleInMenu,
                 VisibleInSitemap = content.VisibleInSitemap
             };
+
+            if (_configuration.SkipEndingSlash && !languageNode.ContentUrl.EndsWith("/")) {
+                languageNode.ContentUrl += '/';
+            }
 
             node.Languages.Add(languageNode);
 

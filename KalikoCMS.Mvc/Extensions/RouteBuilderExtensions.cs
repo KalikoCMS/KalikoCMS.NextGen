@@ -1,5 +1,6 @@
 ﻿namespace KalikoCMS.Mvc.Extensions {
 #if NETCORE
+    using Configuration.Interfaces;
     using Framework;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.AspNetCore.Routing;
@@ -13,12 +14,13 @@
             var actionContextAccessor = routeBuilder.ServiceProvider.GetService(typeof(IActionContextAccessor)) as IActionContextAccessor;
             var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
             var urlResolver = ServiceLocator.Current.GetInstance<IUrlResolver>();
+            var configuration = ServiceLocator.Current.GetInstance<ICmsConfiguration>();
 
             if (insertAsFirst) {
-                routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader));
+                routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
             }
             else {
-                routeBuilder.Routes.Add(new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader));
+                routeBuilder.Routes.Add(new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
             }
         }
     }
