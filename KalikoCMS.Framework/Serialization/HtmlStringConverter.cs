@@ -5,7 +5,6 @@
     using Microsoft.AspNetCore.Html;
 #else
     using System.Web;
-    using System.Web.Mvc;
 #endif
 
     public class HtmlStringConverter : JsonConverter {
