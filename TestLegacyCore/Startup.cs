@@ -13,6 +13,8 @@
     using KalikoCMS.ServiceLocation;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    //using Microsoft.AspNetCore.Internal;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Razor;
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
@@ -24,13 +26,19 @@
         public IServiceProvider ConfigureServices(IServiceCollection services) {
             services.AddMemoryCache();
             services.AddMvc(options => {
-                // add custom binder to beginning of collection
-                options.ModelBinderProviders.Insert(0, new CmsPageBinderProvider());
-            });
+                    // add custom binder to beginning of collection
+                    options.ModelBinderProviders.Insert(0, new CmsPageBinderProvider());
+                    options.EnableEndpointRouting = true;
+                });
+            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.Configure<RazorViewEngineOptions>(options => {
-                options.FileProviders.Add(new CmsEmbeddedFileProvider());
-            });
+            // netcoreapp3.0
+            // Register transformer to use with endpoint routing
+            services.AddScoped<CmsTransformer>();
+
+            //services.Configure<RazorViewEngineOptions>(options => {
+ //TODO: Fix               options.FileProviders.Add(new CmsEmbeddedFileProvider());
+            //});
 
             var dependencyInjectionProvider = new DependencyInjectionProvider();
             return dependencyInjectionProvider.Initialize(services);
@@ -50,19 +58,15 @@
 
             app.UseStaticFiles();
 
-    app.UseMvc(routes => {
-        routes.MapRoute(
-            name: "home", 
-            template: "", 
-            defaults: new { controller = "Home", action = "Index" });
+            app.UseRouting();
 
-        routes.MapCms(false);
-
-        routes.MapRoute(
-            name: "default",
-            template: "{controller=Home}/{action=Index}/{id?}");
-    });
-
+            // netcoreapp3.0:
+            // Enable endpoints and add a MapDynamicControllerRoute for CmsTransformer
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDynamicControllerRoute<CmsTransformer>("{**path}");
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 }

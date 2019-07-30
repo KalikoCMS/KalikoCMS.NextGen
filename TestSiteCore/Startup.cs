@@ -23,7 +23,7 @@
             });
 
             services.Configure<RazorViewEngineOptions>(options => {
-                options.FileProviders.Add(new CmsEmbeddedFileProvider());
+//TODO: Fix                options.FileProviders.Add(new CmsEmbeddedFileProvider());
             });
 
             //services.AddDbContext<InMemoryCmsContext>();

@@ -6,6 +6,7 @@
     using Core.Interfaces;
     using Infrastructure;
     using Interfaces;
+    using KalikoCMS.Extensions;
     using Mappers.Interfaces;
     using ServiceLocation;
 
@@ -92,7 +93,11 @@
             var contentNode = _contentIndexService.GetNode(contentReference.ContentId);
             var children = new List<IContent>();
             foreach (var node in contentNode.Children) {
-                children.Add(_contentIndexService.GetContentFromNode(node));
+                var content = _contentIndexService.GetContentFromNode(node);
+
+                if (content != null && content.IsAvailable()) {
+                    children.Add(content);
+                }
             }
 
             // TODO: null checks + access checks

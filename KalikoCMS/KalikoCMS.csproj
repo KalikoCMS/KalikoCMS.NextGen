@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net461</TargetFrameworks>
     <Version>2.0-alpha1</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1'">
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
@@ -35,7 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="**\*_NETCORE.cs" Condition=" '$(TargetFramework)' == 'net461'" />
-    <Compile Remove="**\*_NET46.cs" Condition=" '$(TargetFramework)' == 'netstandard2.0'" />
+    <Compile Remove="**\*_NET46.cs" Condition=" '$(TargetFramework)' == 'netstandard2.1'" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />

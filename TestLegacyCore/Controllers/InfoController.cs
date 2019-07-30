@@ -19,7 +19,7 @@
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("<html><body>");
             stringBuilder.AppendLine("<ul>");
-            var node = _contentIndexService.GetNode(new Guid("C541EA37-9B7C-4634-85C3-41DE0BE24F66"));
+            var node = _contentIndexService.GetNode(new Guid("be3673e2-128b-42a5-b8cb-8f345d9a58f2"));
             AppendNodes(node, stringBuilder);
             stringBuilder.AppendLine("</ul>");
             stringBuilder.AppendLine("</body></html>");

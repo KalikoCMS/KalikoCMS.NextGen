@@ -14,6 +14,7 @@
     using Services.Resolvers.Interfaces;
 #if NETCORE
     using Microsoft.AspNetCore.Mvc.Infrastructure;
+    using KalikoCMS.Mvc.Framework;
 #endif
 
     public abstract class ServiceLocatorProviderBase {

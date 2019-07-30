@@ -16,12 +16,12 @@
             var urlResolver = ServiceLocator.Current.GetInstance<IUrlResolver>();
             var configuration = ServiceLocator.Current.GetInstance<ICmsConfiguration>();
 
-            if (insertAsFirst) {
-                routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
-            }
-            else {
-                routeBuilder.Routes.Add(new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
-            }
+            //if (insertAsFirst) {
+            //    routeBuilder.Routes.Insert(0, new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
+            //}
+            //else {
+            //    routeBuilder.Routes.Add(new CmsRoute(actionSelector, actionInvokerFactory, actionContextAccessor, urlResolver, contentLoader, configuration));
+            //}
         }
     }
 #endif
