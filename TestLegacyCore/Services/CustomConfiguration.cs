@@ -6,7 +6,7 @@
         public string ConnectionString {
             get {
                 // logic to get configuration here
-                return @"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=LegacyCMS;Data Source=(LocalDb)\MSSQLLocalDB";
+                return @"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=LegacyCMS;Data Source=(localdb)\v11.0";
             }
         }
 
