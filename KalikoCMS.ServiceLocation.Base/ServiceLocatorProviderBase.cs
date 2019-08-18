@@ -33,7 +33,7 @@
             RegisterSingelton<IContentTypeResolver, ContentTypeResolver>();
             RegisterSingelton<IDomainResolver, DomainResolver>();
             RegisterScoped<IHttpContextResolver, HttpContextResolver>();
-            RegisterSingelton<IInitializationService, InitializationService>();
+            RegisterScoped<IInitializationService, InitializationService>();
             RegisterSingelton<ILanguageResolver, LanguageResolver>();
             RegisterScoped<IPropertyResolver, PropertyResolver>();
             RegisterSingelton<IPropertyTypeResolver, PropertyTypeResolver>();
