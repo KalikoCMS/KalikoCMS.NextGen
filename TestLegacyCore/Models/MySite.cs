@@ -1,4 +1,4 @@
-﻿namespace TestSiteCore.Models {
+﻿namespace TestLegacyCore.Models {
     using KalikoCMS.Attributes;
     using KalikoCMS.Core;
 

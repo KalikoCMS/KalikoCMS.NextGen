@@ -33,18 +33,13 @@
                 return null;
             }
 
-            // TODO: Actually get the start page from config, not the first child of root
-            if (path == "/") {
-                if (_configuration.IgnoreStartPage) {
+            // TODO: Allow virtual path
+            if (path == "/" || string.IsNullOrEmpty(path)) {
+                if (_configuration.IgnoreStartPage || _configuration.StartPageId == Guid.Empty) {
                     return null;
                 }
 
-                var startContent = site.Children.FirstOrDefault();
-                if (startContent == null) {
-                    return null;
-                }
-
-                return _contentIndexService.GetContentFromNode(startContent);
+                return _contentIndexService.GetContent(_configuration.StartPageId);
             }
             
             // TODO: Add domain and language resolver
