@@ -9,6 +9,7 @@
     using Infrastructure;
     using KalikoCMS.Data.Entities;
     using KalikoCMS.Data.Repositories.Interfaces;
+    using Microsoft.EntityFrameworkCore;
 
     public class LegacyContentRepository : LegacyRepositoryBase<LegacyPageEntity, ContentEntity, Guid>, IContentRepository {
         private readonly LegacyDataContext _context;
@@ -32,9 +33,8 @@
         }
 
         public IEnumerable<ContentNode> GetContentNodes() {
-            var nodes = (from content in _context.Pages
-                join contentLanguage in
-                    _context.PageInstances.Where(x => x.DeletedDate == null && (x.Status == ContentStatus.Published || (x.Status == ContentStatus.WorkingCopy && x.CurrentVersion == 0)))
+            var nodes = (from content in _context.Pages.AsNoTracking().ToList()
+                    join contentLanguage in _context.PageInstances.AsNoTracking().Where(x => x.DeletedDate == null && (x.Status == ContentStatus.Published || (x.Status == ContentStatus.WorkingCopy && x.CurrentVersion == 0)))
                     on content.PageId equals contentLanguage.PageId into grouped
                 orderby content.TreeLevel
                 select new ContentNode

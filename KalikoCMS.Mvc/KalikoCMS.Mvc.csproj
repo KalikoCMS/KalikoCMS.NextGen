@@ -43,5 +43,8 @@
     <Reference Include="System.Configuration" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
   
 </Project>

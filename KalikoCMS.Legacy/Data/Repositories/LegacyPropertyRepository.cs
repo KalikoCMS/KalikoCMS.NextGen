@@ -7,6 +7,7 @@
     using Entities;
     using KalikoCMS.Data.Entities;
     using KalikoCMS.Data.Repositories.Interfaces;
+    using Microsoft.EntityFrameworkCore;
 
     public class LegacyPropertyRepository : LegacyRepositoryBase<LegacyPropertyEntity, PropertyEntity, int>, IPropertyRepository {
         private readonly LegacyDataContext _context;
@@ -51,10 +52,10 @@
         }
 
         public List<ExtendedPropertyData> LoadAllProperties(Func<Guid, string, object> creator) {
-            var properties = from p in _context.Properties
-                join cp in _context.PageProperties on p.PropertyId equals cp.PropertyId into merge
-                from m in merge.DefaultIfEmpty(new LegacyPagePropertyEntity())
-                join pi in _context.PageInstances on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
+            var properties = from p in _context.Properties.AsNoTracking()
+                join cp in _context.PageProperties.AsNoTracking() on p.PropertyId equals cp.PropertyId into merge
+                from m in merge.DefaultIfEmpty()
+                join pi in _context.PageInstances.AsNoTracking() on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
                 where pi.Status == ContentStatus.Published
                 select new ExtendedPropertyData
                 {

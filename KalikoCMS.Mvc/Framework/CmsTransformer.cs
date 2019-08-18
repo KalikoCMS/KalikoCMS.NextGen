@@ -34,9 +34,11 @@ namespace KalikoCMS.Mvc.Framework
 
             if (!Bootstrapper.Initialize())
             {
-                httpContext.Response.ContentType = "text/text";
-                await httpContext.Response.WriteAsync("System is starting up");
-                return new RouteValueDictionary();
+                return new RouteValueDictionary()
+                {
+                    { "controller", "CmsMessage" },
+                    { "action", "Startup" }
+                };
             }
 
             var content = _urlResolver.GetContent(path, true);

@@ -30,7 +30,9 @@
         #region Synchronize content types
 
         internal List<ContentType> SynchronizeContentTypes() {
-            var contentTypeEntities = _contentTypeRepository.GetAll().Include(x => x.Properties).ToList();
+            // TODO: Temporary fix; Properties needs to be included for the non-legacy version, has to be solved
+            //var contentTypeEntities = _contentTypeRepository.GetAll().Include(x => x.Properties).ToList();
+            var contentTypeEntities = _contentTypeRepository.GetAll().ToList();
             var contentTypes = new List<ContentType>();
 
             SynchronizePageTypes(contentTypeEntities, contentTypes);
