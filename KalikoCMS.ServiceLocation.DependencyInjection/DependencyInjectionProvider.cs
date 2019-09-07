@@ -18,7 +18,7 @@
             return serviceProvider;
         }
 
-        public override void RegisterSingelton<TService, TImplementation>() {
+        public override void RegisterSingleton<TService, TImplementation>() {
             _serviceCollection.AddSingleton<TService, TImplementation>();
         }
 

@@ -76,7 +76,7 @@
             Container.Register<CmsContext, T>(Lifestyle.Scoped);
         }
 
-        public override void RegisterSingelton<TService, TImplementation>() {
+        public override void RegisterSingleton<TService, TImplementation>() {
             Container.Register<TService, TImplementation>(Lifestyle.Singleton);
         }
 

@@ -19,24 +19,24 @@
 
     public abstract class ServiceLocatorProviderBase {
         
-        public abstract void RegisterSingelton<TService, TImplementation>() where TService : class where TImplementation : class, TService;
+        public abstract void RegisterSingleton<TService, TImplementation>() where TService : class where TImplementation : class, TService;
         public abstract void RegisterScoped<TService, TImplementation>() where TService : class where TImplementation : class, TService;
         public abstract void RegisterTransient<TService, TImplementation>() where TService : class where TImplementation : class, TService;
         public abstract void RegisterUserServices();
 
         protected void RegisterCmsServices() {
             // Services
-            RegisterSingelton<ICmsConfiguration, CmsConfiguration>();
-            RegisterSingelton<IContentCreator, ContentCreator>();
-            RegisterSingelton<IContentIndexService, ContentIndexService>();
-            RegisterSingelton<IContentLoader, ContentLoader>();
-            RegisterSingelton<IContentTypeResolver, ContentTypeResolver>();
-            RegisterSingelton<IDomainResolver, DomainResolver>();
+            RegisterSingleton<ICmsConfiguration, CmsConfiguration>();
+            RegisterSingleton<IContentCreator, ContentCreator>();
+            RegisterSingleton<IContentIndexService, ContentIndexService>();
+            RegisterSingleton<IContentLoader, ContentLoader>();
+            RegisterSingleton<IContentTypeResolver, ContentTypeResolver>();
+            RegisterSingleton<IDomainResolver, DomainResolver>();
             RegisterScoped<IHttpContextResolver, HttpContextResolver>();
             RegisterScoped<IInitializationService, InitializationService>();
-            RegisterSingelton<ILanguageResolver, LanguageResolver>();
+            RegisterSingleton<ILanguageResolver, LanguageResolver>();
             RegisterScoped<IPropertyResolver, PropertyResolver>();
-            RegisterSingelton<IPropertyTypeResolver, PropertyTypeResolver>();
+            RegisterSingleton<IPropertyTypeResolver, PropertyTypeResolver>();
             RegisterScoped<IUrlResolver, UrlResolver>();
 
             // Data repositories
@@ -56,10 +56,10 @@
             RegisterScoped<ITagRepository, TagRepository>();
 
             // Mappers
-            RegisterSingelton<IContentMapper, ContentMapper>();
-            RegisterSingelton<IContentTypeMapper, ContentTypeMapper>();
-            RegisterSingelton<IDomainMapper, DomainMapper>();
-            RegisterSingelton<IPropertyMapper, PropertyMapper>();
+            RegisterSingleton<IContentMapper, ContentMapper>();
+            RegisterSingleton<IContentTypeMapper, ContentTypeMapper>();
+            RegisterSingleton<IDomainMapper, DomainMapper>();
+            RegisterSingleton<IPropertyMapper, PropertyMapper>();
 
 #if NETCORE
             RegisterTransient<IActionContextAccessor, ActionContextAccessor>();
