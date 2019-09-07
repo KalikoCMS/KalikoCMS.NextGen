@@ -9,7 +9,7 @@
     public sealed class ContentCollection : IEnumerable<Content> {
         private static readonly object PadLock = new object();
 
-        private readonly int _languageId;
+        //private readonly int _languageId;
 
         public ContentCollection() {
             ContentIds = new Collection<Guid>();

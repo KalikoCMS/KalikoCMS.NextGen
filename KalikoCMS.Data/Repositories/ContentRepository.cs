@@ -156,7 +156,7 @@
 
                     transaction.Commit();
                 }
-                catch(Exception exception) {
+                catch {
                     transaction.Rollback();
                     // TODO: Log
                     throw;
@@ -197,7 +197,7 @@
                     content.Status = ContentStatus.Published;
                     content.StartPublish = contentLanguageEntity.StartPublish;
                 }
-                catch (Exception exception) {
+                catch {
                     transaction.Rollback();
                     // TODO: Log
 

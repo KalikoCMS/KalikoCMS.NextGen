@@ -10,7 +10,7 @@
 
     public class InfoController : Controller {
         private readonly IContentIndexService _contentIndexService;
-        private readonly IContentIndexService _unknown;
+
         public InfoController(IContentIndexService contentIndexService) {
             _contentIndexService = contentIndexService;
         }

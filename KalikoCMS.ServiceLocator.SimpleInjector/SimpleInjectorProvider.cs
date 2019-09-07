@@ -57,9 +57,9 @@
         }
 
         public void InitializeContainer(IApplicationBuilder app) {
-            // Add application presentation components:
-            Container.RegisterMvcControllers(app);
-            Container.RegisterMvcViewComponents(app);
+            // Obsolete, set through services.AddSimpleInjector(container, options => options.AddAspNetCore().AddControllerActivation())
+            //Container.RegisterMvcControllers(app);
+            //Container.RegisterMvcViewComponents(app);
 
             RegisterCmsServices();
 

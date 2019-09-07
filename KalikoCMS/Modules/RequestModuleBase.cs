@@ -12,7 +12,7 @@ namespace KalikoCMS.Modules {
     public abstract class RequestModuleBase : IHttpModule {
 #endif
 
-        private static readonly string PreviewPath = "TODO"; //TODO
+        //private static readonly string PreviewPath = "TODO"; //TODO
         //protected static IRequestManager RequestManager { get; set; }
 
         static RequestModuleBase() {
@@ -46,10 +46,11 @@ namespace KalikoCMS.Modules {
         private void HandleRequest() {
             var relativeUrl = RelativeUrl;
 
-            if (IsUrlToPreview(FullUrl)) {
-                PreviewPage();
-            }
-            else if (IsUrlToStartPage(relativeUrl)) {
+            //TODO:
+            //if (IsUrlToPreview(FullUrl)) {
+            //    PreviewPage();
+            //}
+            if (IsUrlToStartPage(relativeUrl)) {
                 RedirectToStartPage();
             }
             else {
@@ -78,16 +79,16 @@ namespace KalikoCMS.Modules {
             get { return HttpContext.Current.Request.Path.ToLowerInvariant(); }
         }
 
-        private bool IsUrlToPreview(string url) {
-            if (string.IsNullOrEmpty(url)) {
-                return false;
-            }
+        //private bool IsUrlToPreview(string url) {
+        //    if (string.IsNullOrEmpty(url)) {
+        //        return false;
+        //    }
 
-            if (!url.StartsWith("/")) {
-                url = string.Format("/{0}", url);
-            }
-            return url.ToLowerInvariant().StartsWith(PreviewPath);
-        }
+        //    if (!url.StartsWith("/")) {
+        //        url = string.Format("/{0}", url);
+        //    }
+        //    return url.ToLowerInvariant().StartsWith(PreviewPath);
+        //}
 
         private static bool IsUrlToStartPage(string url) {
             return (url.Length == 0 || url == "default.aspx");
