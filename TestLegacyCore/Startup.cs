@@ -1,71 +1,62 @@
-﻿namespace TestSiteCore {
+﻿namespace TestLegacyCore {
     using System;
-    using KalikoCMS.Data;
     using KalikoCMS.Mvc;
-    using KalikoCMS.UI;
-    using KalikoCMS.Mvc.Extensions;
     using KalikoCMS.Mvc.Framework;
-    using KalikoCMS.Data.InMemory;
-    using KalikoCMS.Data.Repositories.Interfaces;
-    using KalikoCMS.Data.SqlServer;
-    using KalikoCMS.Legacy.Data;
-    using KalikoCMS.Legacy.Data.Repositories;
     using KalikoCMS.ServiceLocation;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    //using Microsoft.AspNetCore.Internal;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Razor;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Serilog;
     using Services;
 
     public class Startup {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public IServiceProvider ConfigureServices(IServiceCollection services) {
-            services.AddMemoryCache();
-            services.AddMvc(options => {
-                    // add custom binder to beginning of collection
-                    options.ModelBinderProviders.Insert(0, new CmsPageBinderProvider());
-                    options.EnableEndpointRouting = true;
-                });
-            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        public Startup(IConfiguration configuration) {
+            Configuration = configuration;
+        }
 
-            // netcoreapp3.0
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services) {
+            services.AddControllersWithViews(options => {
+                options.ModelBinderProviders.Insert(0, new CmsPageBinderProvider());
+            });
+
             // Register transformer to use with endpoint routing
             services.AddScoped<CmsTransformer>();
-
-            //services.Configure<RazorViewEngineOptions>(options => {
- //TODO: Fix               options.FileProviders.Add(new CmsEmbeddedFileProvider());
-            //});
-
-            var dependencyInjectionProvider = new DependencyInjectionProvider();
-            return dependencyInjectionProvider.Initialize(services);
+            // Transformer can be overriden in order to manipulate matching pattern
+            //services.AddScoped<CustomCmsTransformer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
-            
+            else {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //app.UseHsts();
+            }
+
             var log = new LoggerConfiguration()
                 .WriteTo.RollingFile("Logs\\log-{Date}.log")
                 .CreateLogger();
 
             Log.Logger = log;
 
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            // netcoreapp3.0:
-            // Enable endpoints and add a MapDynamicControllerRoute for CmsTransformer
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => {
                 endpoints.MapDynamicControllerRoute<CmsTransformer>("{**path}");
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
