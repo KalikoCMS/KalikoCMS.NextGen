@@ -25,13 +25,14 @@
         public void Initialize() {
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
 
-            _index = new ContentIndex();
+            var index = new ContentIndex();
 
             var contentNodes = contentRepository.GetContentNodes();
             foreach (var contentNode in contentNodes) {
-                _index.AddChild(contentNode);
+                index.AddChild(contentNode);
             }
 
+            _index = index;
             //foreach (var site in GetRootNodes(SiteContentProvider.SiteContentTypeId)) {
             //    foreach (var language in site.Languages) {
             //        BuildUrl(site, language);

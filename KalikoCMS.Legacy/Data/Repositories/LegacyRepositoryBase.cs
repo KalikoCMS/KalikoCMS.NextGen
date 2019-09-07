@@ -51,14 +51,14 @@
 
         public abstract Expression<Func<TSource, TEntity>> Map();
 
-        public Guid ToGuid(int value) {
+        public static Guid ToGuid(int value) {
             var bytes = new byte[16];
             BitConverter.GetBytes(value).CopyTo(bytes, 0);
             var guid = new Guid(bytes);
             return guid;
         }
 
-        public int ToInt(Guid value) {
+        public static int ToInt(Guid value) {
             var bytes = new byte[16];
             value.ToByteArray().CopyTo(bytes, 0);
             return BitConverter.ToInt32(bytes, 0);
