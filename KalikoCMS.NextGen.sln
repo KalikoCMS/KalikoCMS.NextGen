@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS", "KalikoCMS\KalikoCMS.csproj", "{88F68D30-339D-43DB-9761-575A4A42D146}"
 EndProject
@@ -47,9 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.ServiceLocation",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestLegacyCore", "TestLegacyCore\TestLegacyCore.csproj", "{1C789ACF-CBC5-4DC7-A58A-D7DEB6B5F01D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalikoCMS.ServiceLocation.DependencyInjection", "KalikoCMS.ServiceLocation.DependencyInjection\KalikoCMS.ServiceLocation.DependencyInjection.csproj", "{B4EFF5FC-24E3-49DC-9601-8CDF394C251F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.ServiceLocation.DependencyInjection", "KalikoCMS.ServiceLocation.DependencyInjection\KalikoCMS.ServiceLocation.DependencyInjection.csproj", "{B4EFF5FC-24E3-49DC-9601-8CDF394C251F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalikoCMS.ServiceLocation.Base", "KalikoCMS.ServiceLocation.Base\KalikoCMS.ServiceLocation.Base.csproj", "{1B920BF6-C752-4E9E-9395-B29D1F8992C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KalikoCMS.ServiceLocation.Base", "KalikoCMS.ServiceLocation.Base\KalikoCMS.ServiceLocation.Base.csproj", "{1B920BF6-C752-4E9E-9395-B29D1F8992C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
