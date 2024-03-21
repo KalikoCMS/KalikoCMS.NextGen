@@ -198,6 +198,11 @@
 
             modelBuilder.Entity<LegacyPropertyEntity>(entity => {
 
+                entity.Property(e => e.ShowInAdmin).HasColumnType("tinyint");
+
+                entity.Property(e => e.Required).HasColumnType("tinyint");
+
+
 #if NETFULL
                 entity.HasIndex(e => e.PageTypeId)
                     .HasName("idx_Property_PageTypeId");

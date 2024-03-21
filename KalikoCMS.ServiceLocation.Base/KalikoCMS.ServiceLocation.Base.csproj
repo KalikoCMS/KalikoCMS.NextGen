@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;netcoreapp3.1;net461</TargetFrameworks>
+    <TargetFrameworks>net8.0;netcoreapp3.1;net461</TargetFrameworks>
     <RootNamespace>KalikoCMS.ServiceLocation</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -12,10 +12,10 @@
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net7.0'">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net8.0'">
     <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition="' $(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net7.0'">
+  <ItemGroup Condition="' $(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net8.0'">
   </ItemGroup>
 
   <!-- .NET 4.6.x references, compilation flags and build options -->

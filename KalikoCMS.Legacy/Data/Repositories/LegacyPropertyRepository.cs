@@ -55,6 +55,8 @@
             var properties = from p in _context.Properties.AsNoTracking().ToList()
                 join cp in _context.PageProperties.AsNoTracking().ToList() on p.PropertyId equals cp.PropertyId into merge
                 from m in merge.DefaultIfEmpty()
+                let pageId = m?.PageId
+                where pageId != null
                 join pi in _context.PageInstances.AsNoTracking().ToList() on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
                 where pi.Status == ContentStatus.Published
                 select new ExtendedPropertyData

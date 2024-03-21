@@ -5,8 +5,8 @@
     <RootNamespace>KalikoCMS</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Castle.Core" Version="5.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KalikoCMS.Logging\KalikoCMS.Logging.csproj" />
