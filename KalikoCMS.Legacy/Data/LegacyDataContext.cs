@@ -198,9 +198,9 @@
 
             modelBuilder.Entity<LegacyPropertyEntity>(entity => {
 
-                entity.Property(e => e.ShowInAdmin).HasColumnType("tinyint");
+                //entity.Property(e => e.ShowInAdmin).HasColumnType("tinyint");
 
-                entity.Property(e => e.Required).HasColumnType("tinyint");
+                //entity.Property(e => e.Required).HasColumnType("tinyint");
 
 
 #if NETFULL
