@@ -22,10 +22,10 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net8.0'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="SimpleInjector.Integration.AspNetCore">
-      <Version>5.5.0</Version>
+      <Version>4.4.6</Version>
     </PackageReference>
     <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core">
-      <Version>5.5.0</Version>
+      <Version>4.4.6</Version>
     </PackageReference>
   </ItemGroup>
 
