@@ -35,9 +35,9 @@
         }
 
         public List<PropertyData> LoadProperties(Guid contentId, int languageId, Guid contentTypeId, int version, Func<Guid, string, object> creator) {
-            var properties = from p in _context.Properties
-                join cp in _context.PageProperties on new {PropertyId = p.PropertyId, PageId = contentId, LanguageId = languageId, Version = version} equals new {cp.PropertyId, cp.PageId, cp.LanguageId, cp.Version} into merge
-                from m in merge.DefaultIfEmpty(new LegacyPagePropertyEntity())
+            var properties = from p in _context.Properties.AsNoTracking().ToList()
+                             join cp in _context.PageProperties.AsNoTracking().ToList() on new {PropertyId = p.PropertyId, PageId = contentId, LanguageId = languageId, Version = version} equals new {cp.PropertyId, cp.PageId, cp.LanguageId, cp.Version} into merge
+                from m in merge.ToList().DefaultIfEmpty(new LegacyPagePropertyEntity())
                 where p.PageTypeId == ToInt(contentTypeId)
                 orderby p.SortOrder
                 select new PropertyData {
@@ -52,10 +52,12 @@
         }
 
         public List<ExtendedPropertyData> LoadAllProperties(Func<Guid, string, object> creator) {
-            var properties = from p in _context.Properties.AsNoTracking()
-                join cp in _context.PageProperties.AsNoTracking() on p.PropertyId equals cp.PropertyId into merge
+            var properties = from p in _context.Properties.AsNoTracking().ToList()
+                join cp in _context.PageProperties.AsNoTracking().ToList() on p.PropertyId equals cp.PropertyId into merge
                 from m in merge.DefaultIfEmpty()
-                join pi in _context.PageInstances.AsNoTracking() on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
+                let pageId = m?.PageId
+                where pageId != null
+                join pi in _context.PageInstances.AsNoTracking().ToList() on new { m.PageId, m.LanguageId, m.Version } equals new { pi.PageId, pi.LanguageId, Version = pi.CurrentVersion }
                 where pi.Status == ContentStatus.Published
                 select new ExtendedPropertyData
                 {

@@ -3,6 +3,7 @@
     using Entities;
     using Microsoft.EntityFrameworkCore;
     using ServiceLocation;
+    using System;
 
     public class LegacyDataContext : DbContext {
         public virtual DbSet<LegacyPageEntity> Pages { get; set; }
@@ -49,9 +50,14 @@
             modelBuilder.Entity<LegacyTagEntity>().ToTable("Tag");
 
             modelBuilder.Entity<LegacyPageEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.PageTypeId)
                     .HasName("IX_Page_PageTypeId");
-
+#else
+                entity.HasIndex(e => e.PageTypeId)
+                    .HasDatabaseName("IX_Page_PageTypeId");
+#endif
                 entity.Property(e => e.PageId).ValueGeneratedNever();
 
                 entity.HasOne(d => d.PageType)
@@ -62,14 +68,26 @@
             });
 
             modelBuilder.Entity<LegacyPageInstanceEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.LanguageId)
                     .HasName("idx_PageInstance_LanguageId");
 
-                entity.HasIndex(e => e.PageId)
+                 entity.HasIndex(e => e.PageId)
                     .HasName("idx_PageInstance_PageId");
 
-                entity.HasIndex(e => new {e.PageId, e.LanguageId})
+                entity.HasIndex(e => new { e.PageId, e.LanguageId })
                     .HasName("IX_Page_PageIdLanguageId");
+#else
+                entity.HasIndex(e => e.LanguageId)
+                    .HasDatabaseName("idx_PageInstance_LanguageId");
+                
+                entity.HasIndex(e => e.PageId)
+                    .HasDatabaseName("idx_PageInstance_PageId");
+
+                entity.HasIndex(e => new { e.PageId, e.LanguageId })
+                    .HasDatabaseName("IX_Page_PageIdLanguageId");
+#endif
 
                 entity.Property(e => e.Author).HasColumnType("varchar(256)");
 
@@ -109,11 +127,20 @@
             });
 
             modelBuilder.Entity<LegacyPagePropertyEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.PageId)
                     .HasName("idx_PageProperty_PageId");
 
                 entity.HasIndex(e => e.PropertyId)
                     .HasName("idx_PageProperty_PropertyId");
+#else
+                entity.HasIndex(e => e.PageId)
+                    .HasDatabaseName("idx_PageProperty_PageId");
+
+                entity.HasIndex(e => e.PropertyId)
+                    .HasDatabaseName("idx_PageProperty_PropertyId");
+#endif
 
                 entity.HasOne(d => d.Page)
                     .WithMany(p => p.PageProperties)
@@ -144,11 +171,19 @@
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_PageTag_Tag");
 
+#if NETFULL
                 entity.HasIndex(e => e.PageId)
                     .HasName("idx_PageTag_PageId");
 
                 entity.HasIndex(e => e.TagId)
                     .HasName("idx_PageTag_TagId");
+#else
+                entity.HasIndex(e => e.PageId)
+                    .HasDatabaseName("idx_PageTag_PageId");
+
+                entity.HasIndex(e => e.TagId)
+                    .HasDatabaseName("idx_PageTag_TagId");
+#endif                
             });
 
             modelBuilder.Entity<LegacyPageTypeEntity>(entity => {
@@ -162,12 +197,25 @@
             });
 
             modelBuilder.Entity<LegacyPropertyEntity>(entity => {
+
+                //entity.Property(e => e.ShowInAdmin).HasColumnType("tinyint");
+
+                //entity.Property(e => e.Required).HasColumnType("tinyint");
+
+
+#if NETFULL
                 entity.HasIndex(e => e.PageTypeId)
                     .HasName("idx_Property_PageTypeId");
 
                 entity.HasIndex(e => e.PropertyTypeId)
                     .HasName("idx_Property_PropertyTypeId");
+#else
+                entity.HasIndex(e => e.PageTypeId)
+                    .HasDatabaseName("idx_Property_PageTypeId");
 
+                entity.HasIndex(e => e.PropertyTypeId)
+                    .HasDatabaseName("idx_Property_PropertyTypeId");
+#endif
                 entity.Property(e => e.Header)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -194,8 +242,14 @@
             });
 
             modelBuilder.Entity<LegacyRedirectEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => new {e.UrlHash, e.Url})
                     .HasName("IX_Redirect_UrlUrlHash");
+#else
+                entity.HasIndex(e => new {e.UrlHash, e.Url})
+                    .HasDatabaseName("IX_Redirect_UrlUrlHash");
+#endif
 
                 entity.Property(e => e.Url)
                     .IsRequired()
@@ -224,11 +278,20 @@
             });
 
             modelBuilder.Entity<LegacySitePropertyEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.PropertyId)
                     .HasName("idx_SiteProperty_PropertyId");
 
                 entity.HasIndex(e => e.SiteId)
                     .HasName("idx_SiteProperty_SiteId");
+#else
+                entity.HasIndex(e => e.PropertyId)
+                    .HasDatabaseName("idx_SiteProperty_PropertyId");
+
+                entity.HasIndex(e => e.SiteId)
+                    .HasDatabaseName("idx_SiteProperty_SiteId");
+#endif
 
                 entity.HasOne(d => d.Property)
                     .WithMany(p => p.SiteProperties)
@@ -247,8 +310,14 @@
                 entity.HasKey(e => e.PropertyId)
                     .HasName("pk_SitePropertyDefinition");
 
+#if NETFULL
                 entity.HasIndex(e => e.PropertyTypeId)
                     .HasName("idx_StPrprtyDfntn_PrprtyTypeId");
+#else
+                entity.HasIndex(e => e.PropertyTypeId)
+                    .HasDatabaseName("idx_StPrprtyDfntn_PrprtyTypeId");
+#endif
+
 
                 entity.Property(e => e.Header)
                     .IsRequired()
@@ -260,8 +329,14 @@
             });
 
             modelBuilder.Entity<LegacyTagEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.TagContextId)
                     .HasName("idx_Tag_TagContextId");
+#else
+                entity.HasIndex(e => e.TagContextId)
+                    .HasDatabaseName("idx_Tag_TagContextId");
+#endif                
 
                 entity.Property(e => e.TagName)
                     .IsRequired()
@@ -275,8 +350,14 @@
             });
 
             modelBuilder.Entity<LegacyTagContextEntity>(entity => {
+
+#if NETFULL
                 entity.HasIndex(e => e.ContextName)
                     .HasName("IX_TagContext_ContextName");
+#else
+                entity.HasIndex(e => e.ContextName)
+                    .HasDatabaseName("IX_TagContext_ContextName");
+#endif
 
                 entity.Property(e => e.ContextName)
                     .IsRequired()

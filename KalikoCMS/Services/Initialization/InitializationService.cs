@@ -59,7 +59,8 @@
         }
 
         private void ApplyConditionalInitializations() {
-            if (_configuration.WarmupProperties) {
+            if (_configuration.WarmupProperties)
+            {
                 _propertyResolver.Preload();
             }
         }

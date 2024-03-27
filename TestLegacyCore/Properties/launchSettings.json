@@ -13,7 +13,7 @@
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress",
+      "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -24,9 +24,18 @@
       "launchBrowser": true,
       "launchUrl": "http://localhost/",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "applicationUrl": "http://localhost:50177/"
+    },
+    "TestLegacyCore": {
+       "commandName": "Project",
+      "launchUrl": "https://localhost:5501",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORT": "5501",
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "applicationUrl": "http://localhost:5400;https://localhost:5401"
     }
   }
 }

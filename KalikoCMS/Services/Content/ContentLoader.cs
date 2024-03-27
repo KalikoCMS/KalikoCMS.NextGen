@@ -159,7 +159,11 @@
                     continue;
                 }
 
-                descendants.AddRange(GetDescendants<T>(content.ContentReference, bypassAccessCheck));
+                if (content != null)
+                {
+                    descendants.AddRange(GetDescendants<T>(content.ContentReference, bypassAccessCheck));
+                }
+                
             }
 
             return descendants;

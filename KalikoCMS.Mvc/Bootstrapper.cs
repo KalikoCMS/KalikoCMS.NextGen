@@ -24,6 +24,7 @@
 
                 try {
                     var initializationService = ServiceLocator.Current.GetInstance<IInitializationService>();
+                    
                     initializationService.Initialize();
 
                     _isInitialized = true;
